@@ -1,0 +1,197 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/drawer_layout"
+    android:background="@color/background"
+    android:layout_width="match_parent"
+     android:layout_height="400dp">
+    <!-- The main content view -->
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/textTitle"
+        android:layout_width="299dp"
+        android:layout_height="44dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="55dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="55dp"
+        android:layout_marginBottom="55dp"
+        android:background="@drawable/back"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:gravity="center"
+        android:text="User Details"
+        android:textAlignment="center"
+        android:textAllCaps="true"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="#011930"
+        android:textSize="23dp" />
+
+    <View
+        android:id="@+id/view1"
+        android:layout_width="300sp"
+        android:layout_height="1px"
+        android:layout_below="@+id/textTitle"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="0sp"
+        android:background="#003366" />
+
+    <View
+        android:id="@+id/view2"
+        android:layout_width="300sp"
+        android:layout_height="2px"
+        android:layout_below="@+id/imageView6"
+        android:layout_alignStart="@+id/view3"
+        android:layout_alignLeft="@+id/view3"
+        android:layout_alignEnd="@+id/view4"
+        android:layout_alignRight="@+id/view4"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="13sp"
+        android:background="#003366" />
+
+    <View
+        android:id="@+id/view3"
+        android:layout_width="300sp"
+        android:layout_height="1px"
+        android:layout_below="@+id/imageView3"
+        android:layout_alignStart="@+id/view4"
+        android:layout_alignLeft="@+id/view4"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10sp"
+        android:background="#003366" />
+
+    <View
+        android:id="@+id/view4"
+        android:layout_width="300sp"
+        android:layout_height="1.7px"
+        android:layout_below="@+id/editPhoneNumber"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="50sp"
+        android:layout_marginTop="10sp"
+        android:background="#0A1B2C" />
+    <View
+         android:layout_width="300sp"
+        android:layout_height="2px"
+        android:layout_below="@+id/editPhoneNumber"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="50sp"
+        android:layout_marginTop="60sp"
+        android:background="#0A1B2C" />
+
+            <ImageView
+                android:layout_width="22sp"
+                android:layout_height="22sp"
+                android:id="@+id/imageView3"
+                android:src="@drawable/blue_user"
+                android:layout_alignBottom="@+id/editFirstName"
+                android:layout_alignLeft="@+id/view2"
+                android:layout_alignStart="@+id/view2" />
+
+            <ImageView
+                android:layout_width="22sp"
+                android:layout_height="22sp"
+                android:id="@+id/imageView6"
+                android:src="@drawable/blue_user"
+                android:layout_alignBottom="@+id/editLastName"
+                android:layout_alignLeft="@+id/view3"
+                android:layout_alignStart="@+id/view3" />
+
+    <TextView
+        android:id="@+id/editFirstName"
+        android:layout_width="164dp"
+        android:layout_height="32dp"
+        android:layout_below="@+id/view1"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="5dp"
+        android:background="@null"
+        android:gravity="center"
+        android:hint="First Name"
+        android:textColor="#003366"
+        android:textColorHint="#003366"
+        android:textSize="15dp" />
+
+    <TextView
+        android:id="@+id/editLastName"
+        android:layout_width="151dp"
+        android:layout_height="35dp"
+        android:layout_below="@+id/view3"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="2dp"
+        android:background="@null"
+        android:gravity="center"
+        android:hint="Last Name"
+        android:textColor="#003366"
+        android:textColorHint="#003366"
+        android:textSize="15dp" />
+
+    <Button
+            android:id="@+id/btnSave"
+            android:layout_width="330sp"
+            android:layout_height="50sp"
+            android:layout_below="@+id/view4"
+            android:layout_alignStart="@+id/view4"
+            android:visibility="gone"
+            android:layout_alignLeft="@+id/view4"
+            android:layout_alignEnd="@+id/view4"
+            android:layout_alignRight="@+id/view4"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="64dp"
+            android:background="@drawable/button_back2"
+            android:onClick="goToSave"
+            android:text="Save"
+            android:textColor="#bfdfdf"
+            android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/editPhoneNumber"
+        android:layout_width="145dp"
+        android:layout_height="34dp"
+        android:layout_below="@+id/view2"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:background="@null"
+        android:gravity="center"
+        android:hint="Mobile Number"
+        android:inputType="phone"
+        android:maxLength="14"
+        android:textColor="#003366"
+        android:textColorHint="#003366"
+        android:textSize="15dp"  />
+
+    <TextView
+        android:id="@+id/bloodtype"
+        android:layout_width="147dp"
+        android:layout_height="29dp"
+        android:layout_below="@+id/view2"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="66dp"
+        android:background="@null"
+        android:gravity="center"
+        android:hint="Blood type"
+        android:inputType="phone"
+        android:maxLength="14"
+        android:textColor="#003366"
+        android:textColorHint="#003366"
+        android:textSize="15dp"  />
+
+    <ImageView
+        android:id="@+id/imageView5"
+        android:layout_width="24sp"
+        android:layout_height="24sp"
+        android:layout_alignStart="@+id/view4"
+        android:layout_alignLeft="@+id/view4"
+        android:layout_alignTop="@+id/editPhoneNumber"
+        android:src="@drawable/blue_phone" />
+
+    <ImageView
+        android:id="@+id/imageView9"
+        android:layout_width="24sp"
+        android:layout_height="24sp"
+        android:layout_alignStart="@+id/view4"
+        android:layout_alignLeft="@+id/view4"
+        android:layout_alignTop="@+id/imageView5"
+        android:layout_marginStart="-3dp"
+        android:layout_marginLeft="-3dp"
+        android:layout_marginTop="54dp"
+        android:src="@drawable/ic_baseline_bloodtype_24" />
+
+
+</RelativeLayout>

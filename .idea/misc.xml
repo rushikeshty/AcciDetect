@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/Rushikesh/AndroidStudioProjects/Dapp/app/src/main/res/drawable/back.xml" value="0.19444444444444445" />
+        <entry key="..\:/Users/Rushikesh/AndroidStudioProjects/Dapp/app/src/main/res/drawable/button_back.xml" value="0.2046875" />
+        <entry key="..\:/Users/Rushikesh/AndroidStudioProjects/Dapp/app/src/main/res/drawable/button_back2.xml" value="0.2046875" />
+        <entry key="..\:/Users/Rushikesh/AndroidStudioProjects/Dapp/app/src/main/res/drawable/customshape.xml" value="0.13" />
+        <entry key="..\:/Users/Rushikesh/AndroidStudioProjects/Dapp/app/src/main/res/drawable/customshape2.xml" value="0.19444444444444445" />
+        <entry key="..\:/Users/Rushikesh/AndroidStudioProjects/Dapp/app/src/main/res/drawable/customshape3.xml" value="0.19444444444444445" />
+        <entry key="..\:/Users/Rushikesh/AndroidStudioProjects/Dapp/app/src/main/res/drawable/fab_label_background.xml" value="0.2046875" />
+        <entry key="..\:/Users/Rushikesh/AndroidStudioProjects/Dapp/app/src/main/res/drawable/ic_baseline_bloodtype_24.xml" value="0.18888888888888888" />
+        <entry key="..\:/Users/Rushikesh/AndroidStudioProjects/Dapp/app/src/main/res/drawable/ic_hospitalicon.xml" value="0.17671232876712328" />
+        <entry key="..\:/Users/Rushikesh/AndroidStudioProjects/Dapp/app/src/main/res/drawable/ic_shakr.xml" value="0.11" />
+        <entry key="..\:/Users/Rushikesh/AndroidStudioProjects/Dapp/app/src/main/res/drawable/side_nav_bar.xml" value="0.19444444444444445" />
+        <entry key="..\:/Users/Rushikesh/AndroidStudioProjects/Dapp/app/src/main/res/drawable/sound.xml" value="0.19444444444444445" />
+        <entry key="..\:/Users/Rushikesh/AndroidStudioProjects/Dapp/app/src/main/res/drawable/toast_back.xml" value="0.2046875" />
+        <entry key="..\:/Users/Rushikesh/AndroidStudioProjects/Dapp/app/src/main/res/layout-v28/activity_myaccount.xml" value="0.20260416666666667" />
+        <entry key="..\:/Users/Rushikesh/AndroidStudioProjects/Dapp/app/src/main/res/layout/activity_accident_list.xml" value="0.22" />
+        <entry key="..\:/Users/Rushikesh/AndroidStudioProjects/Dapp/app/src/main/res/layout/activity_accidents.xml" value="0.18" />
+        <entry key="..\:/Users/Rushikesh/AndroidStudioProjects/Dapp/app/src/main/res/layout/activity_ambulance_driver.xml" value="0.25" />
+        <entry key="..\:/Users/Rushikesh/AndroidStudioProjects/Dapp/app/src/main/res/layout/activity_contact_add.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/Rushikesh/AndroidStudioProjects/Dapp/app/src/main/res/layout/activity_contact_edit.xml" value="0.16" />
+        <entry key="..\:/Users/Rushikesh/AndroidStudioProjects/Dapp/app/src/main/res/layout/activity_dashboard.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/Rushikesh/AndroidStudioProjects/Dapp/app/src/main/res/layout/activity_dialog_message.xml" value="0.14537037037037037" />
+        <entry key="..\:/Users/Rushikesh/AndroidStudioProjects/Dapp/app/src/main/res/layout/activity_hospital_assigned.xml" value="0.2" />
+        <entry key="..\:/Users/Rushikesh/AndroidStudioProjects/Dapp/app/src/main/res/layout/activity_hospital_authority.xml" value="0.14444444444444443" />
+        <entry key="..\:/Users/Rushikesh/AndroidStudioProjects/Dapp/app/src/main/res/layout/activity_login.xml" value="0.18854166666666666" />
+        <entry key="..\:/Users/Rushikesh/AndroidStudioProjects/Dapp/app/src/main/res/layout/activity_login_screen.xml" value="0.33" />
+        <entry key="..\:/Users/Rushikesh/AndroidStudioProjects/Dapp/app/src/main/res/layout/activity_main.xml" value="0.19010416666666666" />
+        <entry key="..\:/Users/Rushikesh/AndroidStudioProjects/Dapp/app/src/main/res/layout/activity_main2.xml" value="0.20427305888483585" />
+        <entry key="..\:/Users/Rushikesh/AndroidStudioProjects/Dapp/app/src/main/res/layout/activity_my_contacts.xml" value="0.25" />
+        <entry key="..\:/Users/Rushikesh/AndroidStudioProjects/Dapp/app/src/main/res/layout/activity_myaccount.xml" value="0.33" />
+        <entry key="..\:/Users/Rushikesh/AndroidStudioProjects/Dapp/app/src/main/res/layout/activity_personal_info.xml" value="0.25" />
+        <entry key="..\:/Users/Rushikesh/AndroidStudioProjects/Dapp/app/src/main/res/layout/activity_phone_verification.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/Rushikesh/AndroidStudioProjects/Dapp/app/src/main/res/layout/activity_police_person.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/Rushikesh/AndroidStudioProjects/Dapp/app/src/main/res/layout/activity_send_sms.xml" value="0.18" />
+        <entry key="..\:/Users/Rushikesh/AndroidStudioProjects/Dapp/app/src/main/res/layout/activity_sign_up.xml" value="0.18" />
+        <entry key="..\:/Users/Rushikesh/AndroidStudioProjects/Dapp/app/src/main/res/layout/activity_splash.xml" value="0.15" />
+        <entry key="..\:/Users/Rushikesh/AndroidStudioProjects/Dapp/app/src/main/res/layout/activity_test_example.xml" value="0.16620370370370371" />
+        <entry key="..\:/Users/Rushikesh/AndroidStudioProjects/Dapp/app/src/main/res/layout/activity_tracking.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/Rushikesh/AndroidStudioProjects/Dapp/app/src/main/res/layout/activity_view_accident.xml" value="0.21" />
+        <entry key="..\:/Users/Rushikesh/AndroidStudioProjects/Dapp/app/src/main/res/layout/add_contact.xml" value="0.16197916666666667" />
+        <entry key="..\:/Users/Rushikesh/AndroidStudioProjects/Dapp/app/src/main/res/layout/app_bar_main.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/Rushikesh/AndroidStudioProjects/Dapp/app/src/main/res/layout/content_main.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/Rushikesh/AndroidStudioProjects/Dapp/app/src/main/res/layout/custom_toast.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/Rushikesh/AndroidStudioProjects/Dapp/app/src/main/res/layout/custom_toolbar.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/Rushikesh/AndroidStudioProjects/Dapp/app/src/main/res/layout/emercontact_list_item.xml" value="0.5" />
+        <entry key="..\:/Users/Rushikesh/AndroidStudioProjects/Dapp/app/src/main/res/layout/exp_group_item.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/Rushikesh/AndroidStudioProjects/Dapp/app/src/main/res/layout/fragment_gallery.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/Rushikesh/AndroidStudioProjects/Dapp/app/src/main/res/layout/fragment_home.xml" value="0.16" />
+        <entry key="..\:/Users/Rushikesh/AndroidStudioProjects/Dapp/app/src/main/res/layout/fragment_logout.xml" value="0.1640625" />
+        <entry key="..\:/Users/Rushikesh/AndroidStudioProjects/Dapp/app/src/main/res/layout/fragment_slideshow.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/Rushikesh/AndroidStudioProjects/Dapp/app/src/main/res/layout/loginactivity.xml" value="0.18009259259259258" />
+        <entry key="..\:/Users/Rushikesh/AndroidStudioProjects/Dapp/app/src/main/res/layout/my_account.xml" value="0.1476851851851852" />
+        <entry key="..\:/Users/Rushikesh/AndroidStudioProjects/Dapp/app/src/main/res/layout/nav_header_main.xml" value="0.25" />
+        <entry key="..\:/Users/Rushikesh/AndroidStudioProjects/Dapp/app/src/main/res/layout/noaccidents.xml" value="0.22" />
+        <entry key="..\:/Users/Rushikesh/AndroidStudioProjects/Dapp/app/src/main/res/layout/notification_layout.xml" value="0.25" />
+        <entry key="..\:/Users/Rushikesh/AndroidStudioProjects/Dapp/app/src/main/res/layout/notification_layout2.xml" value="0.47164591977869985" />
+        <entry key="..\:/Users/Rushikesh/AndroidStudioProjects/Dapp/app/src/main/res/layout/registeractivity.xml" value="0.25" />
+        <entry key="..\:/Users/Rushikesh/AndroidStudioProjects/Dapp/app/src/main/res/layout/single_accident_file.xml" value="0.25" />
+        <entry key="..\:/Users/Rushikesh/AndroidStudioProjects/Dapp/app/src/main/res/menu/activity_main_drawer.xml" value="0.18" />
+        <entry key="..\:/Users/Rushikesh/AndroidStudioProjects/Dapp/app/src/main/res/menu/main.xml" value="0.18854166666666666" />
+        <entry key="..\:/Users/Rushikesh/AndroidStudioProjects/Dapp/app/src/main/res/menu/menu_main.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/Rushikesh/AndroidStudioProjects/Dapp/app/src/main/res/menu/menu_new_order.xml" value="0.18854166666666666" />
+        <entry key="..\:/Users/Rushikesh/AndroidStudioProjects/Dapp/app/src/main/res/menu/mymenu.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/Rushikesh/AppData/Local/Android/Sdk/platforms/android-31/data/res/layout/simple_list_item_1.xml" value="0.16620370370370371" />
+        <entry key="..\:/Users/Rushikesh/AppData/Local/Android/Sdk/platforms/android-31/data/res/layout/simple_spinner_dropdown_item.xml" value="0.18611111111111112" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>

@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:id="@+id/activity_sign_up"
+        android:layout_width="match_parent"
+        android:layout_height="650sp"
+        android:background="#0D1567"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        tools:context=".SignUpActivity">
+
+
+        <TextView
+            android:id="@+id/textViewTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="53dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="75dp"
+            android:layout_marginBottom="35dp"
+            android:gravity="center"
+            android:text="Registeration For User "
+            android:textAlignment="center"
+            android:textColor="#bfdfdf"
+            android:textSize="25dp" />
+
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="135dp"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/editTextEmail"
+            android:layout_marginStart="-45dp"
+            android:layout_marginLeft="-45dp"
+            android:layout_marginBottom="-84dp"
+            android:src="@drawable/user_32px" />
+
+        <EditText
+            android:id="@+id/editTextEmail"
+            android:layout_width="256dp"
+            android:layout_height="40dp"
+            android:layout_below="@+id/textViewTitle"
+            android:layout_marginStart="50dp"
+            android:layout_marginTop="82dp"
+            android:layout_marginEnd="45dp"
+            android:background="@null"
+            android:gravity="center"
+            android:hint="Username"
+            android:inputType="text"
+            android:textColor="#FFFFFC"
+            android:textColorHint="#898A83" />
+
+        <ImageView
+            android:id="@+id/imageView4"
+            android:layout_width="73dp"
+            android:layout_height="36dp"
+            android:layout_above="@+id/imageView3"
+            android:layout_alignLeft="@+id/imageView3"
+            android:layout_marginLeft="23dp"
+            android:layout_marginTop="76dp"
+            android:layout_marginBottom="35dp"
+            android:src="@drawable/lock_32px" />
+
+        <EditText
+            android:id="@+id/editTextPassword"
+            android:layout_width="276dp"
+            android:layout_height="49dp"
+            android:layout_below="@+id/editTextEmail"
+            android:layout_alignBottom="@+id/imageView4"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="50dp"
+            android:layout_marginTop="36dp"
+            android:layout_marginEnd="48dp"
+            android:layout_marginBottom="-87dp"
+            android:background="@null"
+            android:gravity="center"
+            android:hint="Password"
+            android:inputType="textPassword"
+            android:textColor="#FFFFFE"
+            android:textColorHint="#898A83" />
+
+        <EditText
+            android:id="@+id/bloodgroup"
+            android:layout_width="360dp"
+            android:layout_height="46dp"
+            android:layout_alignBottom="@+id/imageView4"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="50dp"
+            android:layout_marginTop="287dp"
+            android:layout_marginEnd="48dp"
+            android:layout_marginBottom="-165dp"
+            android:background="@null"
+            android:drawableLeft="@drawable/ic_baseline_bloodtype_24"
+            android:gravity="center"
+            android:hint="Blood group"
+            android:inputType="textCapCharacters"
+            android:textColor="#FFFFFE"
+            android:textColorHint="#9E9F97" />
+
+        <Button
+            android:id="@+id/btnRegister"
+            android:layout_width="348dp"
+            android:layout_height="43dp"
+            android:layout_below="@+id/editTextPassword"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="197dp"
+            android:layout_marginEnd="-40dp"
+            android:background="@drawable/button_back"
+            android:gravity="center"
+            android:onClick="register"
+            android:text="Register"
+            android:textColor="#bfdfdf"
+            android:textSize="15sp" />
+
+    </RelativeLayout>
+</ScrollView>

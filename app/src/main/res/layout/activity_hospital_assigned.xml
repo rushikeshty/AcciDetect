@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="@drawable/hosptialll"
+    android:layout_height="match_parent"
+    tools:context=".AccidentDetect.HospitalAssigned">
+
+     <TextView
+        android:layout_width="match_parent"
+        android:layout_height="73dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="2dp"
+        android:background="#8AB6FF"
+        android:fontFamily="sans-serif-black"
+        android:gravity="center"
+        android:text="Hospital assigned"
+        android:textSize="30dp"
+         app:drawableLeftCompat="@drawable/ic_hospitalicon" />
+
+    <Button
+        android:id="@+id/viewaccident"
+        android:layout_width="319dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="35dp"
+        android:layout_marginTop="501dp"
+        android:layout_marginEnd="39dp"
+        android:background="#FA6060"
+        android:gravity="center"
+        android:text="View Accidents"
+        android:textSize="20dp" />
+
+    <Button
+        android:id="@+id/updatebtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="432dp"
+        android:layout_marginEnd="49dp"
+        android:background="#FA6060"
+        android:gravity="center"
+        android:text="Update address"
+        android:textSize="20dp" />
+
+    <Button
+        android:id="@+id/logout"
+        android:layout_width="319dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="33dp"
+        android:layout_marginTop="568dp"
+        android:layout_marginEnd="41dp"
+        android:background="#FA6060"
+        android:gravity="center"
+        android:text="Log out"
+        android:textSize="20dp" />
+
+    <EditText
+        android:id="@+id/textView1"
+        android:layout_width="316dp"
+        android:layout_height="60dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="105dp"
+        android:background="#8091A4F3"
+        android:hint="latitude:-"
+        android:textColor="@color/black"
+        android:textSize="25dp" />
+
+    <EditText
+        android:id="@+id/lontitude"
+        android:layout_width="316dp"
+        android:layout_height="60dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="189dp"
+        android:background="#8091A4F3"
+        android:enabled="false"
+        android:hint="longitude:-"
+        android:textColor="@color/black"
+        android:textColorHint="@color/black"
+        android:textSize="20dp" />
+
+    <EditText
+        android:id="@+id/address"
+        android:layout_width="316dp"
+        android:layout_height="60dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="280dp"
+        android:background="#8091A4F3"
+        android:hint="Your address:-"
+        android:textColor="@color/black"
+        android:textColorHint="@color/black"
+        android:textSize="20dp" />
+
+    <EditText
+        android:id="@+id/latitude"
+        android:layout_width="316dp"
+        android:layout_height="60dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="105dp"
+        android:background="#8091A4F3"
+        android:enabled="false"
+        android:hint="latitude:-"
+        android:textColor="@color/black"
+        android:textColorHint="@color/black"
+        android:textSize="20dp" />
+
+ </RelativeLayout>

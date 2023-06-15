@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "904424787069",
+    "project_id": "dapp-53d6d",
+    "storage_bucket": "dapp-53d6d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:904424787069:android:21a03c03779f237aff3514",
+        "android_client_info": {
+          "package_name": "com.example.software2.dapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "904424787069-h8f20n0tkovtl7ibfpmaqmikg0cml1vh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDxRAL2U60EaOTSvsB9nPyx0ojcr2UbuHM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "904424787069-h8f20n0tkovtl7ibfpmaqmikg0cml1vh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

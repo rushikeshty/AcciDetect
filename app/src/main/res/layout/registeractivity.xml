@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".LoginSignup.SignUpActivity">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="636dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="0dp"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            android:background="@drawable/blue_bg">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="73dp"
+                android:src="@drawable/alarm" />
+
+        </FrameLayout>
+
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="62dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="62dp"
+            android:background="@drawable/blue_border_rounded_cornwe">
+
+            <!-- INPUT -->
+            <EditText
+                android:id="@+id/editTextEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/username_icon"
+                android:background="@android:color/transparent"
+                android:fontFamily="@font/poppins_regular"
+                android:hint="Username"
+                android:inputType="textEmailAddress"
+                android:maxLines="1"
+                android:paddingLeft="17dp"
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp"
+                android:textCursorDrawable="@drawable/cursor_color"
+                android:textSize="15sp" />
+
+            <!-- ICON -->
+            <ImageView
+                android:id="@+id/username_icon"
+                android:layout_width="21dp"
+                android:layout_height="26dp"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="17dp"
+                android:layout_marginTop="12dp"
+                android:src="@drawable/user_32px" />
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="62dp"
+            android:layout_marginTop="22.7dp"
+            android:layout_marginRight="62dp"
+            android:background="@drawable/blue_border_rounded_cornwe">
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="35dp"
+                android:textColorHint="#ACA5A5"
+                app:passwordToggleEnabled="true">
+
+                <EditText
+                    android:id="@+id/editTextPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/icon"
+                    android:background="@android:color/transparent"
+                    android:fontFamily="@font/poppins_regular"
+
+                    android:hint="Password"
+                    android:inputType="textPassword"
+                    android:maxLength="10"
+                    android:maxLines="1"
+                    android:paddingLeft="17dp"
+                    android:paddingTop="1dp"
+                    android:paddingBottom="15dp"
+                    android:textColorHint="@color/black"
+                    android:textCursorDrawable="@drawable/cursor_color"
+                    android:textSize="15sp" />
+            </com.google.android.material.textfield.TextInputLayout>
+            <!-- ICON -->
+            <ImageView
+                android:id="@+id/icon"
+                android:layout_width="21dp"
+                android:layout_height="16dp"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="17dp"
+                android:layout_marginTop="17dp"
+                android:src="@drawable/password" />
+
+        </RelativeLayout>
+
+
+        <EditText
+            android:id="@+id/bloodgroup"
+            android:layout_width="239dp"
+            android:layout_height="55dp"
+            android:layout_alignBottom="@+id/imageView4"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="60dp"
+            android:layout_marginTop="23dp"
+            android:layout_marginEnd="48dp"
+            android:layout_marginBottom="-165dp"
+            android:background="@drawable/blue_border_rounded_cornwe"
+            android:drawableLeft="@drawable/ic_baseline_bloodtype_24"
+            android:gravity="center"
+            android:hint="Blood group"
+            android:inputType="textCapCharacters"
+            android:textColor="#000000"
+            android:textColorHint="#9E9F97" />
+
+        <Button
+            android:id="@+id/btnRegister"
+            android:layout_width="246dp"
+            android:layout_height="53dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="62dp"
+            android:layout_marginTop="190dp"
+            android:layout_marginRight="62dp"
+            android:onClick="register"
+            android:background="@drawable/blue_fill__rounded_color"
+            android:fontFamily="@font/poppins_medium"
+            android:gravity="center"
+            android:text="Register"
+            android:textColor="#ffffff"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="392dp"
+        android:layout_height="151dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="310dp"
+        android:layout_marginBottom="0dp"
+        android:background="@drawable/blue_bggg"
+        android:orientation="vertical">
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="0dp"
+        android:layout_marginBottom="13.7dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+
+        <TextView
+            android:layout_width="195dp"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/poppins_regular"
+            android:gravity="center_horizontal"
+            android:text="Welcome"
+            android:textColor="@color/white"
+            android:textSize="25.3sp" />
+
+
+    </LinearLayout>
+
+</RelativeLayout>

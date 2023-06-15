@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="#FDFFFBE0"
+    android:layout_height="match_parent">
+
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:background="#FDFFFBE0"
+    android:layout_height="990dp"
+    tools:context=".AccidentDetect.Hosptialauthrity.ViewAccident">
+
+    <TextView
+        android:id="@+id/locationuser2"
+        android:layout_width="141dp"
+        android:layout_height="39dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="274dp"
+        android:gravity="center"
+        android:text="Location :- "
+        android:textColor="@color/black"
+        android:textSize="18dp" />
+
+    <TextView
+        android:id="@+id/hospitaladdress2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="351dp"
+        android:gravity="center"
+        android:text="Hospital assigned :- "
+        android:textColor="@color/black"
+        android:textSize="18dp" />
+
+    <TextView
+        android:id="@+id/accelerometer"
+        android:layout_width="193dp"
+        android:layout_height="40dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="75dp"
+        android:gravity="center"
+        android:text="Accelerometer value:- "
+        android:textColor="@color/black"
+        android:textSize="18dp" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/sensorread2"
+        android:layout_width="180dp"
+        android:layout_height="42dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="156dp"
+        android:gravity="center"
+        android:text="sensor reading :- "
+        android:textColor="@color/black"
+        android:textSize="18dp" />
+
+    <TextView
+        android:id="@+id/decibelss"
+        android:layout_width="157dp"
+        android:layout_height="34dp"
+        android:layout_below="@+id/sensorread2"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="19dp"
+        android:gravity="center"
+        android:text="Decibel:- "
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/decibelss2"
+        android:layout_width="157dp"
+        android:layout_height="34dp"
+        android:layout_below="@+id/sensorread2"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="209dp"
+        android:layout_marginTop="23dp"
+        android:gravity="center"
+        android:background="@color/white"
+        android:hint="Decibel:- "
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/datetime3"
+        android:layout_width="135dp"
+        android:layout_height="39dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="491dp"
+        android:gravity="center"
+        android:text="Date time :- "
+        android:textColor="@color/black"
+        android:textSize="18dp" />
+
+    <TextView
+        android:id="@+id/emergencycontact2"
+        android:layout_width="387dp"
+        android:layout_height="33dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="556dp"
+        android:gravity="center"
+        android:text="User emergency contact number :- "
+        android:textColor="@color/black"
+        android:textSize="18dp" />
+
+    <TextView
+        android:id="@+id/status2"
+        android:layout_width="188dp"
+        android:layout_height="42dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="418dp"
+        android:gravity="center"
+        android:text="Status of user :- "
+        android:textColor="@color/black"
+        android:textSize="18dp" />
+
+    <TextView
+        android:id="@+id/accident"
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:background="#0C56E8"
+        android:fontFamily="sans-serif-light"
+        android:gravity="center"
+
+        android:text="Accident details"
+        android:textColor="@color/white"
+        android:textSize="22dp"
+        android:textStyle="bold" />
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/hospitaladdress"
+        android:layout_width="209dp"
+        android:layout_height="47dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="182dp"
+        android:layout_marginTop="346dp"
+        android:background="@color/white"
+        android:enabled="false"
+        android:hint="Hospital assigned :- "
+        android:textColor="#002E8C" />
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/Accelerometer"
+        android:layout_width="205dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="207dp"
+        android:layout_marginTop="75dp"
+        android:enabled="false"
+        android:background="@color/white"
+        android:hint="Accelerometer value:- "
+        android:textColor="#002E8C" />
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/sensorread"
+        android:layout_width="204dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="208dp"
+        android:layout_marginTop="155dp"
+        android:enabled="false"
+        android:background="@color/white"
+        android:hint="sensor reading :- "
+        android:textColor="#002E8C" />
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/locationuser"
+        android:layout_width="264dp"
+        android:layout_height="65dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="148dp"
+        android:layout_marginTop="261dp"
+        android:background="@color/white"
+        android:enabled="false"
+        android:hint="location of user :- "
+        android:textColor="#002E8C" />
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/datetime"
+        android:layout_width="248dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="163dp"
+        android:layout_marginTop="498dp"
+        android:background="@color/white"
+        android:enabled="false"
+        android:hint="Date time :- "
+        android:textColor="#002E8C"
+        android:textSize="18dp" />
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/emergencycontact"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="29dp"
+        android:layout_marginTop="609dp"
+        android:background="@color/white"
+        android:enabled="false"
+        android:hint="User emergency contact number :- "
+        android:textColor="#002E8C" />
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/status"
+        android:layout_width="204dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="206dp"
+        android:layout_marginTop="431dp"
+        android:background="@color/white"
+        android:enabled="false"
+        android:hint="status of user :- "
+        android:textColor="#002E8C" />
+
+    <TextView
+        android:layout_width="164dp"
+        android:layout_height="40dp"
+        android:layout_below="@+id/emergencycontact"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="99dp"
+        android:layout_marginTop="28dp"
+        android:gravity="center"
+        android:fontFamily="sans-serif-condensed"
+        android:text="Update status"
+        android:textStyle="bold"
+        android:textSize="20sp" />
+
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="374dp"
+        android:layout_height="47dp"
+        android:layout_below="@id/emergencycontact"
+        android:layout_marginTop="96dp"
+        android:layout_marginBottom="-55dp"
+        android:gravity="center"
+        tools:ignore="HardcodedText" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/directionbtn"
+        android:layout_width="295dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="38dp"
+        android:layout_marginTop="795dp"
+        android:background="#24176C"
+        android:gravity="center"
+        android:text="Update Accident status"
+        android:textColor="@color/white" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/userdetails"
+        android:layout_width="295dp"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/spinner"
+        android:layout_marginStart="35dp"
+        android:layout_marginTop="161dp"
+        android:background="#24176C"
+        android:gravity="center"
+        android:text="View user details"
+        android:textColor="@color/white" />
+
+    <!--    <androidx.appcompat.widget.AppCompatButton-->
+<!--        android:id="@+id/hospitalassigned"-->
+<!--        android:layout_width="295dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginStart="35dp"-->
+<!--        android:layout_marginTop="875dp"-->
+<!--        android:layout_marginBottom="54dp"-->
+<!--        android:background="#24176C"-->
+<!--        android:gravity="center"-->
+<!--        android:text="View Hospital assigned"-->
+<!--        android:textColor="@color/white" />-->
+
+</RelativeLayout>
+</ScrollView>

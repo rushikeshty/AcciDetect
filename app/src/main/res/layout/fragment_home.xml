@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="800dp">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="960dp"
+        android:background="#E3FFFE"
+        android:id="@+id/relativeLayout"
+        tools:context=".UserActivities.ui.home.HomeFragment" >
+
+        <TextView
+            android:id="@+id/bollean"
+            android:layout_width="166dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="55dp"
+            android:layout_marginTop="104dp" />
+
+        <TextView
+            android:id="@+id/accidentstatus"
+            android:layout_width="261dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="64dp"
+            android:layout_marginTop="395dp" />
+
+        <TextView
+            android:id="@+id/sensorread"
+            android:layout_width="139dp"
+            android:layout_height="37dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="238dp"
+            android:layout_marginTop="163dp"
+            android:layout_marginEnd="17dp"
+            android:gravity="center"
+            android:textSize="18sp"
+            app:drawableLeftCompat="@drawable/ic_shakr" />
+
+        <TextView
+            android:id="@+id/decibaltext"
+            android:layout_width="156dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="221dp"
+            android:gravity="center"
+            android:text="decibals"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/decibal"
+            android:layout_width="139dp"
+            android:layout_height="37dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="33dp"
+            android:layout_marginTop="162dp"
+            android:gravity="center"
+            android:textSize="18sp"
+            app:drawableLeftCompat="@drawable/sound" />
+
+        <TextView
+            android:id="@+id/sensortext"
+            android:layout_width="154dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="231dp"
+            android:layout_marginTop="219dp"
+            android:layout_marginEnd="9dp"
+            android:gravity="center"
+            android:text="sensor reading"
+            android:textSize="20sp"
+            android:textStyle="bold"  />
+
+        <Button
+            android:id="@+id/buttonToggleTracking"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/decibaltext"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="-1dp"
+            android:layout_marginTop="189dp"
+            android:layout_marginBottom="289dp"
+            android:background="#003366"
+            android:text="Start Driving"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/hospitalassigned"
+            android:layout_width="295dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/buttonToggleTracking"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="-136dp"
+            android:background="#24176C"
+            android:gravity="center"
+            android:text="View Hospital assigned"
+            android:textColor="@color/white"
+            android:visibility="invisible" />
+
+        <pl.droidsonroids.gif.GifImageView
+            android:id="@+id/gifimage"
+            android:layout_width="390dp"
+            android:layout_height="149dp"
+            android:layout_alignBottom="@+id/buttonToggleTracking"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="2dp"
+            android:layout_marginEnd="1dp"
+            android:layout_marginBottom="-384dp"
+            android:src="@drawable/carruning" />
+
+        <Switch
+            android:id="@+id/switch1"
+            android:layout_width="347dp"
+            android:layout_height="40dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="52dp"
+            android:layout_marginEnd="26dp"
+            android:background="@color/white"
+            android:text="View sensor and decibal reading"
+            android:textSize="16.5dp"
+            android:gravity="center"
+            android:textColor="@color/black"
+            tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+
+    </RelativeLayout>
+</ScrollView>

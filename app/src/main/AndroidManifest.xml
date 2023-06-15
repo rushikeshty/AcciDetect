@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.example.software2.dapp">
+    <!-- Normal Permissions -->
+    <uses-permission android:name="android.permission.INTERNET" /> <!-- Runtime Permissions -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+
+     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+
+    <application
+        android:allowBackup="true"
+        android:hardwareAccelerated="true"
+        android:icon="@drawable/alarm"
+        android:label="@string/app_name"
+         android:theme="@style/CustomActionBarTheme">
+        <activity
+            android:name=".TestExample"
+            android:exported="true" />
+        <activity
+            android:name=".AccidentDetect.DialogMessageActivity"
+            android:exported="true" /> <!-- <activity -->
+        <!-- android:name=".AccidentDetect.Hosptialauthrity.AccidentList" -->
+        <!-- android:exported="true" /> -->
+        <activity
+            android:name=".AccidentDetect.HospitalAssigned"
+            android:exported="true" />
+        <activity
+            android:name=".UserActivities.ui.MyAccount.MyAccountFragment"
+            android:exported="true"
+            tools:ignore="Instantiatable" />
+        <activity
+            android:name=".UserActivities.ui.AddContact.AddContactFragment"
+            android:exported="true"
+            tools:ignore="Instantiatable" />
+        <activity
+            android:name=".UserActivities.ui.home.HomeFragment"
+            android:exported="true"
+            tools:ignore="Instantiatable" /> <!-- <activity -->
+        <!-- android:name=".AmbulanceDriver.MainActivity" -->
+        <!-- android:exported="true" -->
+        <!-- android:label="@string/title_activity_main" -->
+        <!-- android:theme="@style/CustomActionBarTheme.NoActionBar" /> -->
+        <!-- <activity -->
+        <!-- android:name=".ui.login.DashboardAmbulance" -->
+        <!-- android:exported="true" -->
+        <!-- android:label="@string/title_activity_dashboard_ambulance" /> -->
+        <activity
+            android:name=".LoginSignup.PolicePerson"
+            android:exported="true" />
+        <activity
+            android:name=".LoginSignup.HospitalAuthority"
+            android:exported="true" />
+        <activity
+            android:name=".LoginSignup.AmbulanceDriver"
+            android:exported="true" />
+        <activity
+            android:name=".UserActivities.MainActivity"
+            android:exported="true"
+            android:label="@string/title_activity_main"
+            android:theme="@style/CustomActionBarTheme.NoActionBar" />
+        <activity android:name=".LoginSignup.PersonalInfoActivity" />
+        <activity android:name=".LoginSignup.SignUpActivity" />
+        <!-- <activity -->
+        <!-- android:name=".LoginSignup.LoginScreenActivity" -->
+        <!-- android:exported="true" -->
+        <!-- android:label="@string/app_name"/> -->
+        <!-- <activity -->
+        <!-- android:name=".RecentAccident.Accidents" -->
+        <!-- android:exported="true" /> -->
+        <activity
+            android:name=".AccidentDetect.Hosptialauthrity.ViewAccident"
+            android:exported="true"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".AccidentDetect.Hosptialauthrity.AccidentList"
+            android:exported="true" />
+        <activity
+            android:name=".LoginSignup.LoginScreenActivity"
+            android:exported="true"
+            android:label="@string/app_name"/>
+        <activity android:name=".splash"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".AmbulanceViewAccident.Accidents"
+            android:exported="true" />
+        <activity
+            android:name=".EmergencyContact.Add_EmergencyActivity"
+            android:exported="true"
+            android:label=" add contact"
+            tools:ignore="Instantiatable" />
+        <activity
+            android:name=".EmergencyContact.Edit_ContactActivity"
+            android:exported="true"
+            android:label=" Edit contact"
+            tools:ignore="Instantiatable" />
+        <activity
+            android:name=".MyAccount"
+            android:label=" my account"
+            tools:ignore="Instantiatable" />
+        <activity
+            android:name=".SendSMSActivity"
+            android:label=" send sms" />
+
+        <service android:name=".AccidentDetect.SensorService" />
+        <service android:name=".AmbulanceViewAccident.GetAllData" />
+
+        <receiver android:name=".AccidentDetect.NotificationReceiver" />
+
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyAdz5sjzrAIjfg-L2pHZOqgjjpGN4vhkZM" />
+    </application>
+
+</manifest>

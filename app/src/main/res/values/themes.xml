@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <style name="Theme" parent="@android:style/Theme.Holo.Light.DarkActionBar">
+        <item name="android:textViewStyle">@style/theme_textview_style</item>
+    </style>
+
+    <style name="theme_textview_style" parent="@android:style/Widget.Holo.Light.TextView">
+        <item name="android:textColor">@color/pink</item>
+    </style>
+
+    <style name="CustomActionBarTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="CustomActionBarTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="CustomActionBarTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+
+</resources>
