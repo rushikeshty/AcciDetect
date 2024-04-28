@@ -215,7 +215,7 @@ public class SensorService extends Service implements SensorEventListener {
 
         Intent activityIntent = new Intent(this, SensorService.class);
         PendingIntent contentIntent = PendingIntent.getActivity(this,
-                0, activityIntent, 0);
+                0, activityIntent, PendingIntent.FLAG_IMMUTABLE);
 
 //        Intent broadcastIntent = new Intent(this, NotificationReceiver.class);
 //        broadcastIntent.putExtra("toastMessage", message);
@@ -703,7 +703,7 @@ public class SensorService extends Service implements SensorEventListener {
                     | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
             PendingIntent intent1 = PendingIntent.getActivity(getApplicationContext(), 0,
-                    notificationIntent1, 0);
+                    notificationIntent1, PendingIntent.FLAG_IMMUTABLE);
              Notification notification2 = new NotificationCompat.Builder(this, CHANNEL_2_ID)
                     .setSmallIcon(R.drawable.bell)
                     .setOngoing(true)
