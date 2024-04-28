@@ -161,35 +161,4 @@ public class GPSHandler {
         }).start();
     }
 
-    /**
-     * Function for calculating speed
-     *
-     ** /
-    private double calcSpeed() {
-        if (mPoints.size() < 2) {
-            return;
-        }
-
-        if (mPoints.size() > 5) {
-            mPoints.remove(0);
-        }
-
-        long startTime = mPoints.get(0).getLtime();
-        long endTime = mPoints.get(mPoints.size() - 1).getLtime();
-
-        double sumDis = 0;//保存时间段内总走过的距离，单位 km
-
-        Point startPoint = mPoints.get(0);//起点
-        for (int i = 1; i < mPoints.size(); i++) {
-            //遍历计算每相隔两点之间的距离并加起来
-            sumDis += Distance.GetDistance(startPoint, mPoints.get(i));
-            startPoint = mPoints.get(i);
-        }
-
-        //计算速度,此时的单位为 km/h
-        double speed = (sumDis * 1000 / ((endTime - startTime) / 1000.0)) * 3.6;
-
-        return speed;
-    }
-    */
-}
+ }

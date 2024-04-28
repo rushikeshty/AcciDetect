@@ -2,8 +2,8 @@ package com.example.software2.dapp.AmbulanceViewAccident;
 
 
 public class Duration {
-    public String text;
-    public int value;
+    private String text;
+    private int value;
 
     public Duration(String text, int value) {
         this.text = text;

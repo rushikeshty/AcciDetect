@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class DistanceCalculator {
+public class DistanceCalculatorAlgorithm {
 
     private static final double EARTH_RADIUS = 6371; // in kilometers
 
@@ -30,8 +30,7 @@ public class DistanceCalculator {
                 if (distance < minDistance) {
                     minDistance = distance;
                     finall = c1;
-                    //System.out.println(c1.getCity()+"  "+c2.getCity());
-                }
+                 }
             }
         }
         finallatlong = new ArrayList<>();
@@ -39,20 +38,6 @@ public class DistanceCalculator {
         return finallatlong;
     }
 
-//    public static void main(String[] args) {
-//        List<Coordinate> set1 = Arrays.asList(
-//                new Coordinate(51.5074, -0.1278), // London
-//                new Coordinate(48.8566, 2.3522), // Paris
-//                new Coordinate(17.876184, 73.969780 )
-//        );
-//        List<Coordinate> set2 = Arrays.asList(
-//                new Coordinate(40.7128, -74.0060), // New York
-//                new Coordinate(37.7749, -122.4194), // San Francisco
-//                new Coordinate(18.445089, 73.868980)
-//        );
-//
-//       // double minDistance = calculateMinimumDistance(set1, set2);
-//        //System.out.println("Minimum distance between sets: " + minDistance + " km");
-//    }
+
 }
 

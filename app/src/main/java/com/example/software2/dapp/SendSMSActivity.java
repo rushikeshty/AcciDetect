@@ -29,8 +29,7 @@ import android.widget.VideoView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.software2.dapp.AccidentDetect.DecibelMeter;
-import com.example.software2.dapp.AccidentDetect.GPSHandler;
+ import com.example.software2.dapp.AccidentDetect.GPSHandler;
 import com.example.software2.dapp.AccidentDetect.SensorService;
 import com.example.software2.dapp.UserActivities.MainActivity;
 import com.example.software2.dapp.UserActivities.ui.home.HomeFragment;
@@ -81,39 +80,6 @@ public class SendSMSActivity extends AppCompatActivity {
 
 
         CustomToastActivity.CustomToastActivity(this);
-//        setVisible(false);
-//        final Dialog dialog = new Dialog(SendSMSActivity.this);
-//        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-//        dialog.setContentView(R.layout.activity_dialog_message);
-//        dialog.show();
-//        WindowManager.LayoutParams lp = new WindowManager.LayoutParams(
-//                WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT);
-//
-//        lp.copyFrom(dialog.getWindow().getAttributes());
-//        dialog.getWindow().setAttributes(lp);
-//        final VideoView videoview = (VideoView) dialog.findViewById(R.id.videoview);
-//        Uri uri = Uri.parse("android.resource://" + getApplicationContext().getPackageName() + "/" + R.raw.accident);
-//        videoview.setVideoURI(uri);
-//        videoview.start();
-//
-//        videoview.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-//            @Override
-//            public void onCompletion(MediaPlayer mediaPlayer) {
-//                // alertDialog.cancel();
-//                 runOnUiThread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                       setVisible(true);
-//                        dialog.dismiss();
-//                        Toast.makeText(getApplicationContext(), "completed", Toast.LENGTH_SHORT).show();
-//
-//                    }
-//                });
-//
-//            }
-//        });
-
-        // Create required objects
 
         Intent i = getIntent();
         String acc = i.getStringExtra("accident");
@@ -366,9 +332,7 @@ public class SendSMSActivity extends AppCompatActivity {
                 + " has chosen you as their emergency contact. " + username
                 + "'s current location is " + location
                 + " .  ");
-//        for (String hospital : hospitals) {
-//            message.append(hospital).append("; ");
-//        }
+
         final TextView textmessage = findViewById(R.id.textmessage);
         textmessage.setText(message.toString());
         Toast.makeText(getApplicationContext(), message.toString(), Toast.LENGTH_SHORT).show();

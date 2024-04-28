@@ -740,7 +740,7 @@ public class Accidents extends FragmentActivity implements GoogleMap.OnCameraIdl
 //
 //                }
 //            });
-//            List<com.example.software2.dapp.Coordinate> finallatlongi = DistanceCalculator.calculateMinimumDistance(set1, set2);
+//            List<com.example.software2.dapp.Coordinate> finallatlongi = DistanceCalculatorAlgorithm.calculateMinimumDistance(set1, set2);
 //            textttt.setText("hospital assigned " + finallatlongi.toString());
 //        }
 //    }

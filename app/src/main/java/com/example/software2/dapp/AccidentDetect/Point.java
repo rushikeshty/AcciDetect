@@ -1,8 +1,6 @@
 package com.example.software2.dapp.AccidentDetect;
 
-/**
- * Created by 0 on 2016/11/11.
- */
+
 public class Point {
     private double lon;
     private double lat;

@@ -50,11 +50,6 @@ public class NotificationReceiver extends BroadcastReceiver {
 
         //i.setAction("starttrack");
         context.startActivity(i);
-//        mServiceHandler = new ServiceHandler(context);
-//        mServiceHandler.doBindService();
-//        Intent i = new Intent(context,TrackingActivity.class);
-//         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//        context.startActivity(i);
 
     }
  }

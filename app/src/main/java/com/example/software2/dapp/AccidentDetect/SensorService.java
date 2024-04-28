@@ -1,6 +1,6 @@
 package com.example.software2.dapp.AccidentDetect;
 
-import static com.example.software2.dapp.DistanceCalculator.calculateMinimumDistance;
+import static com.example.software2.dapp.DistanceCalculatorAlgorithm.calculateMinimumDistance;
 import static com.example.software2.dapp.UserActivities.ui.home.HomeFragment.powerDb;
 import static com.example.software2.dapp.UserActivities.ui.home.HomeFragment.stop;
 
