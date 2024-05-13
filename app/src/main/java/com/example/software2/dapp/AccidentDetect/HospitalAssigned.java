@@ -438,9 +438,15 @@ public class HospitalAssigned extends AppCompatActivity {
 
             notificationIntent1.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
                     | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            PendingIntent intent1;
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+                intent1 = PendingIntent.getActivity(getApplicationContext(), 0,
+                        notificationIntent1, PendingIntent.FLAG_MUTABLE);
+            } else {
+                intent1 = PendingIntent.getActivity(getApplicationContext(), 0,
+                        notificationIntent1, PendingIntent.FLAG_IMMUTABLE);
+            }
 
-            PendingIntent intent1 = PendingIntent.getActivity(getApplicationContext(), 0,
-                    notificationIntent1, 0);
 
             Notification notification3 = new NotificationCompat.Builder(this, CHANNEL_2_ID)
                     .setSmallIcon(R.drawable.bell)

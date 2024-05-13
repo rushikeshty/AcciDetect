@@ -73,21 +73,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class Accidents extends FragmentActivity implements GoogleMap.OnCameraIdleListener,OnMapReadyCallback, DirectionFinderListener , AdapterView.OnItemSelectedListener {
+public class Accidents extends FragmentActivity implements GoogleMap.OnCameraIdleListener, OnMapReadyCallback, DirectionFinderListener, AdapterView.OnItemSelectedListener {
 
     private static final int REQUEST_LOCATION = 1;
-    Button directionbtn,updatebtn,viewuser,hospitalassig;
-    TextView datetime , address;
-    int count=0;
+    Button directionbtn, updatebtn, viewuser, hospitalassig;
+    TextView datetime, address;
+    int count = 0;
     private int mInterval = 6000;
     // 6 seconds by default, can be changed later
     private Handler mHandler;
     String longitude, latitude;
     static String userid;
-    double ambulancelatitude,ambulancelongitude;
+    double ambulancelatitude, ambulancelongitude;
     FragmentContainerView fragmentContainerView;
     FirebaseAuth firebaseAuth;
-     private DatabaseReference databaseReference;
+    private DatabaseReference databaseReference;
     private @ColorInt
     int mPulseEffectColor;
     private int[] mPulseEffectColorElements;
@@ -95,8 +95,8 @@ public class Accidents extends FragmentActivity implements GoogleMap.OnCameraIdl
     private ValueAnimator mPulseEffectAnimator;
     private Circle mPulseCircle;
     ProgressDialog progressDialog;
-     ArrayList<String> values =new ArrayList<>();
-     GPSTracker tracker;
+    ArrayList<String> values = new ArrayList<>();
+    GPSTracker tracker;
     private GPSHandler mGPSHandler;
     private static String location;
     private FusedLocationProviderClient fusedLocationClient;//One of the location APIs in google play services
@@ -109,9 +109,9 @@ public class Accidents extends FragmentActivity implements GoogleMap.OnCameraIdl
     public Spinner spinner;
     public static Uri gmmIntentUri;
     static String assignedhospital;
-    TextView locationmymap,textttt;
+    TextView locationmymap, textttt;
     private String ambulanceOrigin;
-     String status="";
+    String status = "";
     private List<Coordinate> set2;
 
 
@@ -121,7 +121,7 @@ public class Accidents extends FragmentActivity implements GoogleMap.OnCameraIdl
         setContentView(R.layout.activity_accidents);
         directionbtn = findViewById(R.id.directionbutton);
         firebaseAuth = FirebaseAuth.getInstance();
-       // Intent intent = this.getIntent();
+        // Intent intent = this.getIntent();
         onNewIntent(getIntent());
 
         datetime = findViewById(R.id.datetime);
@@ -143,26 +143,26 @@ public class Accidents extends FragmentActivity implements GoogleMap.OnCameraIdl
                 getAddress();
             }
         };
-         startLocationUpdates();//call this function to check location permission
+        startLocationUpdates();//call this function to check location permission
 
         mHandler = new Handler();
 
         ActivityCompat.requestPermissions(this,
                 new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
-         mGPSHandler = new GPSHandler(this);
+        mGPSHandler = new GPSHandler(this);
         viewuser = findViewById(R.id.viewuserdetails);
 
         viewuser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                MyAccount myAccount = new MyAccount(Accidents.this,userid);
+                MyAccount myAccount = new MyAccount(Accidents.this, userid);
                 myAccount.show();
             }
         });
 
         databaseReference = FirebaseDatabase.getInstance().getReference();
 
-          tracker = new GPSTracker(this);
+        tracker = new GPSTracker(this);
         if (!tracker.canGetLocation()) {
             progressDialog.dismiss();
             tracker.showSettingsAlert();
@@ -176,8 +176,8 @@ public class Accidents extends FragmentActivity implements GoogleMap.OnCameraIdl
         updatebtn = findViewById(R.id.updatebtn);
         startRepeatingTask();
 
-         spinner = (Spinner) findViewById(R.id.spinner);
-         spinner.setOnItemSelectedListener(this);
+        spinner = (Spinner) findViewById(R.id.spinner);
+        spinner.setOnItemSelectedListener(this);
 
         // Spinner Drop down elements
         List<String> categories = new ArrayList<String>();
@@ -188,44 +188,43 @@ public class Accidents extends FragmentActivity implements GoogleMap.OnCameraIdl
         categories.add("USER ADMITTED AT HOSPITAL");
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, categories);
 
-         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-         spinner.setAdapter(dataAdapter);
-         directionbtn.setOnClickListener(new View.OnClickListener() {
-             @Override
-             public void onClick(View v) {
-                 progressDialog.dismiss();
-                 Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-                 mapIntent.setPackage("com.google.android.apps.maps");
-                 startActivity(mapIntent);
-             }
-         });
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(dataAdapter);
+        directionbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                progressDialog.dismiss();
+                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                mapIntent.setPackage("com.google.android.apps.maps");
+                startActivity(mapIntent);
+            }
+        });
 
 
-         updatebtn.setOnClickListener(new View.OnClickListener() {
-             @Override
-             public void onClick(View v) {
-                 if(status.contains("select")){
-                     Toast.makeText(getApplicationContext(), "Please select the status", Toast.LENGTH_SHORT).show();
+        updatebtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (status.contains("select")) {
+                    Toast.makeText(getApplicationContext(), "Please select the status", Toast.LENGTH_SHORT).show();
 
-                 }
-                 else {
-                     databaseReference.child("user").child(userid).child("AccidentInfo").child("status").setValue(status);
-                      Toast.makeText(getApplicationContext(), "Updated succesfully.", Toast.LENGTH_SHORT).show();
-                 }
+                } else {
+                    databaseReference.child("user").child(userid).child("AccidentInfo").child("status").setValue(status);
+                    Toast.makeText(getApplicationContext(), "Updated succesfully.", Toast.LENGTH_SHORT).show();
+                }
 
-             }
-         });
-         hospitalassig.setOnClickListener(new View.OnClickListener() {
-             @Override
-             public void onClick(View view) {
-                 AlertDialog.Builder builder1 = new AlertDialog.Builder(Accidents.this);
-                 builder1.setMessage("Assigned Hospital :- " + assignedhospital);
-                 builder1.setCancelable(true);
-                 AlertDialog alert11 = builder1.create();
-                 alert11.show();
+            }
+        });
+        hospitalassig.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder builder1 = new AlertDialog.Builder(Accidents.this);
+                builder1.setMessage("Assigned Hospital :- " + assignedhospital);
+                builder1.setCancelable(true);
+                AlertDialog alert11 = builder1.create();
+                alert11.show();
 
-             }
-         });
+            }
+        });
     }
 
     @Override
@@ -235,19 +234,19 @@ public class Accidents extends FragmentActivity implements GoogleMap.OnCameraIdl
         assignedhospital = extras.getString("assignedhospital");
         userid = extras.getString("userid");
     }
+
     @Override
     public void onItemSelected(@NonNull AdapterView<?> parent, View view, int position, long id) {
         // On selecting a spinner item
-         status = parent.getItemAtPosition(position).toString();
+        status = parent.getItemAtPosition(position).toString();
 
         // Showing selected spinner item
         Toast.makeText(getApplicationContext(), "Selected: " + status, Toast.LENGTH_SHORT).show();
     }
+
     public void onNothingSelected(AdapterView<?> arg0) {
         // TODO Auto-generated method stub
     }
-
-
 
 
     @SuppressWarnings("MissingPermission")
@@ -278,6 +277,7 @@ public class Accidents extends FragmentActivity implements GoogleMap.OnCameraIdl
         intent.putExtra("add_location", currentLocation);
         startService(intent);
     }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -291,39 +291,38 @@ public class Accidents extends FragmentActivity implements GoogleMap.OnCameraIdl
     }
 
 
-
     private void getdata() {
         //final FirebaseUser user = firebaseAuth.getCurrentUser();
         databaseReference.child("user").child(userid).child("AccidentInfo").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 progressDialog.dismiss();
-                   for (DataSnapshot child : snapshot.getChildren()) {
+                for (DataSnapshot child : snapshot.getChildren()) {
                     values.add(child.getValue().toString());
                 }
-                if(count==0) {
+                if (count == 0) {
                     //here we update time and date only one time
                     datetime.setText(values.get(0));
                     count++;
                 }
-                     address.setText(values.get(5).replaceAll("\n",""));
-                    locationmymap.setText(values.get(5).replaceAll("\n",""));
-                     latitude = values.get(4);
-                     longitude =values.get(6);
+                address.setText(values.get(5).replaceAll("\n", ""));
+                locationmymap.setText(values.get(5).replaceAll("\n", ""));
+                latitude = values.get(4);
+                longitude = values.get(6);
 
                 //Toast.makeText(getApplicationContext(), values.toString(), Toast.LENGTH_SHORT).show();
-                      supportMapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.myMap);
-                     if (supportMapFragment != null) {
-                         supportMapFragment.getMapAsync(Accidents.this);
-                     }
+                supportMapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.myMap);
+                if (supportMapFragment != null) {
+                    supportMapFragment.getMapAsync(Accidents.this);
+                }
                 ambulancelatitude = tracker.getLatitude();
                 ambulancelongitude = tracker.getLongitude();
 
                 sendCallMap();
-                     values.clear();
-                 //    HosiptalAssigned();
+                values.clear();
+                //    HosiptalAssigned();
 
-                 }
+            }
 
 
             @Override
@@ -333,9 +332,10 @@ public class Accidents extends FragmentActivity implements GoogleMap.OnCameraIdl
         });
 
     }
-     private void initPulseEffect() {
+
+    private void initPulseEffect() {
         mPulseEffectColor = ContextCompat.getColor(getApplicationContext(), android.R.color.holo_red_dark);
-        mPulseEffectColorElements = new int[] {
+        mPulseEffectColorElements = new int[]{
                 Color.red(mPulseEffectColor),
                 Color.green(mPulseEffectColor),
                 Color.blue(mPulseEffectColor)
@@ -346,6 +346,7 @@ public class Accidents extends FragmentActivity implements GoogleMap.OnCameraIdl
         mPulseEffectAnimator.setDuration(400);
         mPulseEffectAnimator.setInterpolator(new AccelerateDecelerateInterpolator());
     }
+
     private static float calculatePulseRadius() {
         return (float) Math.pow(2, 16 - (float) 12) * 160;
     }
@@ -358,9 +359,9 @@ public class Accidents extends FragmentActivity implements GoogleMap.OnCameraIdl
         MarkerOptions markerOptions = new MarkerOptions().position(latLng).title("I am here!");
         googleMap.addMarker(markerOptions);
         googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
-         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 12));
-         initPulseEffect();
-      //   googleMap.addMarker(markerOptions);
+        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 12));
+        initPulseEffect();
+        //   googleMap.addMarker(markerOptions);
         if (mPulseCircle != null)
             mPulseCircle.remove();
 
@@ -410,7 +411,8 @@ public class Accidents extends FragmentActivity implements GoogleMap.OnCameraIdl
     public void onDirectionFinderSuccess(List<Route> route) {
 
     }
-     private void sendCallMap() {
+
+    private void sendCallMap() {
 
         if (latitude != null && longitude != null) {
 
@@ -420,20 +422,18 @@ public class Accidents extends FragmentActivity implements GoogleMap.OnCameraIdl
             //Geocoding refers to transforming street address or any address
             List<Address> addresses = null;
             List<Address> addressOfambulance = null;
-            try{
-                addressOfambulance = geocoder.getFromLocation(ambulancelatitude,ambulancelongitude,1);
+            try {
+                addressOfambulance = geocoder.getFromLocation(ambulancelatitude, ambulancelongitude, 1);
 
-            }
-            catch (Exception e){
+            } catch (Exception e) {
                 Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
             }
-            if(addressOfambulance==null || addressOfambulance.size()==0){
+            if (addressOfambulance == null || addressOfambulance.size() == 0) {
                 Toast.makeText(getApplicationContext(), "no address", Toast.LENGTH_SHORT).show();
 
-            }
-            else {
+            } else {
                 Address addressofamb = addressOfambulance.get(0);
-                 ambulanceOrigin = ambulancelatitude+","+ambulancelongitude;
+                ambulanceOrigin = ambulancelatitude + "," + ambulancelongitude;
                 Toast.makeText(getApplicationContext(), ambulanceOrigin, Toast.LENGTH_LONG).show();
 
             }
@@ -447,17 +447,17 @@ public class Accidents extends FragmentActivity implements GoogleMap.OnCameraIdl
                 Toast.makeText(getApplicationContext(), "no address", Toast.LENGTH_SHORT).show();
                 Toast.makeText(getApplicationContext(), String.valueOf(addresses), Toast.LENGTH_SHORT).show();
             } else {
-               // Address address = lati+","+longi;
+                // Address address = lati+","+longi;
 
                 // String origin = "26.854980, 75.830206";
-                String destination = lati+","+longi;
+                String destination = lati + "," + longi;
 
-             //   String origin = ambulancelatitude + " " + ambulancelongitude;
-                if (destination!=null) {
+                //   String origin = ambulancelatitude + " " + ambulancelongitude;
+                if (destination != null) {
 
                     try {
 
-                        String Urll = new DirectionFinder(this, ambulanceOrigin,destination ).createUrll();
+                        String Urll = new DirectionFinder(this, ambulanceOrigin, destination).createUrll();
 
                         gmmIntentUri = Uri.parse("google.navigation:q=" + Urll + "&mode=c");
                         SpannableString content = new SpannableString(gmmIntentUri.toString());
@@ -668,20 +668,21 @@ public class Accidents extends FragmentActivity implements GoogleMap.OnCameraIdl
     }
 
     private class LocationAddressResultReceiver extends ResultReceiver {
-         LocationAddressResultReceiver(Handler handler) {
+        LocationAddressResultReceiver(Handler handler) {
             super(handler);
 
         }
+
         @Override
         protected void onReceiveResult(int resultCode, Bundle resultData) {
-           // getdata();
+            // getdata();
             if (resultCode == 0) {
                 getAddress();
             }
             if (resultCode == 1) {
                 Toast.makeText(Accidents.this, "Address not found, ", Toast.LENGTH_SHORT).show();
             }
-            if(resultCode==2){
+            if (resultCode == 2) {
                 //save current location of user
                 location = resultData.getString("address_result");
                 FirebaseUser user = firebaseAuth.getCurrentUser();
@@ -704,7 +705,7 @@ public class Accidents extends FragmentActivity implements GoogleMap.OnCameraIdl
         super.onStart();
         startLocationUpdates();
 
-     }
+    }
 
     @Override
     protected void onPause() {
@@ -713,7 +714,7 @@ public class Accidents extends FragmentActivity implements GoogleMap.OnCameraIdl
     }
 
 
-//    public void HosiptalAssigned(){
+    //    public void HosiptalAssigned(){
 //
 //        if(latitude!=null&&longitude!=null) {
 //
@@ -750,11 +751,12 @@ public class Accidents extends FragmentActivity implements GoogleMap.OnCameraIdl
         startLocationUpdates();
         //Toast.makeText(getApplicationContext(), location, Toast.LENGTH_SHORT).show();
     }
+
     Runnable mStatusChecker = new Runnable() {
         @Override
         public void run() {
             try {
-                 getdata();
+                getdata();
 
                 //this function can change value of mInterval.
             } finally {
@@ -762,6 +764,7 @@ public class Accidents extends FragmentActivity implements GoogleMap.OnCameraIdl
             }
         }
     };
+
     void startRepeatingTask() {
         mStatusChecker.run();
     }

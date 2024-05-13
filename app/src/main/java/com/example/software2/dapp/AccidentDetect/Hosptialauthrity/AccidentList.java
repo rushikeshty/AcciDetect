@@ -58,23 +58,24 @@ public class AccidentList extends AppCompatActivity {
     SimpleAdapter adapter;
     private ArrayList<Map<String, String>> data;
     static String whichuser;
-     String detected;
+    String detected;
     String assignedhospital;
     DatabaseReference databaseReference;
     private int mInterval = 6000; // 5 seconds by default, can be changed later
     private Handler mHandler;
 
-    int count=0;
+    int count = 0;
     static int finalcount;
 
     SwipeRefreshLayout swipeRefreshLayout;
     ProgressDialog progressDialog;
     GifImageView gifImageView;
-      FirebaseAuth firebaseAuth;
+    FirebaseAuth firebaseAuth;
     public String userid;
 
-     ArrayList<String> usersid;
-     @Override
+    ArrayList<String> usersid;
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mHandler = new Handler();
@@ -82,22 +83,28 @@ public class AccidentList extends AppCompatActivity {
         progressDialog.setMessage("Fetching Data...");
         progressDialog.show();
         firebaseAuth = FirebaseAuth.getInstance();
-         databaseReference = FirebaseDatabase.getInstance().getReference();
+        databaseReference = FirebaseDatabase.getInstance().getReference();
         FirebaseUser user = firebaseAuth.getCurrentUser();
-        if(user!=null){
-                whichuser = user.getEmail();
-            }
+        if (user != null) {
+            whichuser = user.getEmail();
+        }
         mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         createNotificationChannels();
-         databaseReference = FirebaseDatabase.getInstance().getReference();
+        databaseReference = FirebaseDatabase.getInstance().getReference();
         firebaseAuth = FirebaseAuth.getInstance();
-         status.run();
+        status.run();
         GetAccident();
 
 
-
     }
-    public void Init(){
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        GetAccident();
+    }
+
+    public void Init() {
         swipeRefreshLayout = findViewById(R.id.swiperefresh);
         swipeRefreshLayout.setColorSchemeColors(Color.BLUE);
         swipeRefreshLayout.setSize(40);
@@ -107,13 +114,13 @@ public class AccidentList extends AppCompatActivity {
 
         mListview = (ListView) findViewById(R.id.listView);
         firebaseAuth = FirebaseAuth.getInstance();
-         databaseReference = FirebaseDatabase.getInstance().getReference();
+        databaseReference = FirebaseDatabase.getInstance().getReference();
         FirebaseUser user = firebaseAuth.getCurrentUser();
-        if(user!=null){{
-            whichuser=user.getEmail();
-        }}
-
-
+        if (user != null) {
+            {
+                whichuser = user.getEmail();
+            }
+        }
 
 
         data = new ArrayList<Map<String, String>>();
@@ -131,14 +138,14 @@ public class AccidentList extends AppCompatActivity {
                     public void run() {
                         swipeRefreshLayout.setRefreshing(false);
                     }
-                },3000);
-
+                }, 3000);
 
 
             }
         });
     }
-    public void FetchData(String userid){
+
+    public void FetchData(String userid) {
 
         try {
 
@@ -156,7 +163,7 @@ public class AccidentList extends AppCompatActivity {
 
                         Map<String, String> dtname = new HashMap<String, String>();
                         dtname.put("Location", values.get(5).replaceAll("\n", ""));
-                        dtname.put("status",  values.get(9));
+                        dtname.put("status", values.get(9));
                         String finaldatetime = values.get(0);
                         if (count == 0) {
                             dtname.put("date", values.get(0));
@@ -190,11 +197,11 @@ public class AccidentList extends AppCompatActivity {
                                     databaseReference.child("user").child(userid).child("AccidentInfo").addListenerForSingleValueEvent(new ValueEventListener() {
                                         @Override
                                         public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                                 assignedhospital = snapshot.child("hospitalassigned").getValue().toString();
+                                            assignedhospital = snapshot.child("hospitalassigned").getValue().toString();
 
-                                            Intent ambulance = new Intent(AccidentList.this,Accidents.class);
-                                            ambulance.putExtra("assignedhospital",assignedhospital);
-                                            ambulance.putExtra("userid",userid);
+                                            Intent ambulance = new Intent(AccidentList.this, Accidents.class);
+                                            ambulance.putExtra("assignedhospital", assignedhospital);
+                                            ambulance.putExtra("userid", userid);
                                             startActivity(ambulance);
                                         }
 
@@ -204,8 +211,7 @@ public class AccidentList extends AppCompatActivity {
                                         }
                                     });
 
-                                }
-                                else {
+                                } else {
                                     progressDialog.show();
                                     HashMap<String, String> obj = (HashMap<String, String>) adapter.getItem(i);
                                     String userid = (String) obj.get("userid");
@@ -230,7 +236,7 @@ public class AccidentList extends AppCompatActivity {
                                             i.putExtra("datetime", values.get(0));
                                             i.putExtra("emergencycontact", values.get(2));
                                             i.putExtra("userid", userid);
-                                            i.putExtra("decibel",values.get(1));
+                                            i.putExtra("decibel", values.get(1));
                                             startActivity(i);
                                             Toast.makeText(getApplicationContext(), values.toString(), Toast.LENGTH_SHORT).show();
 
@@ -255,27 +261,25 @@ public class AccidentList extends AppCompatActivity {
 
                 }
             });
-        }
-
-        catch (Exception e){
+        } catch (Exception e) {
             Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
 
         }
     }
 
 
-    public void GetAccident(){
+    public void GetAccident() {
         usersid = new ArrayList<>();
-         databaseReference = FirebaseDatabase.getInstance().getReference();
+        databaseReference = FirebaseDatabase.getInstance().getReference();
 
         databaseReference.child("Accidents").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 progressDialog.dismiss();
-                for(DataSnapshot snapshot1 :snapshot.getChildren()){
+                for (DataSnapshot snapshot1 : snapshot.getChildren()) {
                     userid = snapshot1.child("userid").getValue().toString();
                     detected = snapshot1.child("Detected").getValue().toString();
-                    if(detected.contains("true")) {
+                    if (detected.contains("true")) {
                         usersid.add(userid + "" + detected);
                     }
 //                   for(DataSnapshot snapshot11:snapshot1.getChildren()){
@@ -284,20 +288,17 @@ public class AccidentList extends AppCompatActivity {
 
 
                 }
-                if(usersid.size()==0){
+                if (usersid.size() == 0) {
 
                     setContentView(R.layout.noaccidents);
-                }
-                else {
+                } else {
                     setContentView(R.layout.activity_accident_list);
                     Init();
-                    for(int i=0;i< usersid.size();i++){
-                        FetchData(usersid.get(i).replace("true",""));
+                    for (int i = 0; i < usersid.size(); i++) {
+                        FetchData(usersid.get(i).replace("true", ""));
                     }
 
                 }
-
-
 
 
             }
@@ -326,13 +327,13 @@ public class AccidentList extends AppCompatActivity {
         @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
         public void run() {
-            try{
+            try {
                 databaseReference.child("Accidents").addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        for (DataSnapshot snapshot1:snapshot.getChildren()){
-                            if(snapshot1.child("Detected").getValue().toString().contains("true")&&whichuser.contains("ambulance")){
-                                if(finalcount<1){
+                        for (DataSnapshot snapshot1 : snapshot.getChildren()) {
+                            if (snapshot1.child("Detected").getValue().toString().contains("true") && whichuser.contains("ambulance")) {
+                                if (finalcount < 1) {
                                     sendOnChannel2("sendtoambulance");
                                     finalcount++;
                                 }
@@ -347,23 +348,31 @@ public class AccidentList extends AppCompatActivity {
                     }
                 });
 
+            } catch (Exception e) {
+                Toast.makeText(getApplicationContext(), "runnable " + e.getMessage(), Toast.LENGTH_SHORT).show();
             }
-            catch (Exception e){
-                Toast.makeText(getApplicationContext(), "runnable "+e.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-            mHandler.postDelayed(status,1000);
+            mHandler.postDelayed(status, 1000);
         }
     };
+
     public void sendOnChannel2(String notify) {
-         if(notify.equals("sendtoambulance")) {
+        if (notify.equals("sendtoambulance")) {
 
             Intent notificationIntent1 = new Intent(getApplicationContext(), AccidentList.class);
 
             notificationIntent1.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
                     | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
-            PendingIntent intent1 = PendingIntent.getActivity(getApplicationContext(), 0,
-                    notificationIntent1, 0);
+
+            PendingIntent intent1;
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+                 intent1 = PendingIntent.getActivity(getApplicationContext(), 0,
+                        notificationIntent1, PendingIntent.FLAG_MUTABLE);
+            } else {
+                intent1 = PendingIntent.getActivity(this,
+                        0, notificationIntent1, PendingIntent.FLAG_IMMUTABLE);
+            }
+
             Notification notification2 = new NotificationCompat.Builder(this, CHANNEL_2_ID)
                     .setSmallIcon(R.drawable.bell)
                     .setOngoing(true)
@@ -381,8 +390,7 @@ public class AccidentList extends AppCompatActivity {
 
     }
 
-    private void createNotificationChannels()
-    {
+    private void createNotificationChannels() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel1 = new NotificationChannel(
                     CHANNEL_1_ID,
@@ -411,6 +419,7 @@ public class AccidentList extends AppCompatActivity {
 
         return true;
     }
+
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
@@ -425,14 +434,13 @@ public class AccidentList extends AppCompatActivity {
                         .setIcon(android.R.drawable.ic_dialog_alert)
                         .setTitle("Closing Activity")
                         .setMessage("Are you sure you want to close this activity?")
-                        .setPositiveButton("Yes", new DialogInterface.OnClickListener()
-                        {
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 if (firebaseAuth.getCurrentUser() != null) {
                                     FirebaseAuth.getInstance().signOut();
 
-                                     finish();
+                                    finish();
                                     startActivity(new Intent(getApplicationContext(), LoginScreenActivity.class));
                                 }
                             }

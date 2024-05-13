@@ -133,7 +133,6 @@ public class HomeFragment extends Fragment {
         } else {
             isTracking = false;
         }
-        boolen.setText(isTracking + "  service is bound " + ServiceHandler.isBound());
 
         buttonToggleTracking = (Button) root.findViewById(R.id.buttonToggleTracking);
         sensorread = root.findViewById(R.id.sensorread);
@@ -198,7 +197,7 @@ public class HomeFragment extends Fragment {
 
                         }
                     });
-                    if (!assignedhospital.isEmpty()) {
+                    if (assignedhospital!=null && !assignedhospital.isEmpty()) {
                         android.app.AlertDialog.Builder builder1 = new android.app.AlertDialog.Builder(requireContext());
                         builder1.setMessage("Assigned Hospital :- " + assignedhospital);
                         builder1.setIcon(requireActivity().getDrawable(R.drawable.bell));
