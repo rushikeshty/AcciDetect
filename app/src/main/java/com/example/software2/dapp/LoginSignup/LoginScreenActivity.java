@@ -50,7 +50,7 @@ import java.util.List;
 public class LoginScreenActivity extends AppCompatActivity {
 
     private EditText editTextEmail, editTextPassword;
-     Button btnLogin;
+    Button btnLogin;
     Toast toast;
     TextView toast_text;
     Typeface toast_font;
@@ -70,7 +70,7 @@ public class LoginScreenActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.loginactivity);
 
-         //Custom Toast
+        //Custom Toast
         mPermissionHandler = new PermissionHandler(LoginScreenActivity.this);
         List<String> permissionName = new ArrayList<>();
         List<String> permissionTag = new ArrayList<>();
@@ -85,14 +85,14 @@ public class LoginScreenActivity extends AppCompatActivity {
         permissionTag.add("Record audio");
 
 
-         if (!mPermissionHandler.requestPermissions(MY_PERMISSION_REQUEST_CODE, permissionName, permissionTag)
-                || !locationServicesStatusCheck()){
+        if (!mPermissionHandler.requestPermissions(MY_PERMISSION_REQUEST_CODE, permissionName, permissionTag)
+                || !locationServicesStatusCheck()) {
             Toast.makeText(getApplicationContext(), "permission granted", Toast.LENGTH_SHORT).show();
         }
-        
+
 
         toast_font = Typeface.createFromAsset(getAssets(), "AvenirNextLTPro-Cn.otf");
-        inflater = (LayoutInflater)this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         layout = inflater.inflate(R.layout.custom_toast, (ViewGroup) this.findViewById(R.id.toast));
         toast_text = (TextView) layout.findViewById(R.id.tv);
         toast = new Toast(this.getApplicationContext());
@@ -102,104 +102,99 @@ public class LoginScreenActivity extends AppCompatActivity {
         toast.setView(layout);
 
         //Initialisation of all the components
-        editTextEmail = (EditText) findViewById(R.id.editTextEmail);
-        editTextPassword = (EditText) findViewById(R.id.editTextPassword);
-        btnLogin = (Button) findViewById(R.id.btnLogin);
-        textViewRegister = (TextView)findViewById(R.id.textViewRegister);
-         databaseReference = FirebaseDatabase.getInstance().getReference();
+        editTextEmail = findViewById(R.id.editTextEmail);
+        editTextPassword = findViewById(R.id.editTextPassword);
+        btnLogin = findViewById(R.id.btnLogin);
+        textViewRegister = findViewById(R.id.textViewRegister);
+        databaseReference = FirebaseDatabase.getInstance().getReference();
         @SuppressLint("ResourceType") AnimatorSet set = (AnimatorSet) AnimatorInflater.loadAnimator(getApplicationContext(),
                 R.anim.anmation2);
         set.setTarget(textViewRegister);
         set.start();
 
         //Changing font of all layout components
- //        textViewRegister.setTypeface(custom_font);
-         progressDialog = new ProgressDialog(this);
+        //        textViewRegister.setTypeface(custom_font);
+        progressDialog = new ProgressDialog(this);
 
         firebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser user = firebaseAuth.getCurrentUser();
-        btnLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String user = editTextEmail.getText().toString().trim() + "@user.com";
-                String hospital = editTextEmail.getText().toString().trim() + "@hospital.com";
-                String ambulance = editTextEmail.getText().toString().trim() + "@ambulance.com";
-                String password = editTextPassword.getText().toString().trim();
+        btnLogin.setOnClickListener(view -> {
+            String user1 = editTextEmail.getText().toString().trim() + "@user.com";
+            String hospital = editTextEmail.getText().toString().trim() + "@hospital.com";
+            String ambulance = editTextEmail.getText().toString().trim() + "@ambulance.com";
+            String password = editTextPassword.getText().toString().trim();
 
-                if (TextUtils.isEmpty(user)) {
-                    toast_text.setText("No username Entered");
-                    toast.show();
-                    return;
-                }
-
-                if (TextUtils.isEmpty(password)) {
-                    toast_text.setText("No Password Entered");
-                    toast.show();
-                    return;
-                }
-
-                progressDialog.setMessage("Logging In...");
-                progressDialog.show();
-
-                firebaseAuth.signInWithEmailAndPassword(user, password)
-                        .addOnCompleteListener(LoginScreenActivity.this, new OnCompleteListener<AuthResult>() {
-
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                progressDialog.dismiss();
-                                if (task.isSuccessful()) {
-                                    // Start Dashboard Activity
-                                    toast_text.setText("Logged In!");
-                                    toast.show();
-                                    finish();
-                                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                                } else if (!task.isSuccessful()) {
-                                    firebaseAuth.signInWithEmailAndPassword(hospital, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<AuthResult> task) {
-                                            if (task.isSuccessful()) {
-                                                finish();
-                                                startActivity(new Intent(getApplicationContext(), HospitalAssigned.class));
-                                            } else if (!task.isSuccessful()) {
-                                                firebaseAuth.signInWithEmailAndPassword(ambulance, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                                                    @Override
-                                                    public void onComplete(@NonNull Task<AuthResult> task) {
-                                                        if (task.isSuccessful()) {
-                                                            finish();
-                                                            startActivity(new Intent(getApplicationContext(), AccidentList.class));
-                                                        } else {
-                                                            toast_text.setText("Incorrect Credentials or No Network.");
-                                                            toast.show();
-                                                        }
-
-                                                    }
-                                                });
-                                            }
-
-                                        }
-                                    });
-                                }
-
-                            }
-                        });
-
+            if (TextUtils.isEmpty(user1)) {
+                toast_text.setText("No username Entered");
+                toast.show();
+                return;
             }
+
+            if (TextUtils.isEmpty(password)) {
+                toast_text.setText("No Password Entered");
+                toast.show();
+                return;
+            }
+
+            progressDialog.setMessage("Logging In...");
+            progressDialog.show();
+
+            firebaseAuth.signInWithEmailAndPassword(user1, password)
+                    .addOnCompleteListener(LoginScreenActivity.this, new OnCompleteListener<AuthResult>() {
+
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            progressDialog.dismiss();
+                            if (task.isSuccessful()) {
+                                // Start Dashboard Activity
+                                toast_text.setText("Logged In!");
+                                toast.show();
+                                finish();
+                                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                            } else if (!task.isSuccessful()) {
+                                firebaseAuth.signInWithEmailAndPassword(hospital, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<AuthResult> task) {
+                                        if (task.isSuccessful()) {
+                                            finish();
+                                            startActivity(new Intent(getApplicationContext(), HospitalAssigned.class));
+                                        } else if (!task.isSuccessful()) {
+                                            firebaseAuth.signInWithEmailAndPassword(ambulance, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<AuthResult> task) {
+                                                    if (task.isSuccessful()) {
+                                                        finish();
+                                                        startActivity(new Intent(getApplicationContext(), AccidentList.class));
+                                                    } else {
+                                                        toast_text.setText("Incorrect Credentials or No Network.");
+                                                        toast.show();
+                                                    }
+
+                                                }
+                                            });
+                                        }
+
+                                    }
+                                });
+                            }
+
+                        }
+                    });
+
         });
 
 
-        if (user != null&& user.getEmail().contains("hospital")) {
+        if (user != null && user.getEmail().contains("hospital")) {
             // Start Dashboard Activity
             finish();
-            startActivity(new Intent(this,  HospitalAssigned.class));
+            startActivity(new Intent(this, HospitalAssigned.class));
 
-        }
-        else if (user != null&&user.getEmail().contains("user")) {
+        } else if (user != null && user.getEmail().contains("user")) {
             // Start Dashboard Activity
             finish();
-            startActivity(new Intent(getApplicationContext(),  MainActivity.class));
+            startActivity(new Intent(getApplicationContext(), MainActivity.class));
 
-        }
-        else if(user != null && user.getEmail().contains("ambulance")){
+        } else if (user != null && user.getEmail().contains("ambulance")) {
             finish();
             startActivity(new Intent(getApplicationContext(), AccidentList.class));
         }
@@ -217,7 +212,7 @@ public class LoginScreenActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                if(editTextEmail.getText().toString().contains("@")){
+                if (editTextEmail.getText().toString().contains("@")) {
                     toast_text.setText("username should not contain @ ");
                     editTextEmail.setText("");
                     toast.show();
@@ -228,9 +223,7 @@ public class LoginScreenActivity extends AppCompatActivity {
     }
 
 
-
-    public void goToRegister(View view)
-    {
+    public void goToRegister(View view) {
 
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(LoginScreenActivity.this);
 
@@ -243,7 +236,7 @@ public class LoginScreenActivity extends AppCompatActivity {
         // list of the items to be displayed to the user in the
         // form of list so that user can select the item from
         final String[] listItems = new String[]{"As a User", "As a Hospital authority", "As a Ambulance driver"};
-         final int[] checkedItem = {-1};
+        final int[] checkedItem = {-1};
         alertDialog.setSingleChoiceItems(listItems, checkedItem[0], (dialog, which) -> {
             // update the selected item which is selected by the user so that it should be selected
             // when user opens the dialog next time and pass the instance to setSingleChoiceItems method
@@ -256,7 +249,8 @@ public class LoginScreenActivity extends AppCompatActivity {
                     startActivity(new Intent(this, HospitalAuthority.class));
                     break;
                 case "As a Ambulance driver":
-                    startActivity(new Intent(this,AmbulanceDriver.class));;
+                    startActivity(new Intent(this, AmbulanceDriver.class));
+                    ;
                     break;
 
             }
@@ -277,7 +271,7 @@ public class LoginScreenActivity extends AppCompatActivity {
     }
 
 
-     @Override
+    @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {
             case MY_PERMISSION_REQUEST_CODE:
@@ -303,12 +297,7 @@ public class LoginScreenActivity extends AppCompatActivity {
                 .setMessage("This function needs your GPS, do you want to enable it now?")
                 .setIcon(R.drawable.ic_launcher_background)
                 .setCancelable(false)
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
-                    }
-                });
+                .setPositiveButton("Yes", (dialogInterface, i) -> startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)));
         AlertDialog dialog = builder.create();
         dialog.show();
 

@@ -54,25 +54,18 @@ public class MainActivity extends AppCompatActivity {
         NavigationView navigationView = binding.navView;
         View headerLayout = navigationView.getHeaderView(0); // 0-index header
 
-        RelativeLayout linearLayout = (RelativeLayout) headerLayout.findViewById(R.id.linearlay);
-
-
-
-
+        RelativeLayout linearLayout = headerLayout.findViewById(R.id.linearlay);
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
 
         drawer.addDrawerListener(new DrawerLayout.DrawerListener() {
             @Override
             public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
-
             }
-
             @Override
             public void onDrawerOpened(@NonNull View drawerView) {
                 int[] androidColors = getResources().getIntArray(R.array.androidcolors);
                 int randomAndroidColor = androidColors[new Random().nextInt(androidColors.length)];
-
                 linearLayout.setBackgroundColor(randomAndroidColor);;
 
             }
@@ -88,27 +81,23 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow,R.id.nav_logout)
+                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow, R.id.nav_logout)
                 .setOpenableLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
-         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
+        NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
-        TextView username = (TextView) headerLayout.findViewById(R.id.username);
-        if(user!=null){
+        TextView username = headerLayout.findViewById(R.id.username);
+        if (user != null) {
             String[] splitusername = user.getEmail().split("@");
             String userr = splitusername[0];
-            username.setText("Username :-"+userr);
+            username.setText("Username :-" + userr);
         }
 
-         linearLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int[] androidColors = getResources().getIntArray(R.array.androidcolors);
-                int randomAndroidColor = androidColors[new Random().nextInt(androidColors.length)];
-                linearLayout.setBackgroundColor(randomAndroidColor);;
-
-            }
+        linearLayout.setOnClickListener(view -> {
+            int[] androidColors = getResources().getIntArray(R.array.androidcolors);
+            int randomAndroidColor = androidColors[new Random().nextInt(androidColors.length)];
+            linearLayout.setBackgroundColor(randomAndroidColor);
         });
     }
 

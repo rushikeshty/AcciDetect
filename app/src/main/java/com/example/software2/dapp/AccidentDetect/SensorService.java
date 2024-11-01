@@ -92,7 +92,7 @@ public class SensorService extends Service implements SensorEventListener {
 
     private double accelerationX, accelerationY, accelerationZ;
 
-    private int threshold = 35;// this value for shaking
+    private int threshold = 15;// this value for shaking
     double soundthreshold = 15; // This value is for sound decibel
     private GPSHandler mGPSHandler;
 
@@ -101,7 +101,7 @@ public class SensorService extends Service implements SensorEventListener {
     private static String location;
     public static double mx = 0;
     public double sensor;
-    static String finalresult;
+    static String finalresult = "hospital";
     FirebaseUser userr;
     FirebaseAuth auth;
 //    public static MediaRecorder mRecorder;
@@ -698,11 +698,6 @@ public class SensorService extends Service implements SensorEventListener {
 
                 broadcastIntent.putExtra("toastMessage", "Alarm cancelled");
 
-//            contentView.setImageViewResource(R.id.image, R.drawable.bell);
-//            contentView.setTextViewText(R.id.message, "Accident detection for hospital");
-//            contentView1.setImageViewResource(R.id.image, R.drawable.bell);
-//            contentView1.setTextViewText(R.id.message, "Accident information will be sent in a moment. cancel if it is false alarm");
-
                 Intent notificationIntent = new Intent(getApplicationContext(), Accidents.class);
                 Intent notificationIntent1 = new Intent(getApplicationContext(), AccidentList.class);
 
@@ -713,7 +708,7 @@ public class SensorService extends Service implements SensorEventListener {
                 notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
                         | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
-                PendingIntent intent = null;
+                PendingIntent intent;
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
                      intent = PendingIntent.getActivity(getApplicationContext(), 0,
                             notificationIntent, PendingIntent.FLAG_MUTABLE);
@@ -725,7 +720,7 @@ public class SensorService extends Service implements SensorEventListener {
                 notificationIntent1.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
                         | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
-                PendingIntent contentIntent = null;
+                PendingIntent contentIntent;
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                     contentIntent = PendingIntent.getActivity(this,
                             0, notificationIntent1, PendingIntent.FLAG_MUTABLE);

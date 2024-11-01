@@ -8,18 +8,19 @@
     android:background="#E4E4E4"
     tools:context=".AmbulanceViewAccident.Accidents">
 
-
+    <androidx.appcompat.widget.Toolbar
+        android:layout_width="match_parent"
+        android:id="@+id/toolbar"
+        android:layout_height="50dp"/>
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/myMap"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="228dp"
+        android:layout_below="@+id/toolbar"
         android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
         android:layout_marginStart="0dp"
         android:layout_marginTop="0dp">
-
-
     </androidx.fragment.app.FragmentContainerView>
 
     <Button
@@ -28,7 +29,8 @@
         android:layout_height="44dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="184dp"
+        android:layout_marginTop="224dp"
+        android:layout_marginEnd="-1dp"
         android:text="get direction" />
 
     <TextView
@@ -36,9 +38,8 @@
         android:layout_width="match_parent"
         android:layout_height="43dp"
         android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
         android:layout_marginStart="0dp"
-        android:layout_marginTop="2dp"
+        android:layout_marginTop="50dp"
         android:background="#B2BDBCBC"
         android:text="map"
         android:textColor="@color/black" />
@@ -134,6 +135,11 @@
             android:layout_marginEnd="45dp"
             android:layout_marginBottom="-60dp"
             />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/spinner"
+            android:text="select user status"/>
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/updatebtn"

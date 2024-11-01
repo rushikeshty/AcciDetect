@@ -31,16 +31,11 @@ public class Logout extends Fragment {
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .setTitle("Closing Activity")
                 .setMessage("Are you sure you want to close this activity?")
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener()
-                {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        if (firebaseAuth.getCurrentUser() != null) {
-                            FirebaseAuth.getInstance().signOut();
-                            
-                            requireActivity().finish();
-                            startActivity(new Intent(requireContext(), LoginScreenActivity.class));
-                        }
+                .setPositiveButton("Yes", (dialog, which) -> {
+                    if (firebaseAuth.getCurrentUser() != null) {
+                        FirebaseAuth.getInstance().signOut();
+                        requireActivity().finish();
+                        startActivity(new Intent(requireContext(), LoginScreenActivity.class));
                     }
                 })
                 .setNegativeButton("No", null)

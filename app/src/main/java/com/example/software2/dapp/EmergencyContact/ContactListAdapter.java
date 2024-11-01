@@ -32,7 +32,7 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
     FirebaseAuth firebaseAuth;
     DBEmergency db;
     int layoutResourceId;
-    ArrayList<EmerContact> data=new ArrayList<EmerContact>();
+    ArrayList<EmerContact> data;
     RelativeLayout relativeLayout;
     public ContactListAdapter(ArrayList<EmerContact> data, int layoutResourceId, Context context,String email) {
         this.layoutResourceId = layoutResourceId;
@@ -148,7 +148,6 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
         }
         private void removeAt(int position) {
             data.remove(position);
-
             notifyItemRemoved(position);
             notifyItemRangeChanged(getPosition(), data.size());
         }
@@ -159,14 +158,10 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
         notifyItemRangeChanged(position, data.size());
     }
 
-
-
     /*
      to store images efficiently in android
      retrieving is done in backgroud so as to avoid UI to slow down
      */
-
-
 }
 
 

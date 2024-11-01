@@ -51,8 +51,6 @@ public class DBEmergency extends SQLiteOpenHelper {
                 + ")";
 
         db.execSQL(CREATE_CUSTOMER_TABLE);
-
-
     }
 
     //Function of Database

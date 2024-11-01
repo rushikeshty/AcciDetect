@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import com.example.software2.dapp.AccidentDetect.GPSHandler;
 import com.example.software2.dapp.AccidentDetect.HospitalAssigned;
+import com.example.software2.dapp.BaseActivity;
 import com.example.software2.dapp.R;
 import com.example.software2.dapp.AmbulanceViewAccident.Accidents;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -36,9 +37,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.HashMap;
 import java.util.Map;
 
-public class HospitalAuthority extends AppCompatActivity {
+public class HospitalAuthority extends BaseActivity {
     TextView locationdetails;
-    EditText editTextEmail,editTextPassword,Hospitaladdress;
+    EditText editTextEmail, editTextPassword, Hospitaladdress;
     private FirebaseAuth firebaseAuth;
     private DatabaseReference databaseReference;
     private GPSHandler mGPSHandler;
@@ -54,7 +55,6 @@ public class HospitalAuthority extends AppCompatActivity {
     Runnable mStatusChecker;
     private View layout;
 
-    ProgressDialog progressDialog;
     public Accidents.GPSTracker tracker;
 
     @Override
@@ -67,7 +67,6 @@ public class HospitalAuthority extends AppCompatActivity {
         hospitaladdress = findViewById(R.id.hospital);
         firebaseAuth = FirebaseAuth.getInstance();
 
-        progressDialog = new ProgressDialog(this);
         tracker = new Accidents.GPSTracker(this);
         if (!tracker.canGetLocation()) {
             tracker.showSettingsAlert();
@@ -79,7 +78,7 @@ public class HospitalAuthority extends AppCompatActivity {
         hospitaladdress = findViewById(R.id.hospital);
         mGPSHandler = new GPSHandler(this);
         toast_font = Typeface.createFromAsset(getAssets(), "AvenirNextLTPro-Cn.otf");
-        inflater = (LayoutInflater)this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         layout = inflater.inflate(R.layout.custom_toast, (ViewGroup) this.findViewById(R.id.toast));
         toast_text = (TextView) layout.findViewById(R.id.tv);
         toast = new Toast(this.getApplicationContext());
@@ -100,7 +99,7 @@ public class HospitalAuthority extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                if(editTextEmail.getText().toString().contains("@")){
+                if (editTextEmail.getText().toString().contains("@")) {
                     toast_text.setText("username should not contain @ ");
                     editTextEmail.setText("");
                 }
@@ -109,11 +108,11 @@ public class HospitalAuthority extends AppCompatActivity {
 
         mHandler = new Handler();
         databaseReference = FirebaseDatabase.getInstance().getReference();
-         mStatusChecker = new Runnable() {
+        mStatusChecker = new Runnable() {
             @Override
             public void run() {
                 try {
-                    if(mGPSHandler.getCurrentAddress()!=null) {
+                    if (mGPSHandler.getCurrentAddress() != null) {
                         latitude = mGPSHandler.getLatitude();
                         longitude = mGPSHandler.getLongitude();
                         location = mGPSHandler.getCurrentAddress().replaceAll(",", "");
@@ -125,7 +124,6 @@ public class HospitalAuthority extends AppCompatActivity {
                 }
             }
         };
-
 
 
     }
@@ -167,14 +165,12 @@ public class HospitalAuthority extends AppCompatActivity {
                 toast.show();
                 return;
             }
-            progressDialog.setMessage("Registering...");
-            progressDialog.show();
+            showDialog();
 
             firebaseAuth.createUserWithEmailAndPassword(email, password)
                     .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
-                            //progressDialog.dismiss();
                             if (task.isSuccessful()) {
                                 // Login with details
 
@@ -187,15 +183,13 @@ public class HospitalAuthority extends AppCompatActivity {
                                 //   FirebaseUser user = firebaseAuth.getCurrentUser();
 
                                 databaseReference.child("hospital").child("hospital " + user.getUid()).setValue(values);
-                                progressDialog.dismiss();
+                                dismissDialog();
                                 toast_text.setText("Welcome!!");
                                 toast.show();
                                 startActivity(new Intent(HospitalAuthority.this, HospitalAssigned.class).putExtra("hospital", hospital));
-
                                 finish();
-
                             } else {
-                                progressDialog.dismiss();
+                                dismissDialog();
                                 toast_text.setText("check your internet connection or try another username");
                                 toast.show();
                             }

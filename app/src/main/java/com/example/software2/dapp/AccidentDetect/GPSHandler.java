@@ -132,7 +132,7 @@ public class GPSHandler {
                 HttpURLConnection urlConnection = null;
                 try {
                     // Connect to Google API Services
-                    URL url = new URL("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" + locationParm + "&radius=5000&types=hospital&key=AIzaSyDoijibOb-tuDkGfJu6D_fMG10h8A5Epyk");
+                    URL url = new URL("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" + locationParm + "&radius=5000&types=hospital&key=AIzaSyDplDZF-U-Aj_XmVO6lmcwwzCSiyLZsT3Q");
                     urlConnection = (HttpURLConnection) url.openConnection();
                     urlConnection.connect();
 

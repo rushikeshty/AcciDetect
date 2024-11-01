@@ -1,197 +1,122 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
-<RelativeLayout
     android:id="@+id/activity_personal_info"
     android:layout_width="match_parent"
-    android:layout_height="650sp"
-     android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-     android:background="#cccccc"
-    tools:context="com.lifeline.PersonalInfoActivity">
-
+    android:layout_height="match_parent"
+    android:background="@color/white_pressed"
+    tools:context=".LoginSignup.PersonalInfoActivity">
 
     <TextView
         android:id="@+id/textViewTitle"
-        android:layout_width="285dp"
+        android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="55dp"
-        android:layout_marginEnd="26dp"
-        android:layout_marginBottom="55dp"
+        android:layout_marginTop="50dp"
         android:background="@drawable/blue_fill__rounded_color"
+        android:fontFamily="@font/poppins_regular"
         android:gravity="center"
         android:text="Personal Information"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="#FFFFFF"
-        android:textSize="25dp" />
-
-    <View
-        android:layout_width="300sp"
-        android:layout_height="1px"
-        android:background="#003366"
-        android:layout_below="@+id/textViewTitle"
-        android:layout_marginTop="-15sp"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/view1" />
-
-    <View
-        android:layout_width="300sp"
-        android:layout_height="1px"
-        android:background="#003366"
-        android:id="@+id/view2"
-        android:layout_marginTop="10sp"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/imageView6"
-        android:layout_alignLeft="@+id/view3"
-        android:layout_alignStart="@+id/view3"
-        android:layout_alignRight="@+id/view4"
-        android:layout_alignEnd="@+id/view4" />
-
-    <View
-        android:layout_width="300sp"
-        android:layout_height="1px"
-        android:background="#003366"
-        android:id="@+id/view3"
-        android:layout_marginTop="10sp"
-        android:layout_below="@+id/imageView3"
-        android:layout_alignLeft="@+id/view4"
-        android:layout_alignStart="@+id/view4"
-        android:layout_centerHorizontal="true" />
-    <View
-        android:layout_width="300sp"
-        android:layout_height="1px"
-        android:background="#003366"
-        android:id="@+id/view4"
-        android:layout_below="@+id/editTextPhoneNumber"
-        android:layout_centerHorizontal="true"
-        android:layout_marginLeft="50sp"
-        android:layout_marginTop="10sp" />
-    <View
-        android:layout_width="300sp"
-        android:layout_height="1px"
-        android:background="#003366"
-        android:id="@+id/view5"
-        android:layout_marginTop="10sp"
-        android:layout_below="@+id/imageView4"
-        android:layout_centerHorizontal="true"
-         />
+        android:textColor="@color/black"
+        android:textSize="18dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/imageView3"
         android:layout_width="wrap_content"
-        android:layout_height="36dp"
-        android:layout_alignStart="@+id/view2"
-        android:layout_alignLeft="@+id/view2"
-        android:layout_alignBottom="@+id/editTextFirstName"
-        android:layout_marginStart="-47dp"
-        android:layout_marginLeft="-27dp"
-        android:layout_marginBottom="5dp"
-        android:src="@drawable/blue_user" />
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="36dp"
-        android:id="@+id/imageView6"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
         android:src="@drawable/blue_user"
-        android:layout_marginStart="-47dp"
-        android:layout_marginLeft="-27dp"
-        android:layout_alignBottom="@+id/editTextLastName"
-        android:layout_alignLeft="@+id/view3"
-        android:layout_alignStart="@+id/view3" />
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="36dp"
-        android:id="@+id/imageView4"
-        android:src="@drawable/policy1"
-        android:layout_marginStart="-47dp"
-        android:layout_marginLeft="-27dp"
-        android:layout_alignBottom="@+id/editTextPhoneNumber"
-        android:layout_alignLeft="@+id/view4"
-        android:layout_alignStart="@+id/view4" />
-
-    <ImageView
-        android:id="@+id/imageView5"
-        android:layout_width="wrap_content"
-        android:layout_height="36dp"
-        android:layout_alignEnd="@+id/imageView4"
-        android:layout_alignRight="@+id/imageView4"
-        android:layout_alignBottom="@+id/editTextPhoneNumber"
-        android:layout_marginStart="-47dp"
-        android:layout_marginLeft="-27dp"
-        android:layout_marginEnd="-12dp"
-        android:layout_marginRight="-12dp"
-        android:layout_marginBottom="0dp"
-        android:src="@drawable/blue_phone" />
+        app:layout_constraintBottom_toTopOf="@+id/editTextFirstName"
+        app:layout_constraintEnd_toStartOf="@+id/editTextFirstName"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewTitle"
+        app:layout_constraintVertical_bias="0.0" />
 
     <EditText
         android:id="@+id/editTextFirstName"
-        android:layout_width="235dp"
+        android:layout_width="0dp"
         android:layout_height="44dp"
-        android:layout_below="@+id/view1"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="14dp"
-        android:layout_marginEnd="45dp"
-        android:background="@drawable/blue_fill__rounded_color"
+        android:layout_marginTop="56dp"
         android:gravity="center"
         android:hint="First Name"
-        android:textColor="#FFFFFF"
-        android:textColorHint="#FAFAFA" />
+        android:textColor="@color/black"
+        android:textColorHint="#ADADAD"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imageView3"
+        app:layout_constraintTop_toBottomOf="@+id/textViewTitle" />
+
+    <ImageView
+        android:id="@+id/imageView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:src="@drawable/blue_user"
+        app:layout_constraintBottom_toTopOf="@+id/imageView4"
+        app:layout_constraintEnd_toStartOf="@+id/editTextLastName"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView3"
+        app:layout_constraintVertical_bias="0.192" />
 
     <EditText
         android:id="@+id/editTextLastName"
-        android:layout_width="235dp"
+        android:layout_width="0dp"
         android:layout_height="44dp"
-        android:layout_below="@+id/view3"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="15dp"
-        android:layout_marginEnd="45dp"
-        android:background="@drawable/blue_fill__rounded_color"        android:gravity="center"
+        android:layout_marginTop="44dp"
+        android:gravity="center"
         android:hint="Last Name"
-        android:textColor="#F6F8FA"
-        android:textColorHint="#F8FAFB" />
+        android:textColor="@color/black"
+        android:textColorHint="#ADADAD"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/imageView6"
+        app:layout_constraintTop_toBottomOf="@+id/editTextFirstName" />
 
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="51dp"
+        android:layout_height="44dp"
+        android:src="@drawable/policy1"
+        app:layout_constraintBottom_toTopOf="@+id/btnPersonal"
+        app:layout_constraintEnd_toStartOf="@+id/editTextPhoneNumber"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewTitle"
+        app:layout_constraintVertical_bias="0.528" />
+
+    <EditText
+        android:id="@+id/editTextPhoneNumber"
+        android:layout_width="0dp"
+        android:layout_height="44dp"
+        android:layout_marginTop="132dp"
+        android:gravity="center"
+        android:hint="Contact No"
+        android:textColor="@color/black"
+        android:textColorHint="#ADADAD"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.068"
+        app:layout_constraintStart_toEndOf="@+id/imageView6"
+        app:layout_constraintTop_toBottomOf="@+id/editTextFirstName" />
 
     <Button
         android:id="@+id/btnPersonal"
-        android:layout_width="330sp"
-        android:layout_height="50sp"
-        android:layout_below="@+id/view5"
-        android:layout_alignStart="@+id/view5"
-        android:layout_alignLeft="@+id/view5"
-        android:layout_alignEnd="@+id/view5"
-        android:layout_alignRight="@+id/view5"
-        android:layout_centerHorizontal="true"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="48dp"
-        android:layout_marginEnd="-16dp"
-        android:layout_marginRight="-16dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="420dp"
+        android:layout_marginBottom="100dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
         android:background="@color/black"
         android:onClick="goToHome"
         android:text="Next"
         android:textColor="#FFFFFF"
-        android:textSize="25sp" />
-
-    <EditText
-        android:id="@+id/editTextPhoneNumber"
-        android:layout_width="235dp"
-        android:layout_height="44dp"
-        android:layout_below="@+id/view2"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="45dp"
-        android:background="@drawable/blue_fill__rounded_color"
-        android:gravity="center"
-        android:hint="Mobile Number"
-        android:inputType="phone"
-        android:maxLength="14"
-        android:textColor="#FDFDFD"
-        android:textColorHint="#F7F8F8" />
-
-</RelativeLayout>
-</ScrollView>
+        android:textSize="25sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
+</androidx.constraintlayout.widget.ConstraintLayout>

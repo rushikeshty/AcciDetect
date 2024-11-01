@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Android Accident System</string>
+<!--    <string name="app_name">Android Accident System</string>-->
 
     <string name="hello_world">Hello world!</string>
     <string name="action_profile">My profile</string>

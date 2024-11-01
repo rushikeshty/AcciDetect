@@ -21,7 +21,7 @@ public class DistanceCalculatorAlgorithm {
 
     public static List<Coordinate> calculateMinimumDistance(List<Coordinate> set1, List<Coordinate> set2) {
         double minDistance = Double.POSITIVE_INFINITY;
-        List<Coordinate> finallatlong;
+        List<Coordinate> fastestRoute;
         Coordinate finall=null;
 
         for (Coordinate c2 : set1) {
@@ -33,9 +33,9 @@ public class DistanceCalculatorAlgorithm {
                  }
             }
         }
-        finallatlong = new ArrayList<>();
-        finallatlong.add(finall);
-        return finallatlong;
+        fastestRoute = new ArrayList<>();
+        fastestRoute.add(finall);
+        return fastestRoute;
     }
 
 

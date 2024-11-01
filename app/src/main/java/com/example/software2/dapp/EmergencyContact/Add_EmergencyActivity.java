@@ -60,8 +60,6 @@ public class Add_EmergencyActivity extends DialogFragment {
         btn1=(TextView)view.findViewById(R.id.text_add);
         db=new DBEmergency(requireContext());
         Typeface custom_font = Typeface.createFromAsset(requireContext().getAssets(), "AvenirNextLTPro-UltLtCn.otf");
-        editText1.setTypeface(custom_font);
-        editText10.setTypeface(custom_font);
         btn1.setTypeface(custom_font, Typeface.BOLD);
         //Toast variables initialisation
         toast_text.setTypeface(toast_font);

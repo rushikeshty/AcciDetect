@@ -37,7 +37,7 @@ public class PersonalInfoActivity extends AppCompatActivity {
 
         //Custom Toast
         toast_font = Typeface.createFromAsset(getAssets(), "AvenirNextLTPro-Cn.otf");
-        inflater = (LayoutInflater)this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         layout = inflater.inflate(R.layout.custom_toast, (ViewGroup) this.findViewById(R.id.toast));
         toast_text = (TextView) layout.findViewById(R.id.tv);
         toast = new Toast(this.getApplicationContext());
@@ -48,18 +48,11 @@ public class PersonalInfoActivity extends AppCompatActivity {
 
         editTextFirstName = (EditText) findViewById(R.id.editTextFirstName);
         editTextLastName = (EditText) findViewById(R.id.editTextLastName);
-         editTextPhoneNumber = (EditText) findViewById(R.id.editTextPhoneNumber);
+        editTextPhoneNumber = (EditText) findViewById(R.id.editTextPhoneNumber);
         btnPersonal = (Button) findViewById(R.id.btnPersonal);
         textViewTitle = (TextView) findViewById(R.id.textViewTitle);
         editTextPhoneNumber.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
 
-        //Changing font of all layout components
-        Typeface custom_font = Typeface.createFromAsset(getAssets(), "AvenirNextLTPro-UltLtCn.otf");
-        editTextFirstName.setTypeface(custom_font);
-        editTextLastName.setTypeface(custom_font);
-        editTextPhoneNumber.setTypeface(custom_font);
-         btnPersonal.setTypeface(custom_font, Typeface.BOLD);
-        textViewTitle.setTypeface(custom_font, Typeface.BOLD);
     }
 
     public void goToHome(View view)

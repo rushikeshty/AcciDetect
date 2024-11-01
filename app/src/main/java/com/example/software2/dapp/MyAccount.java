@@ -1,5 +1,6 @@
 package com.example.software2.dapp;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -13,14 +14,14 @@ import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
 import com.example.software2.dapp.LoginSignup.UserInformation;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -31,13 +32,13 @@ import java.util.ArrayList;
 
 public class MyAccount extends Dialog {
 
-   // private FirebaseAuth firebaseAuth;
+    // private FirebaseAuth firebaseAuth;
     private DatabaseReference databaseReference;
     private ProgressDialog progressDialog;
-      private CharSequence mTitle;
-     private TextView editFirstName, editLastName, editPhoneNumber,bloodtype;
+    private CharSequence mTitle;
+    private TextView editFirstName, editLastName, editPhoneNumber, bloodtype;
     private Button btnSave;
-     int[] login_icons=new int[]{
+    int[] login_icons = new int[]{
             R.drawable.carpool_32,
             R.drawable.myaccount,
             R.drawable.policy1,
@@ -51,26 +52,27 @@ public class MyAccount extends Dialog {
     LayoutInflater inflater;
     View layout2;
     Context context;
+    ImageView closeButton;
 
-    public MyAccount(@NonNull Context context,String userid) {
+    public MyAccount(@NonNull Context context, String userid) {
         super(context);
         this.context = context;
         this.userid = userid;
     }
 
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_myaccount);
         custom_font = Typeface.createFromAsset(context.getAssets(), "AvenirNextLTPro-MediumCn.otf");
 
-
         databaseReference = FirebaseDatabase.getInstance().getReference();
 
         toast_font = Typeface.createFromAsset(context.getAssets(), "AvenirNextLTPro-Cn.otf");
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        layout2 = inflater.inflate(R.layout.custom_toast, (ViewGroup)this.findViewById(R.id.toast));
+        layout2 = inflater.inflate(R.layout.custom_toast, (ViewGroup) this.findViewById(R.id.toast));
         toast_text = (TextView) layout2.findViewById(R.id.tv);
         toast = new Toast(context.getApplicationContext());
 
@@ -80,22 +82,22 @@ public class MyAccount extends Dialog {
         toast.setDuration(Toast.LENGTH_SHORT);
         toast.setView(layout2);
 
-        editFirstName =  findViewById(R.id.editFirstName);
-        editLastName =  findViewById(R.id.editLastName);
-        editPhoneNumber =  findViewById(R.id.editPhoneNumber);
+        editFirstName = findViewById(R.id.editFirstName);
+        editLastName = findViewById(R.id.editLastName);
+        editPhoneNumber = findViewById(R.id.editPhoneNumber);
+        closeButton = findViewById(R.id.closeButton);
         btnSave = (Button) findViewById(R.id.btnSave);
         textTitle = (TextView) findViewById(R.id.textTitle);
+        LinearProgressIndicator linearProgressIndicator = findViewById(R.id.progress_horizontal);
+        linearProgressIndicator.show();
         editPhoneNumber.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
         //Changing font of all layout components
         Typeface custom_font = Typeface.createFromAsset(context.getAssets(), "AvenirNextLTPro-UltLtCn.otf");
-        //editFirstName.setTypeface(custom_font);
-        //editLastName.setTypeface(custom_font);
-        //editPhoneNumber.setTypeface(custom_font);
         btnSave.setTypeface(custom_font, Typeface.BOLD);
-        textTitle.setTypeface(custom_font, Typeface.BOLD);
         bloodtype = findViewById(R.id.bloodtype);
-
-
+        closeButton.setOnClickListener(view -> {
+            this.dismiss();
+        });
 
         progressDialog = new ProgressDialog(context);
         progressDialog.setMessage("Fetching Data...");
@@ -117,9 +119,9 @@ public class MyAccount extends Dialog {
                     editLastName.setText(values.get(2));
                     editPhoneNumber.setText(values.get(3));
                     bloodtype.setText(values.get(0));
-                 //   policyNumber = values.get(3);
+                    //   policyNumber = values.get(3);
                 }
-
+                linearProgressIndicator.setVisibility(View.GONE);
                 progressDialog.dismiss();
             }
 
@@ -139,17 +141,15 @@ public class MyAccount extends Dialog {
         if (TextUtils.isEmpty(firstName)) {
             Toast.makeText(context, "Please enter your first name", Toast.LENGTH_SHORT).show();
             return;
-        }
-        else if (TextUtils.isEmpty(lastName)) {
+        } else if (TextUtils.isEmpty(lastName)) {
             Toast.makeText(context, "Please enter your last name", Toast.LENGTH_SHORT).show();
             return;
-        }
-        else if (TextUtils.isEmpty(phoneNumber)) {
+        } else if (TextUtils.isEmpty(phoneNumber)) {
             Toast.makeText(context, "Please enter your phone number", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        UserInformation userInformation = new UserInformation(firstName, lastName, phoneNumber,"user");
+        UserInformation userInformation = new UserInformation(firstName, lastName, phoneNumber, "user");
 
 
         progressDialog.setMessage("Saving...");
@@ -160,8 +160,6 @@ public class MyAccount extends Dialog {
         progressDialog.dismiss();
         Toast.makeText(context, "Saved", Toast.LENGTH_SHORT).show();
     }
-
-
 
 
     public boolean onCreateOptionsMenu(Menu menu) {

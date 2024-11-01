@@ -34,7 +34,6 @@ import java.util.Map;
 public class AmbulanceDriver extends AppCompatActivity {
 
     EditText editTextemail, editTextpassword;
-     private View layout;
     private LayoutInflater inflater;
      private FirebaseAuth firebaseAuth;
     private DatabaseReference databaseReference;
@@ -46,7 +45,6 @@ public class AmbulanceDriver extends AppCompatActivity {
         setContentView(R.layout.activity_ambulance_driver);
         inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        layout = inflater.inflate(R.layout.custom_toast, (ViewGroup) this.findViewById(R.id.toast));
         firebaseAuth = FirebaseAuth.getInstance();
         progressDialog = new ProgressDialog(this);
         databaseReference = FirebaseDatabase.getInstance().getReference();

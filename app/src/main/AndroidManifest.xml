@@ -3,7 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.software2.dapp">
     <!-- Normal Permissions -->
+    <uses-feature
+        android:name="android.hardware.telephony"
+        android:required="false" />
     <uses-permission android:name="android.permission.INTERNET" /> <!-- Runtime Permissions -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
@@ -28,6 +32,7 @@
             android:exported="true" /> <!-- <activity -->
         <!-- android:name=".AccidentDetect.Hosptialauthrity.AccidentList" -->
         <!-- android:exported="true" /> -->
+
         <activity
             android:name=".AccidentDetect.HospitalAssigned"
             android:exported="true" />
@@ -96,6 +101,7 @@
 
         <activity
             android:name=".AmbulanceViewAccident.Accidents"
+            android:theme="@style/CustomActionBarTheme.NoActionBar"
             android:exported="true" />
         <activity
             android:name=".EmergencyContact.Add_EmergencyActivity"
@@ -120,10 +126,14 @@
 
         <receiver android:name=".AccidentDetect.NotificationReceiver" />
 
-
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyAdz5sjzrAIjfg-L2pHZOqgjjpGN4vhkZM" />
+            android:value="AIzaSyDplDZF-U-Aj_XmVO6lmcwwzCSiyLZsT3Q" />
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+        <uses-library android:name="com.google.android.maps"/>
     </application>
+
 
 </manifest>

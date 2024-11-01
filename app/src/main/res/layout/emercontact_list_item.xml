@@ -73,6 +73,7 @@
             android:layout_alignLeft="@+id/btn_edit"
             android:layout_alignTop="@+id/btn_edit"
             android:layout_marginLeft="35sp"
+            android:background="#F4E4E4"
             android:layout_marginTop="12dp"
             android:src="@drawable/orange_edit" />
 
@@ -84,6 +85,7 @@
             android:layout_alignLeft="@+id/btn_delete"
             android:layout_alignTop="@+id/imageView7"
             android:layout_marginStart="28dp"
+            android:background="@color/main_orange"
             android:layout_marginLeft="31dp"
             android:src="@drawable/orange_delete" />
 

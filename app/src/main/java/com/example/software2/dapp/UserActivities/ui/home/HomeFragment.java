@@ -103,6 +103,7 @@ public class HomeFragment extends Fragment {
     public static boolean isRecording = false;
     Button btn_record;
     private double currentDecibel = 0;
+    private boolean isShown =false;
 
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -134,7 +135,8 @@ public class HomeFragment extends Fragment {
             isTracking = false;
         }
 
-        buttonToggleTracking = (Button) root.findViewById(R.id.buttonToggleTracking);
+        buttonToggleTracking = root.findViewById(R.id.buttonToggleTracking);
+        buttonToggleTracking.setVisibility(View.GONE);
         sensorread = root.findViewById(R.id.sensorread);
         sensortext = root.findViewById(R.id.sensortext);
         decibaltext = root.findViewById(R.id.decibaltext);
@@ -171,41 +173,34 @@ public class HomeFragment extends Fragment {
         });
         CustomToastActivity.CustomToastActivity(requireActivity());
         mDatabase = new DBEmergency(requireContext());
-//        Intent i = requireActivity().getIntent();
-//        String msg = i.getAction();
         FirebaseUser user = firebaseAuth.getCurrentUser();
-
         setupFirebase();
         databaseReference = FirebaseDatabase.getInstance().getReference();
 
-        hospitalassigned.setOnClickListener(new View.OnClickListener() {
-            @SuppressLint("UseCompatLoadingForDrawables")
-            @Override
-            public void onClick(View view) {
-                progressDialog.show();
-                ;
-                if (user != null) {
-                    databaseReference.child("user").child(user.getUid()).child("AccidentInfo").child("hospitalassigned").addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            progressDialog.dismiss();
-                            assignedhospital = snapshot.getValue().toString();
+        hospitalassigned.setOnClickListener(view -> {
+            progressDialog.show();
+            isShown = false;
+            if (user != null) {
+                databaseReference.child("user").child(user.getUid()).child("AccidentInfo").child("hospitalassigned").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @SuppressLint("UseCompatLoadingForDrawables")
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        progressDialog.dismiss();
+                        assignedhospital = snapshot.getValue().toString();
+                        if (!assignedhospital.isEmpty() && !isShown) {
+                            AlertDialog.Builder builder1 = new AlertDialog.Builder(requireContext());
+                            builder1.setMessage("Assigned Hospital :- " + assignedhospital);
+                            builder1.setIcon(requireActivity().getDrawable(R.drawable.bell));
+                            builder1.setCancelable(true);
+                            builder1.show();
+                            isShown = true;
                         }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-
-                        }
-                    });
-                    if (assignedhospital!=null && !assignedhospital.isEmpty()) {
-                        android.app.AlertDialog.Builder builder1 = new android.app.AlertDialog.Builder(requireContext());
-                        builder1.setMessage("Assigned Hospital :- " + assignedhospital);
-                        builder1.setIcon(requireActivity().getDrawable(R.drawable.bell));
-                        builder1.setCancelable(true);
-                        android.app.AlertDialog alert11 = builder1.create();
-                        alert11.show();
                     }
-                }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                    }
+                });
+
             }
         });
 
@@ -227,83 +222,76 @@ public class HomeFragment extends Fragment {
 
                 lp.copyFrom(dialog.getWindow().getAttributes());
                 dialog.getWindow().setAttributes(lp);
-                final VideoView videoview = (VideoView) dialog.findViewById(R.id.videoview);
+                final VideoView videoview = dialog.findViewById(R.id.videoview);
                 Uri uri = Uri.parse("android.resource://" + requireContext().getPackageName() + "/" + R.raw.accident);
                 videoview.setVideoURI(uri);
                 videoview.start();
 
-                videoview.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                    @Override
-                    public void onCompletion(MediaPlayer mediaPlayer) {
-                        // alertDialog.cancel();
-                        requireActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                requireActivity().setVisible(true);
-                                dialog.dismiss();
-                                Toast.makeText(requireContext(), "completed", Toast.LENGTH_SHORT).show();
-                            }
-                        });
+                videoview.setOnCompletionListener(mediaPlayer -> {
+                    // alertDialog.cancel();
+                    requireActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            requireActivity().setVisible(true);
+                            dialog.dismiss();
+                            Toast.makeText(requireContext(), "completed", Toast.LENGTH_SHORT).show();
+                        }
+                    });
 
-                    }
                 });
 
             }
         }
 
-        accidentstatus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        accidentstatus.setOnClickListener(view -> {
+            AlertDialog.Builder dialog = new AlertDialog.Builder(requireContext());
+            dialog.setIcon(android.R.drawable.ic_dialog_alert);
+            dialog.setMessage("Are you sure want to exit from Accident?");
+            dialog.setPositiveButton("Yes", (dialog1, which) -> {
                 buttonToggleTracking.setVisibility(View.VISIBLE);
                 hospitalassigned.setVisibility(View.INVISIBLE);
                 accidentstatus.setVisibility(View.INVISIBLE);
-                databaseReference.child("Accidents").child(user.getUid()).child("Detected").setValue("false");
-            }
+                if (user != null) {
+                    databaseReference.child("Accidents").child(user.getUid()).child("Detected").setValue("false");
+                }
+            });
+            dialog.setNegativeButton("cancel",((dialog1, which) -> {
+                dialog1.dismiss();
+            }));
+            dialog.show();
         });
 
+        buttonToggleTracking.setOnClickListener(view -> {
+            if (buttonToggleTracking.getText().toString().contains("start")) {
+                gifImageView.setVisibility(View.INVISIBLE);
 
-        buttonToggleTracking.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (buttonToggleTracking.getText().toString().contains("start")) {
-                    gifImageView.setVisibility(View.INVISIBLE);
+            }
+            if (isTracking) {
+                toggleTracking();
+            } else {
+                // Ask for Permissions
+                // Add permissions to the permissionName List
+                List<String> permissionName = new ArrayList<>();
+                List<String> permissionTag = new ArrayList<>();
+                permissionName.add(Manifest.permission.ACCESS_FINE_LOCATION);
+                permissionName.add(Manifest.permission.READ_PHONE_STATE);
+                permissionName.add(Manifest.permission.SEND_SMS);
+                permissionName.add(Manifest.permission.RECORD_AUDIO);
+                permissionTag.add("Access Location");
+                permissionTag.add("Read Phone State");
+                permissionTag.add("Send SMS");
+                permissionTag.add("Record audio");
+                if (!mPermissionHandler.requestPermissions(MY_PERMISSION_REQUEST_CODE, permissionName, permissionTag)
+                        || !locationServicesStatusCheck() || !hasContact())
+                    return;
+                gifImageView.setVisibility(View.VISIBLE);
 
-                }
-                if (isTracking) {
-                    toggleTracking();
-
-
-                } else {
-                    // Ask for Permissions
-                    // Add permissions to the permissionName List
-                    List<String> permissionName = new ArrayList<>();
-                    List<String> permissionTag = new ArrayList<>();
-                    permissionName.add(Manifest.permission.ACCESS_FINE_LOCATION);
-                    permissionName.add(Manifest.permission.READ_PHONE_STATE);
-                    permissionName.add(Manifest.permission.SEND_SMS);
-                    permissionName.add(Manifest.permission.RECORD_AUDIO);
-                    permissionTag.add("Access Location");
-                    permissionTag.add("Read Phone State");
-                    permissionTag.add("Send SMS");
-                    permissionTag.add("Record audio");
-
-
-                    if (!mPermissionHandler.requestPermissions(MY_PERMISSION_REQUEST_CODE, permissionName, permissionTag)
-                            || !locationServicesStatusCheck() || !hasContact())
-                        return;
-                    gifImageView.setVisibility(View.VISIBLE);
-
-                    toggleTracking();
-                }
+                toggleTracking();
             }
         });
         //prepareListDataSignin();
         custom_font = Typeface.createFromAsset(requireContext().getAssets(), "AvenirNextLTPro-MediumCn.otf");
-
-
         // Listview Group expanded listener
-
-
         return root;
     }
 
@@ -328,10 +316,8 @@ public class HomeFragment extends Fragment {
             gifImageView.setVisibility(View.INVISIBLE);
             isTracking = false;
             stop();
-            boolen.setText(isTracking + "  service is bound " + ServiceHandler.isBound());
 
         } else {
-
             mServiceHandler.doBindService();
 
             start();
@@ -360,17 +346,15 @@ public class HomeFragment extends Fragment {
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode) {
-            case MY_PERMISSION_REQUEST_CODE:
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                    if (mPermissionHandler.handleRequestResult(requestCode, permissions, grantResults)) {
-                        toggleTracking();
+        if (requestCode == MY_PERMISSION_REQUEST_CODE) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                if (mPermissionHandler.handleRequestResult(requestCode, permissions, grantResults)) {
+                    toggleTracking();
 
-                    }
                 }
-                break;
-            default:
-                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+            }
+        } else {
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
 
@@ -401,7 +385,7 @@ public class HomeFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-
+        count =0 ;
         boolen.setText(isTracking + "  service is bound " + ServiceHandler.isBound());
 
         if (ServiceHandler.isBound()) {
@@ -436,12 +420,6 @@ public class HomeFragment extends Fragment {
     }
 
 
-//    @Override
-//    public void onStop() {
-//        super.onStop();
-//
-//    }
-
     private boolean hasContact() {
         String email = firebaseUser.getEmail();
         List<EmerContact> contact = mDatabase.getContact(email);
@@ -452,6 +430,7 @@ public class HomeFragment extends Fragment {
             return true;
         }
     }
+
     public void start() {
         if (isRecording) {
             return;
@@ -463,7 +442,6 @@ public class HomeFragment extends Fragment {
             Toast.makeText(getContext(), "granted", Toast.LENGTH_SHORT).show();
             return;
         }
-
 
         audioRecord = new AudioRecord(MediaRecorder.AudioSource.MIC, SAMPLE_RATE, CHANNEL_CONFIG, AUDIO_FORMAT, BUFFER_SIZE);
 
@@ -507,8 +485,6 @@ public class HomeFragment extends Fragment {
                     }
                 });
 
-
-
             }
 
             audioRecord.stop();
@@ -525,17 +501,7 @@ public class HomeFragment extends Fragment {
         isRecording = false;
     }
 
-
-
-
-
     //    @RequiresApi(api = Build.VERSION_CODES.P)
-    @Override
-    public void onPause() {
-        super.onPause();
-
-
-    }
 
     Runnable status = new Runnable() {
         @Override
@@ -548,7 +514,6 @@ public class HomeFragment extends Fragment {
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (snapshot.child("Detected").getValue() != null && snapshot.child("Detected").getValue().toString().contains("true")) {
                             if (count == 0) {
-
                                 accidentstatus.setText("You are currently in accident status. Tap to stop");
                                 buttonToggleTracking.setVisibility(View.INVISIBLE);
                                 count = 1;
@@ -556,9 +521,9 @@ public class HomeFragment extends Fragment {
                             accidentstatus.setVisibility(View.VISIBLE);
                             hospitalassigned.setVisibility(View.VISIBLE);
                         } else {
+                            buttonToggleTracking.setVisibility(View.VISIBLE);
                             hospitalassigned.setVisibility(View.INVISIBLE);
                         }
-
 
                     }
 
@@ -570,10 +535,7 @@ public class HomeFragment extends Fragment {
             }
             mHandler.postDelayed(status, 600);
         }
-
-
     };
-
 
 }
 

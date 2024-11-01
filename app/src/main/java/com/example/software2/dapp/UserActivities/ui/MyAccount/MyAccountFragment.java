@@ -44,12 +44,10 @@ public class MyAccountFragment extends Fragment {
     private String policyNumber;
      private EditText editFirstName, editLastName, editPhoneNumber,bloodtype;
     private Button btnSave;
-     HashMap<String, List<String>> listDataChild;
      private Typeface custom_font;
     Toast toast;
     TextView toast_text, textTitle;
     Typeface toast_font;
-    LayoutInflater inflater;
     View layout2;
 
 
@@ -80,57 +78,48 @@ public class MyAccountFragment extends Fragment {
         toast.setGravity(Gravity.BOTTOM, 0, 100);
         toast.setDuration(Toast.LENGTH_SHORT);
         toast.setView(layout2);
-        bloodtype =(EditText) root.findViewById(R.id.bloodtype);
+        bloodtype = root.findViewById(R.id.bloodtype);
 
-        editFirstName = (EditText) root.findViewById(R.id.editFirstName);
-        editLastName = (EditText) root.findViewById(R.id.editLastName);
-        editPhoneNumber = (EditText) root.findViewById(R.id.editPhoneNumber);
-        btnSave = (Button) root.findViewById(R.id.btnSave);
-        textTitle = (TextView) root.findViewById(R.id.textTitle);
+        editFirstName = root.findViewById(R.id.editFirstName);
+        editLastName = root.findViewById(R.id.editLastName);
+        editPhoneNumber = root.findViewById(R.id.editPhoneNumber);
+        btnSave = root.findViewById(R.id.btnSave);
+        textTitle = root.findViewById(R.id.textTitle);
         editPhoneNumber.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
-        //Changing font of all layout components
-        Typeface custom_font = Typeface.createFromAsset(requireContext().getAssets(), "AvenirNextLTPro-UltLtCn.otf");
-//        editFirstName.setTypeface(custom_font);
-//        editLastName.setTypeface(custom_font);
-//        editPhoneNumber.setTypeface(custom_font);
-        //btnSave.setTypeface(custom_font, Typeface.BOLD);
-        //textTitle.setTypeface(custom_font, Typeface.BOLD);
+        btnSave.setOnClickListener(view -> {
+            String firstName = editFirstName.getText().toString().trim();
+            String lastName = editLastName.getText().toString().trim();
+            String phoneNumber = editPhoneNumber.getText().toString().trim();
+            String bloodtyp = bloodtype.getText().toString();
 
-        btnSave.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String firstName = editFirstName.getText().toString().trim();
-                String lastName = editLastName.getText().toString().trim();
-                String phoneNumber = editPhoneNumber.getText().toString().trim();
-                String bloodtyp = bloodtype.getText().toString();
+            if (TextUtils.isEmpty(firstName)) {
+                Toast.makeText(requireContext(), "Please enter your first name", Toast.LENGTH_SHORT).show();
+                return;
+            } else if (TextUtils.isEmpty(lastName)) {
+                Toast.makeText(requireContext(), "Please enter your last name", Toast.LENGTH_SHORT).show();
+                return;
+            } else if (TextUtils.isEmpty(phoneNumber)) {
+                Toast.makeText(requireContext(), "Please enter your phone number", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            else if (TextUtils.isEmpty(bloodtyp)) {
+                Toast.makeText(requireContext(), "Please enter your Blood group", Toast.LENGTH_SHORT).show();
+                return;
+            }
 
-                if (TextUtils.isEmpty(firstName)) {
-                    Toast.makeText(requireContext(), "Please enter your first name", Toast.LENGTH_SHORT).show();
-                    return;
-                } else if (TextUtils.isEmpty(lastName)) {
-                    Toast.makeText(requireContext(), "Please enter your last name", Toast.LENGTH_SHORT).show();
-                    return;
-                } else if (TextUtils.isEmpty(phoneNumber)) {
-                    Toast.makeText(requireContext(), "Please enter your phone number", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                else if (TextUtils.isEmpty(bloodtyp)) {
-                    Toast.makeText(requireContext(), "Please enter your Blood group", Toast.LENGTH_SHORT).show();
-                    return;
-                }
+            HashMap<String,String> hashMap = new HashMap<>();
+            hashMap.put("firstName",firstName);
+            hashMap.put("lastName",lastName);
+            hashMap.put("phoneNumber",phoneNumber);
+            hashMap.put("bloodgroup",bloodtyp);
+            FirebaseUser user1 = firebaseAuth.getCurrentUser();
 
-                UserInformation userInformation = new UserInformation(firstName, lastName, phoneNumber, bloodtyp);
-
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-
-                progressDialog.setMessage("Saving...");
-                progressDialog.show();
-                if (user != null) {
-                    databaseReference.child("user").child(user.getUid()).child("personal info").setValue(userInformation);
-                    progressDialog.dismiss();
-                    Toast.makeText(requireContext(), "Saved", Toast.LENGTH_SHORT).show();
-
-                }
+            progressDialog.setMessage("Saving...");
+            progressDialog.show();
+            if (user1 != null) {
+                databaseReference.child("user").child(user1.getUid()).child("personal info").setValue(hashMap);
+                progressDialog.dismiss();
+                Toast.makeText(requireContext(), "Saved", Toast.LENGTH_SHORT).show();
             }
         });
         progressDialog = new ProgressDialog(requireContext());
@@ -139,7 +128,7 @@ public class MyAccountFragment extends Fragment {
         databaseReference.child("user").child(user.getUid()).child("personal info").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                ArrayList<String> values = new ArrayList<String>(4);
+                ArrayList<String> values = new ArrayList<>(4);
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
                     values.add(child.getValue().toString());
                 }

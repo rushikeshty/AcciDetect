@@ -23,12 +23,13 @@
 
         <TextView
             android:id="@+id/accidentstatus"
-            android:layout_width="261dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textSize="18dp"
             android:layout_alignParentStart="true"
+            android:gravity="center"
             android:layout_alignParentTop="true"
-            android:layout_marginStart="64dp"
-            android:layout_marginTop="395dp" />
+            android:layout_marginTop="355dp" />
 
         <TextView
             android:id="@+id/sensorread"
@@ -103,7 +104,7 @@
             android:layout_width="295dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/buttonToggleTracking"
-            android:layout_marginStart="40dp"
+            android:layout_marginStart="35dp"
             android:layout_marginTop="-136dp"
             android:background="#24176C"
             android:gravity="center"
@@ -115,12 +116,13 @@
             android:id="@+id/gifimage"
             android:layout_width="390dp"
             android:layout_height="149dp"
+            android:layout_above="@+id/accidentstatus"
             android:layout_alignBottom="@+id/buttonToggleTracking"
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
-            android:layout_marginStart="2dp"
-            android:layout_marginEnd="1dp"
-            android:layout_marginBottom="-384dp"
+            android:layout_marginStart="6dp"
+            android:layout_marginEnd="-3dp"
+            android:layout_marginBottom="-100dp"
             android:src="@drawable/carruning" />
 
         <Switch

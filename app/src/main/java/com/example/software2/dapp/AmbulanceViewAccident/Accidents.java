@@ -27,6 +27,7 @@ import android.provider.Settings;
 import android.text.SpannableString;
 import android.text.style.UnderlineSpan;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.AdapterView;
@@ -35,18 +36,23 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentContainerView;
 
 import com.example.software2.dapp.AccidentDetect.GPSHandler;
+import com.example.software2.dapp.AccidentDetect.Hosptialauthrity.AccidentList;
+import com.example.software2.dapp.AccidentDetect.viewmodel.AccidentListStatusViewmodel;
+import com.example.software2.dapp.BaseActivity;
 import com.example.software2.dapp.Coordinate;
 import com.example.software2.dapp.MyAccount;
 import com.example.software2.dapp.R;
+import com.example.software2.dapp.UserActivities.MainActivity;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -73,7 +79,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class Accidents extends FragmentActivity implements GoogleMap.OnCameraIdleListener, OnMapReadyCallback, DirectionFinderListener, AdapterView.OnItemSelectedListener {
+public class Accidents extends BaseActivity implements GoogleMap.OnCameraIdleListener, OnMapReadyCallback, DirectionFinderListener, AdapterView.OnItemSelectedListener {
 
     private static final int REQUEST_LOCATION = 1;
     Button directionbtn, updatebtn, viewuser, hospitalassig;
@@ -86,15 +92,10 @@ public class Accidents extends FragmentActivity implements GoogleMap.OnCameraIdl
     static String userid;
     double ambulancelatitude, ambulancelongitude;
     FragmentContainerView fragmentContainerView;
-    FirebaseAuth firebaseAuth;
-    private DatabaseReference databaseReference;
-    private @ColorInt
-    int mPulseEffectColor;
+    private @ColorInt int mPulseEffectColor;
     private int[] mPulseEffectColorElements;
-    static String url;
     private ValueAnimator mPulseEffectAnimator;
     private Circle mPulseCircle;
-    ProgressDialog progressDialog;
     ArrayList<String> values = new ArrayList<>();
     GPSTracker tracker;
     private GPSHandler mGPSHandler;
@@ -113,26 +114,28 @@ public class Accidents extends FragmentActivity implements GoogleMap.OnCameraIdl
     private String ambulanceOrigin;
     String status = "";
     private List<Coordinate> set2;
+    private boolean isSelected = false;
+    private AccidentListStatusViewmodel viewmodel;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_accidents);
+        viewmodel = new AccidentListStatusViewmodel();
+        viewmodel.init();
+        if (viewmodel.getCurrentUser() == null) {
+            finishAffinity();
+            startActivity(new Intent(Accidents.this, MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+        }
         directionbtn = findViewById(R.id.directionbutton);
-        firebaseAuth = FirebaseAuth.getInstance();
         // Intent intent = this.getIntent();
         onNewIntent(getIntent());
+        initUI();
 
-        datetime = findViewById(R.id.datetime);
-        fragmentContainerView = findViewById(R.id.myMap);
-        textttt = findViewById(R.id.textttt);
-        address = findViewById(R.id.address);
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("Fetching data please wait...");
-        progressDialog.show();
-        locationmymap = findViewById(R.id.locationmymap);
-        hospitalassig = findViewById(R.id.hospitalassigned);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
         addressResultReceiver = new LocationAddressResultReceiver(new Handler());
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
@@ -150,21 +153,15 @@ public class Accidents extends FragmentActivity implements GoogleMap.OnCameraIdl
         ActivityCompat.requestPermissions(this,
                 new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
         mGPSHandler = new GPSHandler(this);
-        viewuser = findViewById(R.id.viewuserdetails);
 
-        viewuser.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                MyAccount myAccount = new MyAccount(Accidents.this, userid);
-                myAccount.show();
-            }
+        viewuser.setOnClickListener(view -> {
+            MyAccount myAccount = new MyAccount(Accidents.this, userid);
+            myAccount.show();
         });
-
-        databaseReference = FirebaseDatabase.getInstance().getReference();
 
         tracker = new GPSTracker(this);
         if (!tracker.canGetLocation()) {
-            progressDialog.dismiss();
+            dismissDialog();
             tracker.showSettingsAlert();
         } else {
             ambulancelatitude = tracker.getLatitude();
@@ -172,53 +169,35 @@ public class Accidents extends FragmentActivity implements GoogleMap.OnCameraIdl
 
         }
         getdata();
-
-        updatebtn = findViewById(R.id.updatebtn);
         startRepeatingTask();
 
-        spinner = (Spinner) findViewById(R.id.spinner);
-        spinner.setOnItemSelectedListener(this);
-
         // Spinner Drop down elements
-        List<String> categories = new ArrayList<String>();
-        categories.add("select user status");
-        categories.add("AMBULANCE ALLOTTED");
-        categories.add("USER PICKED");
-        categories.add("USER DROPPED AT HOSPITAL");
-        categories.add("USER ADMITTED AT HOSPITAL");
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, categories);
-
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(dataAdapter);
-        directionbtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                progressDialog.dismiss();
-                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-                mapIntent.setPackage("com.google.android.apps.maps");
-                startActivity(mapIntent);
-            }
+        updateSpinner();
+        directionbtn.setOnClickListener(v -> {
+            dismissDialog();
+            Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+            mapIntent.setPackage("com.google.android.apps.maps");
+            startActivity(mapIntent);
         });
 
+        updatebtn.setOnClickListener(v -> {
+            if (status.contains("select")) {
+                Toast.makeText(getApplicationContext(), "Please select the status", Toast.LENGTH_SHORT).show();
 
-        updatebtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (status.contains("select")) {
-                    Toast.makeText(getApplicationContext(), "Please select the status", Toast.LENGTH_SHORT).show();
-
-                } else {
-                    databaseReference.child("user").child(userid).child("AccidentInfo").child("status").setValue(status);
-                    Toast.makeText(getApplicationContext(), "Updated succesfully.", Toast.LENGTH_SHORT).show();
-                }
-
+            } else {
+                viewmodel.getDatabaseReference().child("user").child(userid).child("AccidentInfo").child("status").setValue(status);
+                Toast.makeText(getApplicationContext(), "Updated successfully.", Toast.LENGTH_SHORT).show();
             }
+
         });
         hospitalassig.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 AlertDialog.Builder builder1 = new AlertDialog.Builder(Accidents.this);
                 builder1.setMessage("Assigned Hospital :- " + assignedhospital);
+                builder1.setPositiveButton("ok", (dialogInterface, i) -> {
+                    dialogInterface.dismiss();
+                });
                 builder1.setCancelable(true);
                 AlertDialog alert11 = builder1.create();
                 alert11.show();
@@ -226,7 +205,39 @@ public class Accidents extends FragmentActivity implements GoogleMap.OnCameraIdl
             }
         });
     }
+    public void initUI(){
+        updatebtn = findViewById(R.id.updatebtn);
+        datetime = findViewById(R.id.datetime);
+        fragmentContainerView = findViewById(R.id.myMap);
+        textttt = findViewById(R.id.textttt);
+        address = findViewById(R.id.address);
+        locationmymap = findViewById(R.id.locationmymap);
+        hospitalassig = findViewById(R.id.hospitalassigned);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        viewuser = findViewById(R.id.viewuserdetails);
+        spinner = findViewById(R.id.spinner);
+        spinner.setOnItemSelectedListener(this);
+    }
 
+    public void updateSpinner(){
+        List<String> categories = new ArrayList<>();
+        if(!status.isEmpty()){
+            categories.add(status);
+        }
+        else {
+            categories.add("SELECT USER STATUS:-");
+        }
+        categories.add("AMBULANCE ALLOTTED");
+        categories.add("USER PICKED");
+        categories.add("USER DROPPED AT HOSPITAL");
+        categories.add("USER ADMITTED AT HOSPITAL");
+
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, categories);
+
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(dataAdapter);
+    }
     @Override
     public void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
@@ -239,6 +250,7 @@ public class Accidents extends FragmentActivity implements GoogleMap.OnCameraIdl
     public void onItemSelected(@NonNull AdapterView<?> parent, View view, int position, long id) {
         // On selecting a spinner item
         status = parent.getItemAtPosition(position).toString();
+        isSelected = true;
 
         // Showing selected spinner item
         Toast.makeText(getApplicationContext(), "Selected: " + status, Toast.LENGTH_SHORT).show();
@@ -248,6 +260,13 @@ public class Accidents extends FragmentActivity implements GoogleMap.OnCameraIdl
         // TODO Auto-generated method stub
     }
 
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if(item.getItemId() == android.R.id.home){
+            onBackPressed();
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     @SuppressWarnings("MissingPermission")
     private void startLocationUpdates() {
@@ -290,13 +309,12 @@ public class Accidents extends FragmentActivity implements GoogleMap.OnCameraIdl
         }
     }
 
-
     private void getdata() {
         //final FirebaseUser user = firebaseAuth.getCurrentUser();
-        databaseReference.child("user").child(userid).child("AccidentInfo").addValueEventListener(new ValueEventListener() {
+        viewmodel.getDatabaseReference().child("user").child(userid).child("AccidentInfo").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                progressDialog.dismiss();
+                dismissDialog();
                 for (DataSnapshot child : snapshot.getChildren()) {
                     values.add(child.getValue().toString());
                 }
@@ -309,7 +327,11 @@ public class Accidents extends FragmentActivity implements GoogleMap.OnCameraIdl
                 locationmymap.setText(values.get(5).replaceAll("\n", ""));
                 latitude = values.get(4);
                 longitude = values.get(6);
+                status = values.get(9);
 
+                if(!status.isEmpty() && !isSelected){
+                    updateSpinner();
+                }
                 //Toast.makeText(getApplicationContext(), values.toString(), Toast.LENGTH_SHORT).show();
                 supportMapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.myMap);
                 if (supportMapFragment != null) {
@@ -320,6 +342,7 @@ public class Accidents extends FragmentActivity implements GoogleMap.OnCameraIdl
 
                 sendCallMap();
                 values.clear();
+                dismissDialog();
                 //    HosiptalAssigned();
 
             }
@@ -327,6 +350,7 @@ public class Accidents extends FragmentActivity implements GoogleMap.OnCameraIdl
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
+                dismissDialog();
                 Toast.makeText(Accidents.this, "Fail to get data.", Toast.LENGTH_SHORT).show();
             }
         });
@@ -398,8 +422,6 @@ public class Accidents extends FragmentActivity implements GoogleMap.OnCameraIdl
             }
         });
         mPulseEffectAnimator.start();
-
-
     }
 
     @Override
@@ -434,7 +456,7 @@ public class Accidents extends FragmentActivity implements GoogleMap.OnCameraIdl
             } else {
                 Address addressofamb = addressOfambulance.get(0);
                 ambulanceOrigin = ambulancelatitude + "," + ambulancelongitude;
-                Toast.makeText(getApplicationContext(), ambulanceOrigin, Toast.LENGTH_LONG).show();
+                //Toast.makeText(getApplicationContext(), ambulanceOrigin, Toast.LENGTH_LONG).show();
 
             }
             try {
@@ -685,18 +707,13 @@ public class Accidents extends FragmentActivity implements GoogleMap.OnCameraIdl
             if (resultCode == 2) {
                 //save current location of user
                 location = resultData.getString("address_result");
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                databaseReference.child("user").child(user.getUid()).child("AccidentInfo").child("location").setValue(location);
+                viewmodel.getDatabaseReference().child("user").child(viewmodel.getCurrentUser().getUid()).child("AccidentInfo").child("location").setValue(location);
             }
 
-            FirebaseUser user = firebaseAuth.getCurrentUser();
             location = resultData.getString("address_result");
-            databaseReference.child("user").child(user.getUid()).child("AccidentInfo").child("location").setValue(location);
+            viewmodel.getDatabaseReference().child("user").child(viewmodel.getCurrentUser().getUid()).child("AccidentInfo").child("location").setValue(location);
             address.setText(location);
-
-
         }
-
     }
 
 
@@ -713,43 +730,10 @@ public class Accidents extends FragmentActivity implements GoogleMap.OnCameraIdl
         fusedLocationClient.removeLocationUpdates(locationCallback);
     }
 
-
-    //    public void HosiptalAssigned(){
-//
-//        if(latitude!=null&&longitude!=null) {
-//
-//            List<com.example.software2.dapp.Coordinate> set1 = Collections.singletonList(new Coordinate(Double.parseDouble(latitude), Double.parseDouble(longitude)));
-//            databaseReference.child("hospital").addListenerForSingleValueEvent(new ValueEventListener() {
-//                @Override
-//                public void onDataChange(@NonNull DataSnapshot snapshot) {
-//
-//                    ArrayList<String> values = new ArrayList<String>();
-//                    for (DataSnapshot child : snapshot.child("hospital").getChildren()) {
-//                        values.add(child.getValue().toString());
-//
-//                    }
-//                    if (values.size() > 5) {
-//                       set2 = Collections.singletonList(new Coordinate(Double.parseDouble(values.get(5)), Double.parseDouble(values.get(6))));
-//                        values.clear();
-//                    }
-//
-//
-//                }
-//
-//                @Override
-//                public void onCancelled(@NonNull DatabaseError error) {
-//
-//                }
-//            });
-//            List<com.example.software2.dapp.Coordinate> finallatlongi = DistanceCalculatorAlgorithm.calculateMinimumDistance(set1, set2);
-//            textttt.setText("hospital assigned " + finallatlongi.toString());
-//        }
-//    }
     @Override
     protected void onResume() {
         super.onResume();
         startLocationUpdates();
-        //Toast.makeText(getApplicationContext(), location, Toast.LENGTH_SHORT).show();
     }
 
     Runnable mStatusChecker = new Runnable() {
@@ -757,8 +741,6 @@ public class Accidents extends FragmentActivity implements GoogleMap.OnCameraIdl
         public void run() {
             try {
                 getdata();
-
-                //this function can change value of mInterval.
             } finally {
                 mHandler.postDelayed(mStatusChecker, mInterval);
             }
@@ -769,8 +751,10 @@ public class Accidents extends FragmentActivity implements GoogleMap.OnCameraIdl
         mStatusChecker.run();
     }
 
-    void stopRepeatingTask() {
-        mHandler.removeCallbacks(mStatusChecker);
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        isSelected = false;
     }
 
 }

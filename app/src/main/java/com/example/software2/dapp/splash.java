@@ -27,9 +27,9 @@ public class splash extends AppCompatActivity implements AdapterView.OnItemSelec
     //When we create any splash activity we required splashTime.
     private boolean scheduled = false;
     // we have to start our mainactivity so we initially set it false after some delay we start our main activity.
-    public static final int delay=4500;
+    public static final int delay = 4000;
     TextView splash;
-    int countdelay=300;
+    int countdelay = 400;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

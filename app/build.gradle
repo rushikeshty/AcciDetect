@@ -1,10 +1,11 @@
 plugins {
     id 'com.android.application'
     id 'com.google.gms.google-services'
+    id 'org.jetbrains.kotlin.android'
 }
 
 android {
-    compileSdk 31
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.example.software2.dapp"
@@ -14,6 +15,24 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+    flavorDimensions "default"
+    productFlavors {
+        "hospital"{
+            applicationId "com.example.software2.dapp"
+            resValue "string", "app_name", "Hospital Accidetect"
+            buildConfigField("String", "APP_BRAND", "\"hospital\"")
+        }
+        "ambulance"{
+            applicationId "com.example.software2.dapp"
+            resValue "string", "app_name", "Ambulance Accidetect"
+            buildConfigField("String", "APP_BRAND", "\"ambulance\"")
+        }
+        "user"{
+            applicationId "com.example.software2.dapp"
+            resValue "string", "app_name", "User Accidetect"
+            buildConfigField("String", "APP_BRAND", "\"user\"")
+        }
     }
 
     buildTypes {
@@ -28,6 +47,10 @@ android {
     }
     buildFeatures {
         viewBinding true
+        buildConfig true
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
     }
 }
 
@@ -47,11 +70,12 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1'
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
     implementation 'androidx.navigation:navigation-fragment:2.5.3'
-    implementation 'com.google.android.gms:play-services-maps:18.1.0'
+    implementation 'com.google.android.gms:play-services-maps:19.0.0'
     implementation 'androidx.navigation:navigation-ui:2.5.3'
     implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.17'
     implementation 'com.daimajia.androidanimations:library:2.4@aar'
     implementation 'com.google.android.gms:play-services-location:21.0.1'
+    implementation 'androidx.core:core-ktx:1.13.1'
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.4'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.0'

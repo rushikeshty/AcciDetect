@@ -50,7 +50,7 @@ import java.util.List;
 import pl.droidsonroids.gif.GifImageView;
 
 
-public class SendSMSActivity extends AppCompatActivity {
+public class SendSMSActivity extends BaseActivity {
 
     private GPSHandler mGPSHandler;
     private SmsManager mSmsManager;
@@ -195,20 +195,10 @@ public class SendSMSActivity extends AppCompatActivity {
         textViewPhoneNumber.setText(phoneNumbers);
 
         final Animation animShake = AnimationUtils.loadAnimation(this, R.anim.shake);
-        ImageView alarm = (ImageView) findViewById(R.id.imageView2);
-        ImageView imageView10 =(ImageView) findViewById(R.id.imageView10);
+        ImageView alarm = findViewById(R.id.imageView2);
+        ImageView imageView10 = findViewById(R.id.imageView10);
         alarm.startAnimation(animShake);
         imageView10.startAnimation(animShake);
-
-
-
-        Typeface custom_font = Typeface.createFromAsset(getAssets(), "AvenirNextLTPro-UltLtCn.otf");
-        textViewPhoneNumber.setTypeface(custom_font,Typeface.BOLD);
-        textViewName.setTypeface(custom_font,Typeface.BOLD);
-        textViewEmergencyMessage.setTypeface(custom_font, Typeface.BOLD);
-        textViewTimer.setTypeface(custom_font,Typeface.BOLD_ITALIC);
-        buttonCancel.setTypeface(custom_font, Typeface.BOLD);
-        buttonSend.setTypeface(custom_font, Typeface.BOLD);
     }
 
     private void setupFirebase() {
@@ -226,9 +216,7 @@ public class SendSMSActivity extends AppCompatActivity {
 
     private void getUsername() {
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
-        final ProgressDialog progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("Fetching Data...");
-        progressDialog.show();
+        showDialog();
         databaseReference.child(firebaseUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -241,7 +229,7 @@ public class SendSMSActivity extends AppCompatActivity {
                     username = values.get(0) + " " + values.get(1);
                 }
 
-                progressDialog.dismiss();
+                dismissDialog();
             }
 
             @Override
@@ -252,7 +240,7 @@ public class SendSMSActivity extends AppCompatActivity {
     }
 
     private void setupTimer() {
-        timer = new CountDownTimer(15000, 1000) {
+        timer = new CountDownTimer(13000, 1000) {
 
             public void onTick(long millisUntilFinished) {
                 textViewTimer.setText("seconds remaining: " + millisUntilFinished / 1000);
@@ -264,12 +252,10 @@ public class SendSMSActivity extends AppCompatActivity {
             public void onFinish() {
                 //You can comment out below method if you want to send the message to emergency contacct
                // sendSMSMessage();
-
-
+                textViewEmergencyMessage.setText("");
                 textViewTimer.setText("Message sent");
                 Toast.makeText(getApplicationContext(), "message sent", Toast.LENGTH_SHORT).show();
-
-
+                new Handler().postDelayed(() -> startActivity(new Intent(getApplicationContext(), MainActivity.class)),2000);
             }
         };
 
