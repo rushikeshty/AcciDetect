@@ -1,5 +1,7 @@
 package com.example.software2.dapp.AmbulanceViewAccident;
 
+import static com.example.software2.dapp.AccidentDetect.Hosptialauthrity.AccidentList.userEmail;
+
 import android.Manifest;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -38,6 +40,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
@@ -122,6 +125,7 @@ public class Accidents extends BaseActivity implements GoogleMap.OnCameraIdleLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_accidents);
+
         viewmodel = new AccidentListStatusViewmodel();
         viewmodel.init();
         if (viewmodel.getCurrentUser() == null) {
@@ -135,6 +139,8 @@ public class Accidents extends BaseActivity implements GoogleMap.OnCameraIdleLis
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setTitle("Ambulance User");
+
         }
 
         addressResultReceiver = new LocationAddressResultReceiver(new Handler());

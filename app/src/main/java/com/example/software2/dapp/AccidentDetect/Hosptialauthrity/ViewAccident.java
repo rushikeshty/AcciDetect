@@ -46,8 +46,8 @@ public class ViewAccident extends AppCompatActivity implements AdapterView.OnIte
         userLocation = findViewById(R.id.locationuser);
         hospitalAddress = findViewById(R.id.hospitaladdress);
         status = findViewById(R.id.status);
-        @SuppressLint("ResourceType")
-        AnimatorSet set = (AnimatorSet) AnimatorInflater.loadAnimator(getApplicationContext(),
+
+        @SuppressLint("ResourceType") AnimatorSet set = (AnimatorSet) AnimatorInflater.loadAnimator(getApplicationContext(),
                 R.anim.property_animator);
         set.setTarget(status);
         set.start();
@@ -115,9 +115,7 @@ public class ViewAccident extends AppCompatActivity implements AdapterView.OnIte
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        // On selecting a spinner item
          item = parent.getItemAtPosition(position).toString();
-         // Showing selected spinner item
         Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
     }
     public void onNothingSelected(AdapterView<?> arg0) {

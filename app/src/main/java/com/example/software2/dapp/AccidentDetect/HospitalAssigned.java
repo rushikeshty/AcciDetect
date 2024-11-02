@@ -48,6 +48,9 @@ public class HospitalAssigned extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hospital_assigned);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle("Hospital Authority");
+        }
         viewmodel = new AccidentListStatusViewmodel();
         viewmodel.init();
         initUI();
