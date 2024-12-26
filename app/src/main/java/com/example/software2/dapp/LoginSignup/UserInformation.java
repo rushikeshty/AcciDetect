@@ -3,11 +3,7 @@ package com.example.software2.dapp.LoginSignup;
 
 public class UserInformation {
 
-    private String firstName, lastName, phoneNumber,bloodgroup;
-
-    public UserInformation() {
-
-    }
+    public String firstName, lastName, phoneNumber,bloodgroup;
 
     public UserInformation(String firstName, String lastName, String phoneNumber,String bloodgroup) {
         this.firstName = firstName;

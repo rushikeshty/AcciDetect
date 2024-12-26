@@ -1,9 +1,9 @@
 package com.example.software2.dapp;
 
 public class Coordinate {
-    private double latitude;
-    private double longitude;
-    private String address;
+    public double latitude;
+    public double longitude;
+    public String address;
 
     public Coordinate(double latitude, double longitude, String address) {
         this.latitude = latitude;

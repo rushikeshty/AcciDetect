@@ -26,7 +26,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ViewAccident extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
+public class ViewAccident extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     private static final String TAG = ViewAccident.class.toString();
     EditText Accelerometer, sensorReading, userLocation, hospitalAddress, status, datetime, emergencyContact;
     public Spinner spinner;
@@ -69,8 +69,8 @@ public class ViewAccident extends AppCompatActivity implements AdapterView.OnIte
         status.setText(status1);
         String datetime1 = i.getStringExtra("datetime");
         datetime.setText(datetime1);
-        String emerg = i.getStringExtra("emergencycontact");
-        emergencyContact.setText(emerg);
+        String emergencyContact = i.getStringExtra("emergencycontact");
+        this.emergencyContact.setText(emergencyContact);
         String decibel = i.getStringExtra("decibel");
         decibels = findViewById(R.id.decibelss2);
         decibels.setText(decibel);
@@ -101,13 +101,22 @@ public class ViewAccident extends AppCompatActivity implements AdapterView.OnIte
 
     @NonNull
     private ArrayAdapter<String> getStringArrayAdapter() {
+        String accidentStatus = status.getText().toString();
         List<String> categories = new ArrayList<>();
-        categories.add("select user status");
+        if (!accidentStatus.isEmpty()) {
+            categories.add(accidentStatus);
+        } else {
+            categories.add("SELECT USER STATUS:-");
+        }
         categories.add("AMBULANCE ALLOTTED");
         categories.add("USER PICKED");
         categories.add("USER DROPPED AT HOSPITAL");
         categories.add("USER ADMITTED AT HOSPITAL");
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, categories);
+
+        int idx = categories.lastIndexOf(accidentStatus);
+        categories.remove(idx);
+
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, categories);
 
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         return dataAdapter;
@@ -115,11 +124,12 @@ public class ViewAccident extends AppCompatActivity implements AdapterView.OnIte
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-         item = parent.getItemAtPosition(position).toString();
+        item = parent.getItemAtPosition(position).toString();
         Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
     }
+
     public void onNothingSelected(AdapterView<?> arg0) {
-        Log.i(TAG,"Nothing selected ");
+        Log.i(TAG, "Nothing selected ");
     }
 
 }

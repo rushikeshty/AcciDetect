@@ -2,20 +2,24 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.software2.dapp">
-    <!-- Normal Permissions -->
+
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
     <uses-feature
         android:name="android.hardware.telephony"
         android:required="false" />
+
+    <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" /> <!-- Runtime Permissions -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
-
-     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
-     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.SEND_SMS" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
 
     <application
@@ -23,16 +27,13 @@
         android:hardwareAccelerated="true"
         android:icon="@drawable/alarm"
         android:label="@string/app_name"
-         android:theme="@style/CustomActionBarTheme">
+        android:theme="@style/CustomActionBarTheme">
         <activity
             android:name=".TestExample"
             android:exported="true" />
         <activity
             android:name=".AccidentDetect.DialogMessageActivity"
-            android:exported="true" /> <!-- <activity -->
-        <!-- android:name=".AccidentDetect.Hosptialauthrity.AccidentList" -->
-        <!-- android:exported="true" /> -->
-
+            android:exported="true" />
         <activity
             android:name=".AccidentDetect.HospitalAssigned"
             android:exported="true" />
@@ -47,15 +48,7 @@
         <activity
             android:name=".UserActivities.ui.home.HomeFragment"
             android:exported="true"
-            tools:ignore="Instantiatable" /> <!-- <activity -->
-        <!-- android:name=".AmbulanceDriver.MainActivity" -->
-        <!-- android:exported="true" -->
-        <!-- android:label="@string/title_activity_main" -->
-        <!-- android:theme="@style/CustomActionBarTheme.NoActionBar" /> -->
-        <!-- <activity -->
-        <!-- android:name=".ui.login.DashboardAmbulance" -->
-        <!-- android:exported="true" -->
-        <!-- android:label="@string/title_activity_dashboard_ambulance" /> -->
+            tools:ignore="Instantiatable" />
         <activity
             android:name=".LoginSignup.PolicePerson"
             android:exported="true" />
@@ -72,13 +65,6 @@
             android:theme="@style/CustomActionBarTheme.NoActionBar" />
         <activity android:name=".LoginSignup.PersonalInfoActivity" />
         <activity android:name=".LoginSignup.SignUpActivity" />
-        <!-- <activity -->
-        <!-- android:name=".LoginSignup.LoginScreenActivity" -->
-        <!-- android:exported="true" -->
-        <!-- android:label="@string/app_name"/> -->
-        <!-- <activity -->
-        <!-- android:name=".RecentAccident.Accidents" -->
-        <!-- android:exported="true" /> -->
         <activity
             android:name=".AccidentDetect.Hosptialauthrity.ViewAccident"
             android:exported="true"
@@ -89,8 +75,9 @@
         <activity
             android:name=".LoginSignup.LoginScreenActivity"
             android:exported="true"
-            />
-        <activity android:name=".splash"
+            android:label="@string/app_name" />
+        <activity
+            android:name=".splash"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -98,11 +85,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".AmbulanceViewAccident.Accidents"
-            android:theme="@style/CustomActionBarTheme.NoActionBar"
-            android:exported="true" />
+            android:exported="true"
+            android:theme="@style/CustomActionBarTheme.NoActionBar" />
         <activity
             android:name=".EmergencyContact.Add_EmergencyActivity"
             android:exported="true"
@@ -121,6 +107,13 @@
             android:name=".SendSMSActivity"
             android:label=" send sms" />
 
+        <service
+            android:name=".MyFirebaseMessagingService"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
         <service android:name=".AccidentDetect.SensorService" />
         <service android:name=".AmbulanceViewAccident.GetAllData" />
 
@@ -128,12 +121,17 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyDplDZF-U-Aj_XmVO6lmcwwzCSiyLZsT3Q" />
+            android:value="@string/api_key" />
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
-        <uses-library android:name="com.google.android.maps"/>
-    </application>
+        <meta-data
+            android:name="com.google.android.gms.vision.DEPENDENCIES"
+            android:value="barcode" />
 
+        <uses-library android:name="com.google.android.maps" />
+
+
+    </application>
 
 </manifest>

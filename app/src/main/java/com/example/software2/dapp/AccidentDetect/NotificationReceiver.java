@@ -20,36 +20,32 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class NotificationReceiver extends BroadcastReceiver {
-    private ServiceHandler mServiceHandler;
-    private FirebaseAuth firebaseAuth;
-    private DatabaseReference databaseReference;
+
+    public NotificationReceiver() {
+    }
 
     @Override
     public void onReceive(Context context, @NonNull Intent intent) {
         context.stopService(intent);
-         countDownTimer.cancel();
+        countDownTimer.cancel();
 
         SensorService.mNotificationManager.cancelAll();
-        firebaseAuth = FirebaseAuth.getInstance();
-        databaseReference = FirebaseDatabase.getInstance().getReference();
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
         FirebaseUser user = firebaseAuth.getCurrentUser();
-        Map<String, Object> values = new HashMap<String, Object>();
+        Map<String, Object> values = new HashMap<>();
         values.put("Detected", "false");
-        values.put("userid",String.valueOf(user));
+        values.put("userid", String.valueOf(user));
 
-         if(user!=null){
-             databaseReference.child("Accidents").child(user.getUid()).setValue(values);
-         }
-
+        if (user != null) {
+            databaseReference.child("Accidents").child(user.getUid()).setValue(values);
+        }
         Toast.makeText(context, "start again tracing", Toast.LENGTH_SHORT).show();
-        SendSMSActivity.mediaPlayeralarm.stop();
+        SendSMSActivity.mediaPlayerAlarm.stop();
         SendSMSActivity.timer.cancel();
 
         Intent i = new Intent(context, MainActivity.class);
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
-        //i.setAction("starttrack");
         context.startActivity(i);
-
     }
- }
+}

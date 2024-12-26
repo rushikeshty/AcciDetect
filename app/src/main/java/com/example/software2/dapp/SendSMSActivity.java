@@ -5,10 +5,9 @@ import static com.example.software2.dapp.AccidentDetect.SensorService.mNotificat
 import static com.example.software2.dapp.UserActivities.ui.home.HomeFragment.powerDb;
 import static com.example.software2.dapp.UserActivities.ui.home.HomeFragment.stop;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -16,23 +15,22 @@ import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Looper;
 import android.telephony.SmsManager;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.annotation.NonNull;
 
- import com.example.software2.dapp.AccidentDetect.GPSHandler;
+import com.example.software2.dapp.AccidentDetect.GPSHandler;
 import com.example.software2.dapp.AccidentDetect.SensorService;
 import com.example.software2.dapp.UserActivities.MainActivity;
-import com.example.software2.dapp.UserActivities.ui.home.HomeFragment;
 import com.example.software2.dapp.EmergencyContact.DBEmergency;
 import com.example.software2.dapp.EmergencyContact.EmerContact;
 import com.example.software2.dapp.LoginSignup.LoginScreenActivity;
@@ -46,29 +44,27 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import pl.droidsonroids.gif.GifImageView;
+import java.util.Objects;
 
 
 public class SendSMSActivity extends BaseActivity {
 
     private GPSHandler mGPSHandler;
     private SmsManager mSmsManager;
-     private DBEmergency mDatabase;
+    private DBEmergency mDatabase;
     public static CountDownTimer timer;
-    public static MediaPlayer mediaPlayeralarm;
+    public static MediaPlayer mediaPlayerAlarm;
 
     private FirebaseAuth firebaseAuth;
     private FirebaseUser firebaseUser;
     private String username = "";
     private DatabaseReference databaseReference;
 
-    private Button buttonSend, buttonCancel;
-    private TextView textViewPhoneNumber, textViewName, textViewTimer, textViewEmergencyMessage;
+    private TextView textViewTimer;
+    private TextView textViewEmergencyMessage;
 
-    private String phoneNumberArray[];
-    private List<String> hospitals;
-    private ArrayList<EmerContact> add = new ArrayList<>();
+    private String[] phoneNumberArray;
+    private final ArrayList<EmerContact> add = new ArrayList<>();
 
     /**
      * Called when the activity is first created.
@@ -78,15 +74,13 @@ public class SendSMSActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_send_sms);
 
-
-        CustomToastActivity.CustomToastActivity(this);
+        CustomToastActivity.CustomToast(this);
 
         Intent i = getIntent();
         String acc = i.getStringExtra("accident");
-        if(acc!=null) {
-            String acciden = acc;
-            if (acciden.equals("accident")) {
-                 setVisible(false);
+        if (acc != null) {
+            if (acc.equals("accident")) {
+                setVisible(false);
                 final Dialog dialog = new Dialog(SendSMSActivity.this);
                 dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 dialog.setContentView(R.layout.activity_dialog_message);
@@ -94,28 +88,18 @@ public class SendSMSActivity extends BaseActivity {
                 WindowManager.LayoutParams lp = new WindowManager.LayoutParams(
                         WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT);
 
-                lp.copyFrom(dialog.getWindow().getAttributes());
+                lp.copyFrom(Objects.requireNonNull(dialog.getWindow()).getAttributes());
                 dialog.getWindow().setAttributes(lp);
-                final VideoView videoview = (VideoView) dialog.findViewById(R.id.videoview);
+                final VideoView videoview = dialog.findViewById(R.id.videoview);
                 Uri uri = Uri.parse("android.resource://" + this.getPackageName() + "/" + R.raw.accident);
                 videoview.setVideoURI(uri);
                 videoview.start();
 
-                videoview.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                    @Override
-                    public void onCompletion(MediaPlayer mediaPlayer) {
-                        // alertDialog.cancel();
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                setVisible(true);
-                                dialog.dismiss();
-                                Toast.makeText(getApplicationContext(), "completed", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-
-                    }
-                });
+                videoview.setOnCompletionListener(mediaPlayer -> runOnUiThread(() -> {
+                    setVisible(true);
+                    dialog.dismiss();
+                    Toast.makeText(getApplicationContext(), "completed", Toast.LENGTH_SHORT).show();
+                }));
 
             }
         }
@@ -123,9 +107,7 @@ public class SendSMSActivity extends BaseActivity {
         mGPSHandler = new GPSHandler(this);
         mDatabase = new DBEmergency(this);
         mSmsManager = SmsManager.getDefault();
-        mediaPlayeralarm = MediaPlayer.create(this, R.raw.rising_swoops);
-
-        hospitals = mGPSHandler.getHospitalAddress();
+        mediaPlayerAlarm = MediaPlayer.create(this, R.raw.rising_swoops);
 
         setupFirebase();
         setupUI();
@@ -135,16 +117,16 @@ public class SendSMSActivity extends BaseActivity {
 
     public void cancelAlarm(View view) {
         FirebaseUser user = firebaseAuth.getCurrentUser();
-        if(user!=null){
+        if (user != null) {
             databaseReference.child("Accidents").child(user.getUid()).child("Detected").setValue("false");
         }
         mNotificationManager.cancelAll();
         CustomToastActivity.showCustomToast("Alarm is cancelled");
-        mediaPlayeralarm.pause();
+        mediaPlayerAlarm.pause();
         timer.cancel();
         countDownTimer.cancel();
         stop();
-        powerDb=0;
+        powerDb = 0;
         finish();
         Intent i = new Intent(SendSMSActivity.this, SensorService.class);
         stopService(i);
@@ -153,46 +135,39 @@ public class SendSMSActivity extends BaseActivity {
     }
 
     public void sendButtonPress(View view) {
-
         sendSMSMessage();
     }
 
-    /*
-     * Private Functions
-     */
     public void finish() {
         super.finish();
-    };
+    }
 
     private void setupUI() {
         String email = firebaseUser.getEmail();
         List<EmerContact> contact;
 
-        textViewTimer = (TextView) findViewById(R.id.timer);
-        textViewEmergencyMessage = (TextView) findViewById(R.id.emergencymessage);
-        textViewPhoneNumber = (TextView) findViewById(R.id.phone1);
-        textViewName = (TextView) findViewById(R.id.name1);
-        buttonSend = (Button) findViewById(R.id.send);
-        buttonCancel = (Button) findViewById(R.id.cancel);
+        textViewTimer = findViewById(R.id.timer);
+        textViewEmergencyMessage = findViewById(R.id.emergencymessage);
+        TextView textViewPhoneNumber = findViewById(R.id.phone1);
+        TextView textViewName = findViewById(R.id.name1);
 
         contact = mDatabase.getContact(email);
-        for (EmerContact cn : contact) {
-            add.add(cn);
-        }
+        add.addAll(contact);
 
         phoneNumberArray = new String[3];
-        String nameArray[] = new String[3];
-        String names = "", phoneNumbers = "";
-        for (int i = 0; i < add.size(); i++){
+        String[] nameArray = new String[3];
+        StringBuilder names = new StringBuilder();
+        StringBuilder phoneNumbers = new StringBuilder();
+        for (int i = 0; i < add.size(); i++) {
             EmerContact emerContact = add.get(i);
             nameArray[i] = emerContact._name;
             phoneNumberArray[i] = emerContact._phone;
-            names = names + nameArray[i] + '\n';
-            phoneNumbers = phoneNumbers + phoneNumberArray[i]+'\n';
+            names.append(nameArray[i]).append('\n');
+            phoneNumbers.append(phoneNumberArray[i]).append('\n');
         }
 
-        textViewName.setText(names);
-        textViewPhoneNumber.setText(phoneNumbers);
+        textViewName.setText(names.toString());
+        textViewPhoneNumber.setText(phoneNumbers.toString());
 
         final Animation animShake = AnimationUtils.loadAnimation(this, R.anim.shake);
         ImageView alarm = findViewById(R.id.imageView2);
@@ -219,10 +194,10 @@ public class SendSMSActivity extends BaseActivity {
         showDialog();
         databaseReference.child(firebaseUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                ArrayList<String> values = new ArrayList<String>(4);
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                ArrayList<String> values = new ArrayList<>(4);
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
-                    values.add(child.getValue().toString());
+                    values.add(Objects.requireNonNull(child.getValue()).toString());
                 }
 
                 if (!values.isEmpty()) {
@@ -233,7 +208,7 @@ public class SendSMSActivity extends BaseActivity {
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onCancelled(@NonNull DatabaseError databaseError) {
                 Toast.makeText(SendSMSActivity.this, "Could not retrieve data.", Toast.LENGTH_SHORT).show();
             }
         });
@@ -242,20 +217,22 @@ public class SendSMSActivity extends BaseActivity {
     private void setupTimer() {
         timer = new CountDownTimer(13000, 1000) {
 
+            @SuppressLint("SetTextI18n")
             public void onTick(long millisUntilFinished) {
                 textViewTimer.setText("seconds remaining: " + millisUntilFinished / 1000);
                 //here you can have your logic to set text to edittext
-                mediaPlayeralarm.start();
+                mediaPlayerAlarm.start();
                 // send.setEnabled(true);
             }
 
+            @SuppressLint("SetTextI18n")
             public void onFinish() {
                 //You can comment out below method if you want to send the message to emergency contacct
-               // sendSMSMessage();
+                // sendSMSMessage();
                 textViewEmergencyMessage.setText("");
                 textViewTimer.setText("Message sent");
                 Toast.makeText(getApplicationContext(), "message sent", Toast.LENGTH_SHORT).show();
-                new Handler().postDelayed(() -> startActivity(new Intent(getApplicationContext(), MainActivity.class)),2000);
+                new Handler().postDelayed(() -> startActivity(new Intent(getApplicationContext(), MainActivity.class)), 2000);
             }
         };
 
@@ -265,7 +242,7 @@ public class SendSMSActivity extends BaseActivity {
     /* Function to send a alert text message */
     private void sendSMSMessage() {
         // Stop the media and alarm
-        mediaPlayeralarm.pause();
+        mediaPlayerAlarm.pause();
         countDownTimer.cancel();
         timer.cancel();
 
@@ -275,16 +252,15 @@ public class SendSMSActivity extends BaseActivity {
         ArrayList<String> dividedMessage = mSmsManager.divideMessage(message);
 
         // Need to send message to all emergency contacts
-        for (int i=0; i < add.size(); i++) {
+        for (int i = 0; i < add.size(); i++) {
             try {
                 mSmsManager.sendMultipartTextMessage(phoneNumberArray[i].replaceAll("[-() ]", "") // Need to remove special characters
                         , null, dividedMessage, null, null);
             } catch (Exception e) {
-                e.printStackTrace();
+                Log.d("Error:-", Objects.requireNonNull(e.getMessage()));
             }
         }
 
-        ;
     }
 
     boolean doubleBackToExitPressedOnce = false;
@@ -299,13 +275,9 @@ public class SendSMSActivity extends BaseActivity {
         this.doubleBackToExitPressedOnce = true;
         Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
 
-        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
-
-            @Override
-            public void run() {
-                doubleBackToExitPressedOnce=false;
-                startActivity(new Intent(SendSMSActivity.this, MainActivity.class));
-            }
+        new Handler(Looper.getMainLooper()).postDelayed(() -> {
+            doubleBackToExitPressedOnce = false;
+            startActivity(new Intent(SendSMSActivity.this, MainActivity.class));
         }, 2000);
     }
 
@@ -319,8 +291,8 @@ public class SendSMSActivity extends BaseActivity {
                 + "'s current location is " + location
                 + " .  ");
 
-        final TextView textmessage = findViewById(R.id.textmessage);
-        textmessage.setText(message.toString());
+        final TextView textMessage = findViewById(R.id.textmessage);
+        textMessage.setText(message.toString());
         Toast.makeText(getApplicationContext(), message.toString(), Toast.LENGTH_SHORT).show();
         return message.toString();
     }

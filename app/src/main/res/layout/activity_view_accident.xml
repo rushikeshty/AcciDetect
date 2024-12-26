@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:background="#FDFFFBE0"
@@ -20,7 +18,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginStart="0dp"
-        android:layout_marginTop="274dp"
+        android:layout_marginTop="248dp"
         android:gravity="center"
         android:text="Location :- "
         android:textColor="@color/black"
@@ -31,9 +29,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="0dp"
-        android:layout_marginTop="351dp"
+        android:layout_below="@id/locationuser"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="40dp"
         android:gravity="center"
         android:text="Hospital assigned :- "
         android:textColor="@color/black"
@@ -59,7 +57,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginStart="0dp"
-        android:layout_marginTop="156dp"
+        android:layout_marginTop="128dp"
         android:gravity="center"
         android:text="sensor reading :- "
         android:textColor="@color/black"
@@ -96,8 +94,8 @@
         android:layout_height="39dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="1dp"
-        android:layout_marginTop="491dp"
+        android:layout_marginStart="9dp"
+        android:layout_marginTop="494dp"
         android:gravity="center"
         android:text="Date time :- "
         android:textColor="@color/black"
@@ -118,12 +116,12 @@
 
     <TextView
         android:id="@+id/status2"
-        android:layout_width="188dp"
+        android:layout_width="wrap_content"
         android:layout_height="42dp"
+        android:layout_below="@+id/hospitaladdress2"
         android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="0dp"
-        android:layout_marginTop="418dp"
+        android:layout_marginStart="11dp"
+        android:layout_marginTop="47dp"
         android:gravity="center"
         android:text="Status of user :- "
         android:textColor="@color/black"
@@ -144,15 +142,19 @@
 
     <androidx.appcompat.widget.AppCompatEditText
         android:id="@+id/hospitaladdress"
-        android:layout_width="209dp"
-        android:layout_height="47dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="182dp"
-        android:layout_marginTop="346dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/locationuser"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="31dp"
+        android:layout_marginTop="41dp"
+        android:layout_marginEnd="-1dp"
+        android:layout_toEndOf="@+id/hospitaladdress2"
         android:background="@color/white"
         android:enabled="false"
+        android:gravity="center"
         android:hint="Hospital assigned :- "
+        android:maxLines="2"
         android:textColor="#002E8C" />
 
     <androidx.appcompat.widget.AppCompatEditText
@@ -161,10 +163,10 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="207dp"
-        android:layout_marginTop="75dp"
-        android:enabled="false"
+        android:layout_marginStart="210dp"
+        android:layout_marginTop="78dp"
         android:background="@color/white"
+        android:enabled="false"
         android:hint="Accelerometer value:- "
         android:textColor="#002E8C" />
 
@@ -174,21 +176,22 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="208dp"
-        android:layout_marginTop="155dp"
-        android:enabled="false"
+        android:layout_marginStart="210dp"
+        android:layout_marginTop="138dp"
         android:background="@color/white"
+        android:enabled="false"
         android:hint="sensor reading :- "
         android:textColor="#002E8C" />
 
     <androidx.appcompat.widget.AppCompatEditText
         android:id="@+id/locationuser"
-        android:layout_width="264dp"
-        android:layout_height="65dp"
-        android:layout_alignParentStart="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="148dp"
-        android:layout_marginTop="261dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="254dp"
+        android:layout_toEndOf="@+id/locationuser2"
         android:background="@color/white"
         android:enabled="false"
         android:hint="location of user :- "
@@ -198,10 +201,11 @@
         android:id="@+id/datetime"
         android:layout_width="248dp"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
+        android:layout_below="@+id/status"
+        android:layout_marginStart="33dp"
+        android:layout_marginTop="497dp"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="163dp"
-        android:layout_marginTop="498dp"
+        android:layout_toEndOf="@+id/datetime3"
         android:background="@color/white"
         android:enabled="false"
         android:hint="Date time :- "
@@ -223,29 +227,43 @@
 
     <androidx.appcompat.widget.AppCompatEditText
         android:id="@+id/status"
-        android:layout_width="204dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="206dp"
-        android:layout_marginTop="431dp"
+        android:layout_below="@+id/hospitaladdress"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="35dp"
+        android:gravity="center"
+        android:layout_toEndOf="@+id/status2"
         android:background="@color/white"
         android:enabled="false"
         android:hint="status of user :- "
         android:textColor="#002E8C" />
 
     <TextView
+        android:id="@+id/updateStatus"
         android:layout_width="164dp"
         android:layout_height="40dp"
         android:layout_below="@+id/emergencycontact"
         android:layout_alignParentStart="true"
-        android:layout_marginStart="99dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="100dp"
         android:layout_marginTop="28dp"
-        android:gravity="center"
+        android:layout_marginEnd="100dp"
         android:fontFamily="sans-serif-condensed"
+        android:gravity="center"
         android:text="Update status"
-        android:textStyle="bold"
-        android:textSize="20sp" />
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/updateStatus"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="9dp"
+        android:layout_marginTop="8dp"
+        android:text="select user status" />
 
     <Spinner
         android:id="@+id/spinner"
@@ -280,18 +298,6 @@
         android:gravity="center"
         android:text="View user details"
         android:textColor="@color/white" />
-
-    <!--    <androidx.appcompat.widget.AppCompatButton-->
-<!--        android:id="@+id/hospitalassigned"-->
-<!--        android:layout_width="295dp"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginStart="35dp"-->
-<!--        android:layout_marginTop="875dp"-->
-<!--        android:layout_marginBottom="54dp"-->
-<!--        android:background="#24176C"-->
-<!--        android:gravity="center"-->
-<!--        android:text="View Hospital assigned"-->
-<!--        android:textColor="@color/white" />-->
 
 </RelativeLayout>
 </ScrollView>

@@ -28,87 +28,68 @@ import com.google.firebase.auth.FirebaseUser;
 
 
 public class Add_EmergencyActivity extends DialogFragment {
-    EditText editText1,editText10;
+    EditText editText1, editText10;
     TextView btn1;
     Toast toast;
     TextView toast_text;
-    ContactListAdapter contactListAdapter;
     Typeface toast_font;
     public LayoutInflater inflater;
     View layout;
     DBEmergency db;
     FirebaseAuth firebaseAuth;
-    String email="";
+    String email = "";
+
+    @SuppressLint("MissingInflatedId")
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-         View view = inflater.inflate(R.layout.activity_contact_add,container,false);
-         firebaseAuth = FirebaseAuth.getInstance();
+        View view = inflater.inflate(R.layout.activity_contact_add, container, false);
+        firebaseAuth = FirebaseAuth.getInstance();
 
         final FirebaseUser user = firebaseAuth.getCurrentUser();
-        email=user.getEmail();
+        if (user != null) email = user.getEmail();
 
         toast_font = Typeface.createFromAsset(requireContext().getAssets(), "AvenirNextLTPro-Cn.otf");
-        inflater = (LayoutInflater)requireContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        layout = inflater.inflate(R.layout.custom_toast, (ViewGroup) view.findViewById(R.id.toast));
-        toast_text = (TextView) layout.findViewById(R.id.tv);
+        inflater = (LayoutInflater) requireContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        layout = inflater.inflate(R.layout.custom_toast, view.findViewById(R.id.toast));
+        toast_text = layout.findViewById(R.id.tv);
         toast = new Toast(requireContext().getApplicationContext());
-        editText1 = (EditText)view.findViewById(R.id.add_name);
-        editText10=(EditText)view.findViewById(R.id.add_phone);
+        editText1 = view.findViewById(R.id.add_name);
+        editText10 = view.findViewById(R.id.add_phone);
         editText10.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
-        btn1=(TextView)view.findViewById(R.id.text_add);
-        db=new DBEmergency(requireContext());
+        btn1 = view.findViewById(R.id.text_add);
+        db = new DBEmergency(requireContext());
         Typeface custom_font = Typeface.createFromAsset(requireContext().getAssets(), "AvenirNextLTPro-UltLtCn.otf");
         btn1.setTypeface(custom_font, Typeface.BOLD);
-        //Toast variables initialisation
         toast_text.setTypeface(toast_font);
         toast.setGravity(Gravity.BOTTOM, 0, 100);
         toast.setDuration(Toast.LENGTH_SHORT);
         toast.setView(layout);
 
         btn1.setOnClickListener(new View.OnClickListener() {
-            @SuppressLint("NotifyDataSetChanged")
+            @SuppressLint({"NotifyDataSetChanged", "SetTextI18n"})
             @Override
             public void onClick(View v) {
-                if(editText1.getText().toString().length()==0)
-                {
+                if (editText1.getText().toString().isEmpty()) {
                     toast_text.setText("Enter Name");
                     toast.show();
-                }
-                else if(editText10.toString().length()==0)
-                {
+                } else if (editText10.toString().isEmpty()) {
                     toast_text.setText("Enter phone number");
                     toast.show();
-                }
-                else {
+                } else {
                     swipeRefreshLayout.setRefreshing(true);
-
-                    //swipeRefreshLayout.setRefreshing(true);
-                    String text = db.addContact(new EmerContact(editText1.getText().toString(),editText10.getText().toString(),email));
+                    String text = db.addContact(new EmerContact(editText1.getText().toString(), editText10.getText().toString(), email));
                     toast_text.setText(text);
                     toast.show();
-                      dismiss();
+                    dismiss();
                     dismissNow();
-                    final Handler h=new Handler(Looper.getMainLooper());
-                    h.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            AddContactFragment.Isrefresh();
-
-                        }
-                    },3000);
-
-
-                    //                    Intent intent = new Intent(requireContext(), AddContactFragment.class);
-//                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                    startActivity(intent);
+                    final Handler h = new Handler(Looper.getMainLooper());
+                    h.postDelayed(AddContactFragment::IsRefresh, 3000);
                 }
             }
         });
         return view;
     }
-
-
 
 }

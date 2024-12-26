@@ -2,6 +2,7 @@
 Accident Detection System
 
 
+
 The Android accident detection app consists of three modules - user module, ambulance module, and hospital authority module. The user module allows users to register, login, add emergency contacts, and start or stop accident detection. The ambulance and hospital authority modules receive notifications of accidents and can view the accident location and provide appropriate assistance.
 User Module:  The User module is the main module of the Android accident detection project. This module allows users to register and log in to the app. Once logged in, users can add at least one emergency contact and initiate the accident detection process. The User module also sends notifications to emergency contacts and hospital authorities in the event of an accident.
 

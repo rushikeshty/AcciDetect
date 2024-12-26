@@ -21,13 +21,12 @@
             android:layout_alignParentEnd="true"
             android:layout_marginTop="0dp"
             android:layout_marginEnd="0dp"
-            android:layout_marginBottom="35dp"
             android:background="@drawable/blue_fill__rounded_color"
             android:backgroundTint="@color/black"
             android:gravity="center"
             android:text="Registration For Hospital Authority"
             android:textAlignment="center"
-            android:textColor="#bfdfdf"
+            android:textColor="#FFFFFF"
             android:textSize="20dp" />
 
         <View
@@ -56,23 +55,6 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="50dp" />
 
-        <ImageView
-            android:id="@+id/imageView3"
-            android:layout_width="55dp"
-            android:layout_height="55dp"
-            android:layout_alignBottom="@+id/textViewTitle"
-            android:layout_marginBottom="-279dp"
-            android:background="@color/background"
-            android:src="@drawable/password" />
-
-        <ImageView
-            android:id="@+id/imageView4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/view2"
-            android:layout_marginTop="58dp"
-            android:background="@color/white"
-            android:src="@drawable/lock_32px" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
@@ -105,7 +87,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/textInputLayout"
             android:layout_alignParentEnd="true"
-            android:layout_marginTop="204dp"
+            android:layout_marginTop="234dp"
             android:layout_marginEnd="-1dp"
             android:layout_marginBottom="-131dp"
             android:text="latitude longitude " />
@@ -116,7 +98,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/view3"
             android:layout_alignParentEnd="true"
-            android:layout_marginTop="309dp"
+            android:layout_marginTop="319dp"
             android:layout_marginEnd="0dp"
             android:background="@drawable/button_back"
             android:fontFamily="@font/poppins_regular"
@@ -126,49 +108,116 @@
             android:textColor="@color/white"
             android:textSize="20dp"
             android:textStyle="bold" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/textViewTitle"
+            android:orientation="vertical">
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="62dp"
+                android:layout_marginTop="50dp"
+                android:layout_marginRight="62dp"
+                android:background="@drawable/blue_border_rounded_cornwe">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/editTextPassword"
-            android:layout_width="254dp"
-            android:layout_height="61dp"
-            android:layout_below="@+id/editTextEmail"
-            android:layout_marginStart="90dp"
-            android:layout_marginTop="54dp"
-            android:layout_marginEnd="51dp"
-            android:background="@color/background"
-            android:gravity="center"
-            android:hint="Password"
-            android:inputType="textPassword"
-            android:textColor="#898A83"
-            android:textColorHint="#898A83" />
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/editTextEmail"
-            android:layout_width="260dp"
-            android:layout_height="60dp"
-            android:layout_marginStart="39dp"
-            android:layout_marginTop="168dp"
-            android:layout_toEndOf="@+id/imageView4"
-            android:background="@color/background"
-            android:gravity="center"
-            android:hint="Username"
-            android:importantForAutofill="no"
-            android:inputType="textAutoComplete"
-            android:textColor="#0A0A0A"
-            android:textColorHint="#898A83" />
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="35dp"
+                    android:textColorHint="#ACA5A5">
+
+                    <EditText
+                        android:id="@+id/editTextEmail"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@+id/icon"
+                        android:background="@android:color/transparent"
+                        android:fontFamily="@font/poppins_regular"
+                        android:hint="Username"
+                        android:inputType="textEmailAddress"
+                        android:maxLength="10"
+                        android:maxLines="1"
+                        android:paddingLeft="17dp"
+                        android:paddingTop="1dp"
+                        android:paddingBottom="15dp"
+                        android:textColorHint="@color/black"
+                        android:textCursorDrawable="@drawable/cursor_color"
+                        android:textSize="15sp" />
+                </com.google.android.material.textfield.TextInputLayout>
+                <!-- ICON -->
+                <ImageView
+                    android:id="@+id/username_icon"
+                    android:layout_width="21dp"
+                    android:layout_height="16dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="17dp"
+                    android:layout_marginTop="17dp"
+                    android:src="@drawable/password" />
+
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="62dp"
+                android:layout_marginTop="50dp"
+                android:layout_marginRight="62dp"
+                android:background="@drawable/blue_border_rounded_cornwe">
+
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="35dp"
+                    android:textColorHint="#ACA5A5"
+                    app:passwordToggleEnabled="true">
+
+                    <EditText
+                        android:id="@+id/editTextPassword"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@+id/icon"
+                        android:background="@android:color/transparent"
+                        android:fontFamily="@font/poppins_regular"
+                        android:hint="Password"
+                        android:inputType="textPassword"
+                        android:maxLength="10"
+                        android:maxLines="1"
+                        android:paddingLeft="17dp"
+                        android:paddingTop="1dp"
+                        android:paddingBottom="15dp"
+                        android:textColorHint="@color/black"
+                        android:textCursorDrawable="@drawable/cursor_color"
+                        android:textSize="15sp" />
+                </com.google.android.material.textfield.TextInputLayout>
+                <!-- ICON -->
+                <ImageView
+                    android:id="@+id/icon"
+                    android:layout_width="21dp"
+                    android:layout_height="16dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="17dp"
+                    android:layout_marginTop="17dp"
+                    android:src="@drawable/password" />
+
+            </RelativeLayout>
+
+
+        </LinearLayout>
+
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/hospital"
             android:layout_width="match_parent"
             android:layout_height="41dp"
             android:layout_alignTop="@+id/btnRegister"
-            android:layout_marginTop="-57dp"
+            android:layout_marginTop="-76dp"
             android:layout_marginEnd="4dp"
             android:layout_marginBottom="225dp"
             android:background="@color/background"
             android:drawableLeft="@drawable/ic_baseline_edit_location_24"
             android:hint="Hospital address:- "
-            android:importantForAutofill="no"
             android:textColor="#171212"
             android:textColorHint="#898A83" />
 

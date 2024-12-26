@@ -16,24 +16,6 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
-    flavorDimensions "default"
-    productFlavors {
-        "hospital"{
-            applicationId "com.example.software2.dapp"
-            resValue "string", "app_name", "Hospital Accidetect"
-            buildConfigField("String", "APP_BRAND", "\"hospital\"")
-        }
-        "ambulance"{
-            applicationId "com.example.software2.dapp"
-            resValue "string", "app_name", "Ambulance Accidetect"
-            buildConfigField("String", "APP_BRAND", "\"ambulance\"")
-        }
-        "user"{
-            applicationId "com.example.software2.dapp"
-            resValue "string", "app_name", "User Accidetect"
-            buildConfigField("String", "APP_BRAND", "\"user\"")
-        }
-    }
 
     buildTypes {
         release {
@@ -51,6 +33,11 @@ android {
     }
     kotlinOptions {
         jvmTarget = '1.8'
+    }
+    android {
+        packagingOptions {
+            resources.excludes.add("META-INF/*")
+        }
     }
 }
 
@@ -76,6 +63,15 @@ dependencies {
     implementation 'com.daimajia.androidanimations:library:2.4@aar'
     implementation 'com.google.android.gms:play-services-location:21.0.1'
     implementation 'androidx.core:core-ktx:1.13.1'
+    implementation 'com.squareup.retrofit2:retrofit:2.3.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
+    implementation 'com.google.auth:google-auth-library-oauth2-http:1.3.0'
+    implementation 'com.google.firebase:firebase-messaging:24.1.0'
+    implementation 'androidx.activity:activity-ktx:1.9.3'
+    implementation 'com.google.android.gms:play-services-vision-common:19.1.3'
+    implementation 'com.google.android.gms:play-services-vision:20.1.3'
+    implementation 'com.google.android.gms:play-services-nearby:19.3.0'
+    implementation 'androidx.activity:activity:1.9.3'
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.4'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.0'

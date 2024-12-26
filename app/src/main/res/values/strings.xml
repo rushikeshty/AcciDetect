@@ -1,10 +1,11 @@
 <resources>
-<!--    <string name="app_name">Android Accident System</string>-->
+ <string name="app_name">Android AcciDetect</string>
 
     <string name="hello_world">Hello world!</string>
     <string name="action_profile">My profile</string>
     <string name="action_logout">Log out</string>
     <string name="drawer_open">Open navigation drawer</string>
+    <string name="api_key">AIzaSyDplDZF-U-Aj_XmVO6lmcwwzCSiyLZsT3Q</string>
     <string name="drawer_close">Close navigation drawer</string>
     <string name="title_activity_dashboard_ambulance">DashboardAmbulance</string>
     <string name="prompt_email">Email</string>
@@ -27,5 +28,7 @@
     <string name="menu_gallery">Emergency Contacts</string>
     <string name="menu_slideshow">My Account</string>
     <string name="menu_logout">Log Out</string>
+ <string name="msg_token_fmt">hello123</string>
+
 
 </resources>

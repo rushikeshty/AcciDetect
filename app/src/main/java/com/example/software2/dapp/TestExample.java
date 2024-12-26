@@ -1,23 +1,21 @@
 package com.example.software2.dapp;
 
-import android.app.Activity;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.media.AudioManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class TestExample extends AppCompatActivity {
-    /**
-     * Called when the activity is first created.
-     */
+import java.util.Objects;
 
-    private SeekBar volumeSeekbar = null;
+public class TestExample extends AppCompatActivity {
     private AudioManager audioManager = null;
-    TextView textprogress;
+    TextView textProgress;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -25,12 +23,16 @@ public class TestExample extends AppCompatActivity {
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
         setContentView(R.layout.activity_test_example);
         initControls();
-        textprogress = findViewById(R.id.textprogress);
+        textProgress = findViewById(R.id.textprogress);
     }
 
+    @SuppressLint("SetTextI18n")
     private void initControls() {
         try {
-            volumeSeekbar = (SeekBar) findViewById(R.id.seekBar1);
+            /**
+             * Called when the activity is first created.
+             */
+            SeekBar volumeSeekbar = findViewById(R.id.seekBar1);
             audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
             volumeSeekbar.setMax(audioManager
                     .getStreamMaxVolume(AudioManager.STREAM_MUSIC));
@@ -41,7 +43,7 @@ public class TestExample extends AppCompatActivity {
             volumeSeekbar.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
                 @Override
                 public void onStopTrackingTouch(SeekBar arg0) {
-                    textprogress.setText("progress set "+ arg0.getProgress());
+                    textProgress.setText("progress set " + arg0.getProgress());
                 }
 
                 @Override
@@ -55,7 +57,7 @@ public class TestExample extends AppCompatActivity {
                 }
             });
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.d("Handle Exception:", Objects.requireNonNull(e.getMessage()));
         }
     }
 }

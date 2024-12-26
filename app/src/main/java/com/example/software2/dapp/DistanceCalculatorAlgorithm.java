@@ -1,7 +1,6 @@
 package com.example.software2.dapp;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class DistanceCalculatorAlgorithm {
@@ -15,14 +14,13 @@ public class DistanceCalculatorAlgorithm {
                 + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2))
                 * Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        double distance = EARTH_RADIUS * c;
-        return distance;
+        return EARTH_RADIUS * c;
     }
 
     public static List<Coordinate> calculateMinimumDistance(List<Coordinate> set1, List<Coordinate> set2) {
         double minDistance = Double.POSITIVE_INFINITY;
         List<Coordinate> fastestRoute;
-        Coordinate finall=null;
+        Coordinate finall = null;
 
         for (Coordinate c2 : set1) {
             for (Coordinate c1 : set2) {
@@ -30,14 +28,13 @@ public class DistanceCalculatorAlgorithm {
                 if (distance < minDistance) {
                     minDistance = distance;
                     finall = c1;
-                 }
+                }
             }
         }
         fastestRoute = new ArrayList<>();
         fastestRoute.add(finall);
         return fastestRoute;
     }
-
 
 }
 

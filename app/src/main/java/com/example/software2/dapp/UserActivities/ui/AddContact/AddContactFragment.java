@@ -31,129 +31,103 @@ import com.google.firebase.auth.FirebaseUser;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AddContactFragment extends Fragment  {
-      private AddContactBinding binding;
+public class AddContactFragment extends Fragment {
+    private AddContactBinding binding;
 
-    private FirebaseAuth firebaseAuth;
-   public static SwipeRefreshLayout swipeRefreshLayout;
+    @SuppressLint("StaticFieldLeak")
+    public static SwipeRefreshLayout swipeRefreshLayout;
 
-     static String email="";
-     private Typeface custom_font;
+    static String email = "";
     Toast toast;
     TextView toast_text;
     Typeface toast_font;
-    LayoutInflater inflater;
     View layout2;
     Button btn_add;
-   public static RecyclerView dataList;
-  public static  List<EmerContact> contact;
-   public static ArrayList<EmerContact> add=new ArrayList<EmerContact>();
-   @SuppressLint("StaticFieldLeak")
-   public static DBEmergency db;
+    public static RecyclerView dataList;
+    public static List<EmerContact> contact;
+    public static ArrayList<EmerContact> add = new ArrayList<>();
+    @SuppressLint("StaticFieldLeak")
+    public static DBEmergency db;
     @SuppressLint("StaticFieldLeak")
     public static ContactListAdapter adapter;
 
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
-
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         binding = AddContactBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
         swipeRefreshLayout = root.findViewById(R.id.swiperefresh);
 
-        custom_font = Typeface.createFromAsset(requireContext().getAssets(), "AvenirNextLTPro-MediumCn.otf");
+        Typeface.createFromAsset(requireContext().getAssets(), "AvenirNextLTPro-MediumCn.otf");
 
-        firebaseAuth = FirebaseAuth.getInstance();
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
 
         final FirebaseUser user = firebaseAuth.getCurrentUser();
-        email=user.getEmail();
-         toast_font = Typeface.createFromAsset(requireContext().getAssets(), "AvenirNextLTPro-Cn.otf");
+        if (user != null) {
+            email = user.getEmail();
+        }
+        toast_font = Typeface.createFromAsset(requireContext().getAssets(), "AvenirNextLTPro-Cn.otf");
         inflater = (LayoutInflater) requireContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        layout2 = inflater.inflate(R.layout.custom_toast, (ViewGroup)root.findViewById(R.id.toast));
-        toast_text = (TextView) layout2.findViewById(R.id.tv);
+        layout2 = inflater.inflate(R.layout.custom_toast, root.findViewById(R.id.toast));
+        toast_text = layout2.findViewById(R.id.tv);
         toast = new Toast(requireContext().getApplicationContext());
-        btn_add=(Button)root.findViewById(R.id.btn_add);
-        dataList = (RecyclerView) root.findViewById(R.id.listView);
-        db=new DBEmergency(requireContext());
+        btn_add = root.findViewById(R.id.btn_add);
+        dataList = root.findViewById(R.id.listView);
+        db = new DBEmergency(requireContext());
 
-        //recycler View implementation
         dataList.setLayoutManager(new LinearLayoutManager(requireContext()));
         dataList.setItemAnimator(new DefaultItemAnimator());
 
-        //Toast variables initialisation
         toast_text.setTypeface(toast_font);
         toast.setGravity(Gravity.BOTTOM, 0, 100);
         toast.setDuration(Toast.LENGTH_SHORT);
         toast.setView(layout2);
 
-         custom_font = Typeface.createFromAsset(requireContext().getAssets(), "AvenirNextLTPro-MediumCn.otf");
-         contact = db.getContact(email);
-        for (EmerContact cn : contact) {
-            add.add(cn);
-        }
+        Typeface.createFromAsset(requireContext().getAssets(), "AvenirNextLTPro-MediumCn.otf");
+        contact = db.getContact(email);
+        add.addAll(contact);
 
-        adapter = new ContactListAdapter(add, R.layout.emercontact_list_item,requireContext(),email);
+        adapter = new ContactListAdapter(add, R.layout.emercontact_list_item, requireContext(), email);
         dataList.setAdapter(adapter);
 
 
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                contact.clear();
-                contact = db.getContact(email);
-                add.clear();
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            contact.clear();
+            contact = db.getContact(email);
+            add.clear();
 
-                for (EmerContact cn : contact) {
-                    add.add(cn);
-                }
+            add.addAll(contact);
 
-                adapter = new ContactListAdapter(add, R.layout.emercontact_list_item,requireContext(),email);
-                dataList.setAdapter(adapter);
-                swipeRefreshLayout.setRefreshing(false);
+            adapter = new ContactListAdapter(add, R.layout.emercontact_list_item, requireContext(), email);
+            dataList.setAdapter(adapter);
+            swipeRefreshLayout.setRefreshing(false);
 
-            }
         });
 
         btn_add.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onClick(View v) {
-
-//                Intent intent=new Intent(requireContext(), Add_EmergencyActivity.class);
-//                startActivity(intent);
                 Add_EmergencyActivity contact = new Add_EmergencyActivity();
-
                 contact.show(requireActivity().getSupportFragmentManager(), "add contact");
-
-
-
             }
         });
-
-
-
-
-        final TextView textView = binding.textGallery;
-         return root;
+        return root;
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-         add.clear();
+        add.clear();
         binding = null;
     }
-    public static void Isrefresh(){
-        if(swipeRefreshLayout.isRefreshing()){
+
+    public static void IsRefresh() {
+        if (swipeRefreshLayout.isRefreshing()) {
             contact.clear();
             contact = db.getContact(email);
             add.clear();
-
-            for (EmerContact cn : contact) {
-                add.add(cn);
-            }
-
+            add.addAll(contact);
             adapter = new ContactListAdapter(add, R.layout.emercontact_list_item, swipeRefreshLayout.getContext(), email);
             dataList.setAdapter(adapter);
             swipeRefreshLayout.setRefreshing(false);

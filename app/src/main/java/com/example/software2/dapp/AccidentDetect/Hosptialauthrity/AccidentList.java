@@ -13,11 +13,13 @@ import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import com.example.software2.dapp.AccidentDetect.Utils.NotificationUtils;
 import com.example.software2.dapp.AccidentDetect.viewmodel.AccidentListStatusViewmodel;
 import com.example.software2.dapp.BaseActivity;
@@ -33,6 +35,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -121,19 +124,19 @@ public class AccidentList extends BaseActivity {
         GetAccident();
     }
 
+    @SuppressWarnings("unchecked")
     public void FetchData(String userid) {
         try {
             showDialog();
             databaseReference.child("user").addChildEventListener(new ChildEventListener() {
                 @Override
                 public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                    Log.d("DataSnapshot", snapshot.getKey().toString());
                 }
 
                 @Override
                 public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                     ArrayList<String> values = new ArrayList<>();
-                    databaseReference.child("user").child(snapshot.getKey()).addListenerForSingleValueEvent(new ValueEventListener() {
+                    databaseReference.child("user").child(Objects.requireNonNull(snapshot.getKey())).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             dismissDialog();
@@ -149,17 +152,17 @@ public class AccidentList extends BaseActivity {
                                 }
                             }
                             if (!values.isEmpty() && values.size() > 9) {
-                                Map<String, String> dtname = new HashMap<>();
-                                dtname.put("Location", values.get(5).replaceAll("\n", ""));
-                                dtname.put("status", values.get(9));
+                                Map<String, String> accidentDetails = new HashMap<>();
+                                accidentDetails.put("Location", values.get(5).replaceAll("\n", ""));
+                                accidentDetails.put("status", values.get(9));
                                 String finalDateTime = values.get(0);
                                 if (count == 0) {
-                                    dtname.put("date", values.get(0));
+                                    accidentDetails.put("date", values.get(0));
                                     count++;
                                 } else {
-                                    dtname.put("date", finalDateTime);
+                                    accidentDetails.put("date", finalDateTime);
                                 }
-                                updateListItem(position, dtname);
+                                updateListItem(position, accidentDetails);
                             }
                         }
 
@@ -177,7 +180,7 @@ public class AccidentList extends BaseActivity {
 
                 @Override
                 public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                    Log.d("DataSnapshot", snapshot.getKey().toString());
+                    Log.d("DataSnapshot", Objects.requireNonNull(snapshot.getKey()));
                 }
 
                 @Override
@@ -191,22 +194,22 @@ public class AccidentList extends BaseActivity {
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     ArrayList<String> values = new ArrayList<>();
                     for (DataSnapshot child : snapshot.child("AccidentInfo").getChildren()) {
-                        values.add(child.getValue().toString());
+                        values.add(Objects.requireNonNull(child.getValue()).toString());
                     }
                     if (!values.isEmpty() && values.size() > 9) {
-                        Map<String, String> dtname = new HashMap<>();
-                        dtname.put("Location", values.get(5).replaceAll("\n", ""));
-                        dtname.put("status", values.get(9));
+                        Map<String, String> accidentData = new HashMap<>();
+                        accidentData.put("Location", values.get(5).replaceAll("\n", ""));
+                        accidentData.put("status", values.get(9));
                         String finalDateTime = values.get(0);
                         if (count == 0) {
-                            dtname.put("date", values.get(0));
+                            accidentData.put("date", values.get(0));
                             count++;
                         } else {
-                            dtname.put("date", finalDateTime);
+                            accidentData.put("date", finalDateTime);
                         }
 
-                        dtname.put("userid", snapshot.getKey());
-                        data.add(dtname);
+                        accidentData.put("userid", snapshot.getKey());
+                        data.add(accidentData);
                         final ListView lst = findViewById(R.id.listView);
                         MyDataList = new ArrayList<>(data);
                         String[] from = {"Location", "status", "date", "userid"};
@@ -220,19 +223,20 @@ public class AccidentList extends BaseActivity {
                             Toast.makeText(AccidentList.this, "There are no donors for the selected blood group", Toast.LENGTH_LONG).show();
                         }
                         lst.setOnItemClickListener((adapterView, view, i, l) -> {
+                            HashMap<String, String> obj = (HashMap<String, String>) adapter.getItem(i);
+                            String userid1 = obj.get("userid");
                             if (userEmail.contains("ambulance")) {
-                                HashMap<String, String> obj = (HashMap<String, String>) adapter.getItem(i);
-                                String userid1 = obj.get("userid");
                                 assert userid1 != null;
                                 databaseReference.child("user").child(userid1).child("AccidentInfo").addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(@NonNull DataSnapshot snapshot1) {
-                                        assignedHospital = snapshot1.child("hospitalassigned").getValue().toString();
+                                        assignedHospital = Objects.requireNonNull(snapshot1.child("hospitalassigned").getValue()).toString();
                                         Intent ambulance = new Intent(AccidentList.this, Accidents.class);
                                         ambulance.putExtra("assignedhospital", assignedHospital);
                                         ambulance.putExtra("userid", userid1);
                                         startActivity(ambulance);
                                     }
+
                                     @Override
                                     public void onCancelled(@NonNull DatabaseError error) {
 
@@ -240,44 +244,42 @@ public class AccidentList extends BaseActivity {
                                 });
 
                             } else {
-                                HashMap<String, String> obj = (HashMap<String, String>) adapter.getItem(i);
-                                String userid1 = obj.get("userid");
-                                assert userid1 != null;
 
-                                databaseReference.child("user").child(userid1).child("AccidentInfo").addListenerForSingleValueEvent(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(@NonNull DataSnapshot snapshot1) {
-                                        ArrayList<String> values1 = new ArrayList<>(4);
-                                        for (DataSnapshot child : snapshot1.getChildren()) {
-                                            values1.add(child.getValue().toString());
+                                if (userid1 != null) {
+                                    databaseReference.child("user").child(userid1).child("AccidentInfo").addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot snapshot1) {
+                                            ArrayList<String> values1 = new ArrayList<>(4);
+                                            for (DataSnapshot child : snapshot1.getChildren()) {
+                                                values1.add(Objects.requireNonNull(child.getValue()).toString());
+                                            }
+
+                                            Intent i = getIntent(values1);
+                                            startActivity(i);
+                                            Toast.makeText(getApplicationContext(), values1.toString(), Toast.LENGTH_SHORT).show();
                                         }
 
-                                        Intent i = getIntent(values1);
-                                        startActivity(i);
-                                        Toast.makeText(getApplicationContext(), values1.toString(), Toast.LENGTH_SHORT).show();
+                                        @NonNull
+                                        private Intent getIntent(ArrayList<String> values1) {
+                                            Intent i = new Intent(AccidentList.this, ViewAccident.class);
+                                            i.putExtra("speed", values1.get(8));
+                                            i.putExtra("sensor", values1.get(7));
+                                            i.putExtra("location", values1.get(5));
+                                            i.putExtra("hospital", values1.get(3));
+                                            i.putExtra("status", values1.get(9));
+                                            i.putExtra("datetime", values1.get(0));
+                                            i.putExtra("emergencycontact", values1.get(2));
+                                            i.putExtra("userid", userid1);
+                                            i.putExtra("decibel", values1.get(1));
+                                            return i;
+                                        }
 
-                                    }
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError error) {
 
-                                    @NonNull
-                                    private Intent getIntent(ArrayList<String> values1) {
-                                        Intent i = new Intent(AccidentList.this, ViewAccident.class);
-                                        i.putExtra("speed", values1.get(8));
-                                        i.putExtra("sensor", values1.get(7));
-                                        i.putExtra("location", values1.get(5));
-                                        i.putExtra("hospital", values1.get(3));
-                                        i.putExtra("status", values1.get(9));
-                                        i.putExtra("datetime", values1.get(0));
-                                        i.putExtra("emergencycontact", values1.get(2));
-                                        i.putExtra("userid", userid1);
-                                        i.putExtra("decibel", values1.get(1));
-                                        return i;
-                                    }
-
-                                    @Override
-                                    public void onCancelled(@NonNull DatabaseError error) {
-
-                                    }
-                                });
+                                        }
+                                    });
+                                }
 
                             }
                         });
@@ -296,9 +298,10 @@ public class AccidentList extends BaseActivity {
 
         }
     }
-    public void updateListItem(int position, Map<String, String> dtname) {
+
+    public void updateListItem(int position, Map<String, String> accidentDetails) {
         if (position >= 0 && position <= MyDataList.size()) {
-            MyDataList.set(position,dtname);
+            MyDataList.set(position, accidentDetails);
             String[] from = {"Location", "status", "date", "userid"};
             int[] to = {R.id.location, R.id.status, R.id.timedate, R.id.userid};
             adapter = new SimpleAdapter(getApplicationContext(), MyDataList, R.layout.single_accident_file, from, to);
@@ -316,16 +319,15 @@ public class AccidentList extends BaseActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot snapshot1 : snapshot.getChildren()) {
-                    userid = snapshot1.child("userid").getValue().toString();
-                    detected = snapshot1.child("Detected").getValue().toString();
+                    userid = Objects.requireNonNull(snapshot1.child("userid").getValue()).toString();
+                    detected = Objects.requireNonNull(snapshot1.child("Detected").getValue()).toString();
                     if (detected.contains("true") && !userid.contains("com.google.firebase.auth.")) {
-                        Log.d("USERSDATA ", usersIds.toString());
                         usersIds.add(userid + detected);
                     }
                 }
                 if (usersIds.isEmpty()) {
                     setContentView(R.layout.noaccidents);
-                    if(alreadyInit){
+                    if (alreadyInit) {
                         initSwipeRefreshLayout();
                         alreadyInit = true;
                     }
@@ -375,7 +377,7 @@ public class AccidentList extends BaseActivity {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         for (DataSnapshot snapshot1 : snapshot.getChildren()) {
-                            if (snapshot1.child("Detected").getValue().toString().contains("true") && userEmail.contains("ambulance")) {
+                            if (Objects.requireNonNull(snapshot1.child("Detected").getValue()).toString().contains("true") && userEmail.contains("ambulance")) {
                                 if (finalCount < 1) {
                                     notificationUtils.sendOnChannel2("sendtoambulance");
                                     finalCount++;

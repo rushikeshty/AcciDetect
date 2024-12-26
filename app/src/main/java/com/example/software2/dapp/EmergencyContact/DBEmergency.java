@@ -1,5 +1,6 @@
 package com.example.software2.dapp.EmergencyContact;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -11,9 +12,7 @@ import java.util.List;
 
 
 public class DBEmergency extends SQLiteOpenHelper {
-    private Context context;
-    int flag = 0;
-    String contindex="";
+    String contactIndex ="";
     private static final int DATABASE_VERSION = 1;
 
     // Database Name
@@ -24,20 +23,15 @@ public class DBEmergency extends SQLiteOpenHelper {
 
     // Customer Table Columns names
     private static final String CUSTOMER_EMAIL = "email";
-    private static final String E_NAME1 = "name1";
     private static final String E_CONTACT1="cont1";
-    private static final String E_NAME2 = "name2";
     private static final String E_CONTACT2="cont2";
-    private static final String E_NAME3 = "name3";
     private static final String E_CONTACT3="cont3";
 
 
     public DBEmergency(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        this.context = context;
     }
 
-    //Creating of databases
     @Override
     public void onCreate(SQLiteDatabase db) {
         String CREATE_CUSTOMER_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_CONTACTS + "("
@@ -53,21 +47,17 @@ public class DBEmergency extends SQLiteOpenHelper {
         db.execSQL(CREATE_CUSTOMER_TABLE);
     }
 
-    //Function of Database
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_CONTACTS);
-
-
-        // Create tables again
         onCreate(db);
     }
     public String addContact(EmerContact contact) {
-        String toast="";
+        String toast;
         SQLiteDatabase db = this.getWritableDatabase();
-        contindex = exist(db, contact);
+        contactIndex = exist(db, contact);
 
-        if (contindex.equals("First")) {
+        if (contactIndex.equals("First")) {
             String s="Name="+contact.getName()+" Phone="+contact.getPhone();
             ContentValues values = new ContentValues();
             values.put(CUSTOMER_EMAIL,contact.getEmail());
@@ -77,15 +67,14 @@ public class DBEmergency extends SQLiteOpenHelper {
             db.close();
             toast="Contact saved";
         }
-        else if(contindex.equals(""))
+        else if(contactIndex.isEmpty())
         {
-            toast="You can save upto 3 emergency contacts only.";
+            toast="You can save up to 3 emergency contacts only.";
         }
         else
         {
             String s="Name="+contact.getName()+" Phone="+contact.getPhone();
-            String query="UPDATE "+TABLE_CONTACTS +" SET "+contindex+"= '"+s+"' WHERE email='" +contact.getEmail()+ "';";
-            // Inserting Row
+            String query="UPDATE "+TABLE_CONTACTS +" SET "+ contactIndex +"= '"+s+"' WHERE email='" +contact.getEmail()+ "';";
             db.execSQL(query);
             db.close();
             toast="Contact saved";
@@ -93,19 +82,20 @@ public class DBEmergency extends SQLiteOpenHelper {
         return toast;
     }
 
+    @SuppressLint("Recycle")
     public List<EmerContact> getContact(String email) {
-        List<EmerContact> contactList = new ArrayList<EmerContact>();
-        List<String> contacts=new ArrayList<String>();
+        List<EmerContact> contactList = new ArrayList<>();
+        List<String> contacts= new ArrayList<>();
         SQLiteDatabase db = getWritableDatabase();
-        String name="", phone="";
+        String name, phone;
         String rowQuery="SELECT * FROM "+TABLE_CONTACTS+" where email='"+email+"';";
         Cursor cursor=db.rawQuery(rowQuery,null);
         if (cursor.moveToFirst())
         {
             for(int i=1;i<=3;i++)
             {
-                String addrquery ="SELECT cont"+i+" FROM "+TABLE_CONTACTS+" where email='"+email+"' AND cont"+i+" IS NOT NULL;";
-                Cursor cursor1=db.rawQuery(addrquery,null);
+                String addQuery ="SELECT cont"+i+" FROM "+TABLE_CONTACTS+" where email='"+email+"' AND cont"+i+" IS NOT NULL;";
+                Cursor cursor1=db.rawQuery(addQuery,null);
                     if(cursor1.moveToFirst())
                     {
                         String s=cursor.getString(i);
@@ -132,33 +122,34 @@ public class DBEmergency extends SQLiteOpenHelper {
 
     }
 
-    public String  exist(SQLiteDatabase db, EmerContact contact) {
-        String emailsearchQuery = "SELECT * FROM " + TABLE_CONTACTS + " where " + CUSTOMER_EMAIL + " = '" + contact.getEmail()+"'";
-        Cursor e = db.rawQuery(emailsearchQuery, null);
+    @SuppressLint("Recycle")
+    public String exist(SQLiteDatabase db, EmerContact contact) {
+        String emailSearchQuery = "SELECT * FROM " + TABLE_CONTACTS + " where " + CUSTOMER_EMAIL + " = '" + contact.getEmail()+"'";
+        Cursor e = db.rawQuery(emailSearchQuery, null);
         if(e.getCount()==0)
         {
-            contindex="First";
+            contactIndex ="First";
         }
         else {
             for (int i = 1; i <= 3; i++) {
-                String emptysearchQuery = "SELECT cont" + i + " FROM " + TABLE_CONTACTS + " where " + CUSTOMER_EMAIL + " = '" + contact.getEmail() + "' AND cont" + i + " IS NULL";
-                Cursor c = db.rawQuery(emptysearchQuery, null);
+                String emptySearchQuery = "SELECT cont" + i + " FROM " + TABLE_CONTACTS + " where " + CUSTOMER_EMAIL + " = '" + contact.getEmail() + "' AND cont" + i + " IS NULL";
+                Cursor c = db.rawQuery(emptySearchQuery, null);
                 if (c.getCount() == 0) {
-                    contindex = "";
+                    contactIndex = "";
 
                 } else {
-                    contindex = "cont" + i;
+                    contactIndex = "cont" + i;
                     break;
                 }
 
             }
         }
-        return contindex;
+        return contactIndex;
     }
 
 
-    public String updatecontact(String conindex,String value,String email) {
-        String update="UPDATE "+TABLE_CONTACTS+" SET "+conindex+"= "+value+" where email='"+email+"';";
+    public String updateContact(String contactIdx, String value, String email) {
+        String update="UPDATE "+TABLE_CONTACTS+" SET "+contactIdx+"= "+value+" where email='"+email+"';";
         SQLiteDatabase db=this.getWritableDatabase();
         db.execSQL(update);
         db.close();
@@ -172,7 +163,7 @@ public class DBEmergency extends SQLiteOpenHelper {
 
     public void DeleteEntry(String email) {
         SQLiteDatabase db=this.getWritableDatabase();
-        String deletequery = "DELETE * FROM " + TABLE_CONTACTS + " where " + E_CONTACT1 + " = '" +email+"'";
-        db.execSQL(deletequery);
+        String deleteQuery = "DELETE * FROM " + TABLE_CONTACTS + " where " + E_CONTACT1 + " = '" +email+"'";
+        db.execSQL(deleteQuery);
     }
 }

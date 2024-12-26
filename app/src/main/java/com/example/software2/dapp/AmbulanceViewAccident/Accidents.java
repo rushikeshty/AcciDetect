@@ -1,17 +1,13 @@
 package com.example.software2.dapp.AmbulanceViewAccident;
 
-import static com.example.software2.dapp.AccidentDetect.Hosptialauthrity.AccidentList.userEmail;
-
 import android.Manifest;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.app.Service;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -38,21 +34,16 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentContainerView;
 
-import com.example.software2.dapp.AccidentDetect.GPSHandler;
-import com.example.software2.dapp.AccidentDetect.Hosptialauthrity.AccidentList;
 import com.example.software2.dapp.AccidentDetect.viewmodel.AccidentListStatusViewmodel;
 import com.example.software2.dapp.BaseActivity;
-import com.example.software2.dapp.Coordinate;
 import com.example.software2.dapp.MyAccount;
 import com.example.software2.dapp.R;
 import com.example.software2.dapp.UserActivities.MainActivity;
@@ -61,6 +52,7 @@ import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.Priority;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -69,31 +61,27 @@ import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
-public class Accidents extends BaseActivity implements GoogleMap.OnCameraIdleListener, OnMapReadyCallback, DirectionFinderListener, AdapterView.OnItemSelectedListener {
+public class Accidents extends BaseActivity implements GoogleMap.OnCameraIdleListener, OnMapReadyCallback, AdapterView.OnItemSelectedListener {
 
     private static final int REQUEST_LOCATION = 1;
-    Button directionbtn, updatebtn, viewuser, hospitalassig;
+    private static final String TAG = Accidents.class.getName();
+    Button directionBtn, updateBtn, viewUser, assignedHospital;
     TextView datetime, address;
     int count = 0;
-    private int mInterval = 6000;
-    // 6 seconds by default, can be changed later
     private Handler mHandler;
     String longitude, latitude;
     static String userid;
-    double ambulancelatitude, ambulancelongitude;
+    double ambulanceLatitude, ambulanceLongitude;
     FragmentContainerView fragmentContainerView;
     private @ColorInt int mPulseEffectColor;
     private int[] mPulseEffectColorElements;
@@ -101,22 +89,18 @@ public class Accidents extends BaseActivity implements GoogleMap.OnCameraIdleLis
     private Circle mPulseCircle;
     ArrayList<String> values = new ArrayList<>();
     GPSTracker tracker;
-    private GPSHandler mGPSHandler;
-    private static String location;
-    private FusedLocationProviderClient fusedLocationClient;//One of the location APIs in google play services
+    private FusedLocationProviderClient fusedLocationClient;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 2;//Request Code is used to check which permission called this function. // This request code is provided when the user is prompt for permission.
     private LocationAddressResultReceiver addressResultReceiver;//receives the address results
     @SuppressLint("StaticFieldLeak")
-    private android.location.Location currentLocation;
+    private Location currentLocation;
     private LocationCallback locationCallback;
     private SupportMapFragment supportMapFragment;
     public Spinner spinner;
     public static Uri gmmIntentUri;
-    static String assignedhospital;
-    TextView locationmymap, textttt;
-    private String ambulanceOrigin;
+    static String assignedHospitalName;
+    TextView locationOnMap;
     String status = "";
-    private List<Coordinate> set2;
     private boolean isSelected = false;
     private AccidentListStatusViewmodel viewmodel;
 
@@ -132,8 +116,7 @@ public class Accidents extends BaseActivity implements GoogleMap.OnCameraIdleLis
             finishAffinity();
             startActivity(new Intent(Accidents.this, MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
         }
-        directionbtn = findViewById(R.id.directionbutton);
-        // Intent intent = this.getIntent();
+        directionBtn = findViewById(R.id.directionbutton);
         onNewIntent(getIntent());
         initUI();
 
@@ -156,37 +139,34 @@ public class Accidents extends BaseActivity implements GoogleMap.OnCameraIdleLis
 
         mHandler = new Handler();
 
-        ActivityCompat.requestPermissions(this,
-                new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
-        mGPSHandler = new GPSHandler(this);
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
 
-        viewuser.setOnClickListener(view -> {
+        viewUser.setOnClickListener(view -> {
             MyAccount myAccount = new MyAccount(Accidents.this, userid);
             myAccount.show();
         });
 
         tracker = new GPSTracker(this);
-        if (!tracker.canGetLocation()) {
+        if (tracker.canGetLocation()) {
             dismissDialog();
             tracker.showSettingsAlert();
         } else {
-            ambulancelatitude = tracker.getLatitude();
-            ambulancelongitude = tracker.getLongitude();
+            ambulanceLatitude = tracker.getLatitude();
+            ambulanceLongitude = tracker.getLongitude();
 
         }
-        getdata();
+        getData();
         startRepeatingTask();
-
-        // Spinner Drop down elements
         updateSpinner();
-        directionbtn.setOnClickListener(v -> {
+
+        directionBtn.setOnClickListener(v -> {
             dismissDialog();
             Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
             mapIntent.setPackage("com.google.android.apps.maps");
             startActivity(mapIntent);
         });
 
-        updatebtn.setOnClickListener(v -> {
+        updateBtn.setOnClickListener(v -> {
             if (status.contains("select")) {
                 Toast.makeText(getApplicationContext(), "Please select the status", Toast.LENGTH_SHORT).show();
 
@@ -196,42 +176,35 @@ public class Accidents extends BaseActivity implements GoogleMap.OnCameraIdleLis
             }
 
         });
-        hospitalassig.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                AlertDialog.Builder builder1 = new AlertDialog.Builder(Accidents.this);
-                builder1.setMessage("Assigned Hospital :- " + assignedhospital);
-                builder1.setPositiveButton("ok", (dialogInterface, i) -> {
-                    dialogInterface.dismiss();
-                });
-                builder1.setCancelable(true);
-                AlertDialog alert11 = builder1.create();
-                alert11.show();
-
-            }
+        assignedHospital.setOnClickListener(view -> {
+            AlertDialog.Builder builder1 = new AlertDialog.Builder(Accidents.this);
+            builder1.setMessage("Assigned Hospital :- " + assignedHospitalName);
+            builder1.setPositiveButton("ok", (dialogInterface, i) -> dialogInterface.dismiss());
+            builder1.setCancelable(true);
+            AlertDialog alert11 = builder1.create();
+            alert11.show();
         });
     }
-    public void initUI(){
-        updatebtn = findViewById(R.id.updatebtn);
+
+    public void initUI() {
+        updateBtn = findViewById(R.id.updatebtn);
         datetime = findViewById(R.id.datetime);
         fragmentContainerView = findViewById(R.id.myMap);
-        textttt = findViewById(R.id.textttt);
         address = findViewById(R.id.address);
-        locationmymap = findViewById(R.id.locationmymap);
-        hospitalassig = findViewById(R.id.hospitalassigned);
+        locationOnMap = findViewById(R.id.locationmymap);
+        assignedHospital = findViewById(R.id.hospitalassigned);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        viewuser = findViewById(R.id.viewuserdetails);
+        viewUser = findViewById(R.id.viewuserdetails);
         spinner = findViewById(R.id.spinner);
         spinner.setOnItemSelectedListener(this);
     }
 
-    public void updateSpinner(){
-        List<String> categories = new ArrayList<>();
-        if(!status.isEmpty()){
+    public void updateSpinner() {
+        ArrayList<String> categories = new ArrayList<>();
+        if (!status.isEmpty()) {
             categories.add(status);
-        }
-        else {
+        } else {
             categories.add("SELECT USER STATUS:-");
         }
         categories.add("AMBULANCE ALLOTTED");
@@ -239,17 +212,25 @@ public class Accidents extends BaseActivity implements GoogleMap.OnCameraIdleLis
         categories.add("USER DROPPED AT HOSPITAL");
         categories.add("USER ADMITTED AT HOSPITAL");
 
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, categories);
+        int idx = categories.lastIndexOf(status);
+        if (idx > -1) {
+            categories.remove(idx);
+        }
+
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, new ArrayList<>(categories));
 
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(dataAdapter);
     }
+
     @Override
-    public void onNewIntent(Intent intent) {
+    public void onNewIntent(@NonNull Intent intent) {
         super.onNewIntent(intent);
         Bundle extras = intent.getExtras();
-        assignedhospital = extras.getString("assignedhospital");
-        userid = extras.getString("userid");
+        if (extras != null) {
+            assignedHospitalName = extras.getString("assignedhospital");
+            userid = extras.getString("userid");
+        }
     }
 
     @Override
@@ -263,29 +244,22 @@ public class Accidents extends BaseActivity implements GoogleMap.OnCameraIdleLis
     }
 
     public void onNothingSelected(AdapterView<?> arg0) {
-        // TODO Auto-generated method stub
+        Log.d(Accidents.TAG, arg0.toString());
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if(item.getItemId() == android.R.id.home){
+        if (item.getItemId() == android.R.id.home) {
             onBackPressed();
         }
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("MissingPermission")
     private void startLocationUpdates() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) !=
-                PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new
-                            String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
-                    LOCATION_PERMISSION_REQUEST_CODE);
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
         } else {
-            LocationRequest locationRequest = new LocationRequest();
-            locationRequest.setInterval(10000);
-            locationRequest.setFastestInterval(10000);
-            locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+            LocationRequest locationRequest = new LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 10000).setMinUpdateIntervalMillis(10000).build();
             fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null);
         }
     }
@@ -293,8 +267,7 @@ public class Accidents extends BaseActivity implements GoogleMap.OnCameraIdleLis
     @SuppressWarnings("MissingPermission")
     private void getAddress() {
         if (!Geocoder.isPresent()) {
-            Toast.makeText(Accidents.this, "Can't find current address, ",
-                    Toast.LENGTH_SHORT).show();
+            Toast.makeText(Accidents.this, "Can't find current address, ", Toast.LENGTH_SHORT).show();
             return;
         }
         Intent intent = new Intent(this, GetAllData.class);
@@ -315,14 +288,15 @@ public class Accidents extends BaseActivity implements GoogleMap.OnCameraIdleLis
         }
     }
 
-    private void getdata() {
-        //final FirebaseUser user = firebaseAuth.getCurrentUser();
+    private void getData() {
         viewmodel.getDatabaseReference().child("user").child(userid).child("AccidentInfo").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 dismissDialog();
                 for (DataSnapshot child : snapshot.getChildren()) {
-                    values.add(child.getValue().toString());
+                    if (child.getValue() != null) {
+                        values.add(child.getValue().toString());
+                    }
                 }
                 if (count == 0) {
                     //here we update time and date only one time
@@ -330,12 +304,12 @@ public class Accidents extends BaseActivity implements GoogleMap.OnCameraIdleLis
                     count++;
                 }
                 address.setText(values.get(5).replaceAll("\n", ""));
-                locationmymap.setText(values.get(5).replaceAll("\n", ""));
+                locationOnMap.setText(values.get(5).replaceAll("\n", ""));
                 latitude = values.get(4);
                 longitude = values.get(6);
                 status = values.get(9);
 
-                if(!status.isEmpty() && !isSelected){
+                if (!status.isEmpty() && !isSelected) {
                     updateSpinner();
                 }
                 //Toast.makeText(getApplicationContext(), values.toString(), Toast.LENGTH_SHORT).show();
@@ -343,14 +317,12 @@ public class Accidents extends BaseActivity implements GoogleMap.OnCameraIdleLis
                 if (supportMapFragment != null) {
                     supportMapFragment.getMapAsync(Accidents.this);
                 }
-                ambulancelatitude = tracker.getLatitude();
-                ambulancelongitude = tracker.getLongitude();
+                ambulanceLatitude = tracker.getLatitude();
+                ambulanceLongitude = tracker.getLongitude();
 
                 sendCallMap();
                 values.clear();
                 dismissDialog();
-                //    HosiptalAssigned();
-
             }
 
 
@@ -365,11 +337,7 @@ public class Accidents extends BaseActivity implements GoogleMap.OnCameraIdleLis
 
     private void initPulseEffect() {
         mPulseEffectColor = ContextCompat.getColor(getApplicationContext(), android.R.color.holo_red_dark);
-        mPulseEffectColorElements = new int[]{
-                Color.red(mPulseEffectColor),
-                Color.green(mPulseEffectColor),
-                Color.blue(mPulseEffectColor)
-        };
+        mPulseEffectColorElements = new int[]{Color.red(mPulseEffectColor), Color.green(mPulseEffectColor), Color.blue(mPulseEffectColor)};
 
         mPulseEffectAnimator = ValueAnimator.ofFloat(0, calculatePulseRadius());
         mPulseEffectAnimator.setStartDelay(3000);
@@ -392,8 +360,7 @@ public class Accidents extends BaseActivity implements GoogleMap.OnCameraIdleLis
         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 12));
         initPulseEffect();
         //   googleMap.addMarker(markerOptions);
-        if (mPulseCircle != null)
-            mPulseCircle.remove();
+        if (mPulseCircle != null) mPulseCircle.remove();
 
         if (mPulseEffectAnimator != null) {
             mPulseEffectAnimator.removeAllUpdateListeners();
@@ -401,22 +368,14 @@ public class Accidents extends BaseActivity implements GoogleMap.OnCameraIdleLis
             mPulseEffectAnimator.end();
         }
 
-        mPulseCircle = googleMap.addCircle(new CircleOptions()
-                .center(latLng)
-                .radius(0).strokeWidth(0)
-                .fillColor(mPulseEffectColor));
-        mPulseEffectAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                if (mPulseCircle == null)
-                    return;
+        mPulseCircle = googleMap.addCircle(new CircleOptions().center(latLng).radius(0).strokeWidth(0).fillColor(mPulseEffectColor));
+        mPulseEffectAnimator.addUpdateListener(valueAnimator -> {
+            if (mPulseCircle == null) return;
 
-                int alpha = (int) ((1 - valueAnimator.getAnimatedFraction()) * 128);
-                mPulseCircle.setFillColor(Color.argb(alpha,
-                        mPulseEffectColorElements[0], mPulseEffectColorElements[1], mPulseEffectColorElements[2]));
-                mPulseCircle.setRadius((float) valueAnimator.getAnimatedValue());
+            int alpha = (int) ((1 - valueAnimator.getAnimatedFraction()) * 128);
+            mPulseCircle.setFillColor(Color.argb(alpha, mPulseEffectColorElements[0], mPulseEffectColorElements[1], mPulseEffectColorElements[2]));
+            mPulseCircle.setRadius((float) valueAnimator.getAnimatedValue());
 
-            }
         });
         mPulseEffectAnimator.addListener(new AnimatorListenerAdapter() {
             @Override
@@ -430,84 +389,44 @@ public class Accidents extends BaseActivity implements GoogleMap.OnCameraIdleLis
         mPulseEffectAnimator.start();
     }
 
-    @Override
-    public void onDirectionFinderStart() {
-
-    }
-
-    @Override
-    public void onDirectionFinderSuccess(List<Route> route) {
-
-    }
-
     private void sendCallMap() {
 
         if (latitude != null && longitude != null) {
-
-            double lati = Double.parseDouble(latitude);
-            double longi = Double.parseDouble(longitude);
+            double lat = Double.parseDouble(latitude);
+            double longs = Double.parseDouble(longitude);
             Geocoder geocoder = new Geocoder(this, Locale.getDefault());
             //Geocoding refers to transforming street address or any address
             List<Address> addresses = null;
-            List<Address> addressOfambulance = null;
             try {
-                addressOfambulance = geocoder.getFromLocation(ambulancelatitude, ambulancelongitude, 1);
-
-            } catch (Exception e) {
-                Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-            if (addressOfambulance == null || addressOfambulance.size() == 0) {
-                Toast.makeText(getApplicationContext(), "no address", Toast.LENGTH_SHORT).show();
-
-            } else {
-                Address addressofamb = addressOfambulance.get(0);
-                ambulanceOrigin = ambulancelatitude + "," + ambulancelongitude;
-                //Toast.makeText(getApplicationContext(), ambulanceOrigin, Toast.LENGTH_LONG).show();
-
-            }
-            try {
-                addresses = geocoder.getFromLocation(lati, longi, 1);
+                addresses = geocoder.getFromLocation(lat, longs, 1);
             } catch (Exception ioException) {
                 Toast.makeText(getApplicationContext(), ioException.getMessage(), Toast.LENGTH_SHORT).show();
             }
 
-            if (addresses == null || addresses.size() == 0) {
+            if (addresses == null || addresses.isEmpty()) {
                 Toast.makeText(getApplicationContext(), "no address", Toast.LENGTH_SHORT).show();
                 Toast.makeText(getApplicationContext(), String.valueOf(addresses), Toast.LENGTH_SHORT).show();
             } else {
-                // Address address = lati+","+longi;
 
-                // String origin = "26.854980, 75.830206";
-                String destination = lati + "," + longi;
+                String destination = lat + "," + longs;
+                try {
+                    String url = new DirectionFinder(destination).createUrl();
 
-                //   String origin = ambulancelatitude + " " + ambulancelongitude;
-                if (destination != null) {
+                    gmmIntentUri = Uri.parse("google.navigation:q=" + url + "&mode=c");
+                    SpannableString content = new SpannableString(gmmIntentUri.toString());
+                    content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
 
-                    try {
+                    fragmentContainerView.setOnClickListener(view -> {
+                        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                        mapIntent.setPackage("com.google.android.apps.maps");
+                        startActivity(mapIntent);
 
-                        String Urll = new DirectionFinder(this, ambulanceOrigin, destination).createUrll();
+                    });
 
-                        gmmIntentUri = Uri.parse("google.navigation:q=" + Urll + "&mode=c");
-                        SpannableString content = new SpannableString(gmmIntentUri.toString());
-                        content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
-//                        url.setText(content);
-
-                        fragmentContainerView.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-                                mapIntent.setPackage("com.google.android.apps.maps");
-                                startActivity(mapIntent);
-
-                            }
-                        });
-
-
-                    } catch (UnsupportedEncodingException e) {
-                        Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-
+                } catch (UnsupportedEncodingException e) {
+                    Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
+
             }
         }
     }
@@ -541,7 +460,7 @@ public class Accidents extends BaseActivity implements GoogleMap.OnCameraIdleLis
         private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 10; // 10 meters
 
         // The minimum time between updates in milliseconds
-        private static final long MIN_TIME_BW_UPDATES = 1000 * 60 * 1; // 1 minute
+        private static final long MIN_TIME_BW_UPDATES = 1000 * 60; // 1 minute
 
         // Declaring a Location Manager
         protected LocationManager locationManager;
@@ -554,30 +473,24 @@ public class Accidents extends BaseActivity implements GoogleMap.OnCameraIdleLis
         @SuppressLint("MissingPermission")
         public Location getLocation() {
             try {
-                locationManager = (LocationManager) mContext
-                        .getSystemService(LOCATION_SERVICE);
+                locationManager = (LocationManager) mContext.getSystemService(LOCATION_SERVICE);
 
                 // getting GPS status
-                isGPSEnabled = locationManager
-                        .isProviderEnabled(LocationManager.GPS_PROVIDER);
+                isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
 
                 // getting network status
-                isNetworkEnabled = locationManager
-                        .isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+                isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
 
                 if (!isGPSEnabled && !isNetworkEnabled) {
+                    Log.d(TAG, "No Network Provided");
                     // no network provider is enabled
                 } else {
                     this.canGetLocation = true;
                     if (isNetworkEnabled) {
-                        locationManager.requestLocationUpdates(
-                                LocationManager.NETWORK_PROVIDER,
-                                MIN_TIME_BW_UPDATES,
-                                MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
+                        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, MIN_TIME_BW_UPDATES, MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
                         Log.d("Network", "Network");
                         if (locationManager != null) {
-                            location = locationManager
-                                    .getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                            location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
                             if (location != null) {
                                 latitude = location.getLatitude();
                                 longitude = location.getLongitude();
@@ -587,14 +500,12 @@ public class Accidents extends BaseActivity implements GoogleMap.OnCameraIdleLis
                     // if GPS Enabled get lat/long using GPS Services
                     if (isGPSEnabled) {
                         if (location == null) {
-                            locationManager.requestLocationUpdates(
-                                    LocationManager.GPS_PROVIDER,
-                                    MIN_TIME_BW_UPDATES,
-                                    MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
+                            if (locationManager != null) {
+                                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_TIME_BW_UPDATES, MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
+                            }
                             Log.d("GPS Enabled", "GPS Enabled");
                             if (locationManager != null) {
-                                location = locationManager
-                                        .getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                                location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
                                 if (location != null) {
                                     latitude = location.getLatitude();
                                     longitude = location.getLongitude();
@@ -605,7 +516,7 @@ public class Accidents extends BaseActivity implements GoogleMap.OnCameraIdleLis
                 }
 
             } catch (Exception e) {
-                e.printStackTrace();
+                Log.d("Exception", Objects.requireNonNull(e.getMessage()));
             }
 
             return location;
@@ -619,8 +530,6 @@ public class Accidents extends BaseActivity implements GoogleMap.OnCameraIdleLis
             if (location != null) {
                 latitude = location.getLatitude();
             }
-
-            // return latitude
             return latitude;
         }
 
@@ -631,57 +540,40 @@ public class Accidents extends BaseActivity implements GoogleMap.OnCameraIdleLis
             if (location != null) {
                 longitude = location.getLongitude();
             }
-
-            // return longitude
             return longitude;
         }
 
 
         public boolean canGetLocation() {
-            return this.canGetLocation;
+            return !this.canGetLocation;
         }
 
         /**
          * Function to show settings alert dialog
-         * On pressing Settings button will lauch Settings Options
+         * On pressing Settings button will launch Settings Options
          */
         public void showSettingsAlert() {
             AlertDialog.Builder alertDialog = new AlertDialog.Builder(mContext);
-
-            // Setting Dialog Title
             alertDialog.setTitle("GPS is settings");
-
-            // Setting Dialog Message
             alertDialog.setMessage("GPS is not enabled. Do you want to go to settings menu?");
-
-            // On pressing Settings button
-            alertDialog.setPositiveButton("Settings", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-                    Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                    mContext.startActivity(intent);
-                }
+            alertDialog.setPositiveButton("Settings", (dialog, which) -> {
+                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                mContext.startActivity(intent);
             });
-
-            // on pressing cancel button
-            alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.cancel();
-                }
-            });
-            // Showing Alert Message
+            alertDialog.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
             alertDialog.show();
         }
 
         @Override
-        public void onLocationChanged(Location location) {
+        public void onLocationChanged(@NonNull Location location) {
         }
 
         @Override
-        public void onProviderDisabled(String provider) {
+        public void onProviderDisabled(@NonNull String provider) {
         }
 
         @Override
-        public void onProviderEnabled(String provider) {
+        public void onProviderEnabled(@NonNull String provider) {
         }
 
         @Override
@@ -703,13 +595,13 @@ public class Accidents extends BaseActivity implements GoogleMap.OnCameraIdleLis
 
         @Override
         protected void onReceiveResult(int resultCode, Bundle resultData) {
-            // getdata();
             if (resultCode == 0) {
                 getAddress();
             }
             if (resultCode == 1) {
                 Toast.makeText(Accidents.this, "Address not found, ", Toast.LENGTH_SHORT).show();
             }
+            String location;
             if (resultCode == 2) {
                 //save current location of user
                 location = resultData.getString("address_result");
@@ -746,8 +638,9 @@ public class Accidents extends BaseActivity implements GoogleMap.OnCameraIdleLis
         @Override
         public void run() {
             try {
-                getdata();
+                getData();
             } finally {
+                int mInterval = 6000;
                 mHandler.postDelayed(mStatusChecker, mInterval);
             }
         }
@@ -762,5 +655,4 @@ public class Accidents extends BaseActivity implements GoogleMap.OnCameraIdleLis
         super.onBackPressed();
         isSelected = false;
     }
-
 }

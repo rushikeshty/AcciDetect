@@ -1,6 +1,5 @@
 package com.example.software2.dapp.UserActivities.ui;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -18,12 +17,11 @@ import com.google.firebase.auth.FirebaseAuth;
 public class Logout extends Fragment {
 
     private FirebaseAuth firebaseAuth;
-    private FragmentLogoutBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        binding = FragmentLogoutBinding.inflate(inflater, container, false);
+        FragmentLogoutBinding binding = FragmentLogoutBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
         firebaseAuth = FirebaseAuth.getInstance();
 
@@ -40,8 +38,6 @@ public class Logout extends Fragment {
                 })
                 .setNegativeButton("No", null)
                 .show();
-
-
         return root;
     }
 }

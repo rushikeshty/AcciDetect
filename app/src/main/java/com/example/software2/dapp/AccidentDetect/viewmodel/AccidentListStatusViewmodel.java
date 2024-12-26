@@ -1,7 +1,5 @@
 package com.example.software2.dapp.AccidentDetect.viewmodel;
 
-import android.app.NotificationManager;
-
 import androidx.lifecycle.ViewModel;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -13,10 +11,11 @@ public class AccidentListStatusViewmodel extends ViewModel {
     DatabaseReference databaseReference;
     FirebaseAuth firebaseAuth;
 
-    public void init(){
+    public void init() {
         firebaseAuth = FirebaseAuth.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference();
     }
+
     public DatabaseReference getDatabaseReference() {
         return databaseReference;
     }
