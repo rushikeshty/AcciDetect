@@ -2,14 +2,27 @@
 Accident Detection System
 
 
-The Android accident detection app consists of three modules - user module, ambulance module, and hospital authority module. The user module allows users to register, login, add emergency contacts, and start or stop accident detection. The ambulance and hospital authority modules receive notifications of accidents and can view the accident location and provide appropriate assistance.
-User Module:  The User module is the main module of the Android accident detection project. This module allows users to register and log in to the app. Once logged in, users can add at least one emergency contact and initiate the accident detection process. The User module also sends notifications to emergency contacts and hospital authorities in the event of an accident.
+The Android accident detection app consists of three modules – User, Ambulance, and Hospital Authority – enhanced with TensorFlow Lite (TFLite) AI/ML for real-time accident detection. The AI model runs on-device, analyzing accelerometer and gyroscope sensor data to detect accident patterns with high accuracy, even offline. Once an accident is detected, the system automatically triggers alerts and coordinates emergency response via Firebase.
 
-Ambulance Module: The Ambulance module is responsible for receiving notifications from the User module and dispatching an ambulance to the accident site. The Ambulance module also provides real-time updates to the hospital authorities about the accident and the condition of the accident victims.
+User Module:
+The primary module where users can register, log in, add emergency contacts, and start/stop AI-powered accident detection. The TFLite model continuously monitors motion sensor data in the background to identify potential accidents. Upon detection, the module sends real-time alerts with location details to emergency contacts, ambulance services, and hospital authorities via Firebase Cloud Messaging (FCM).
 
-Hospital Authority Module: The Hospital Authority module receives real-time updates from the Ambulance module about the accident and the condition of the accident victims. This module is responsible for providing medical assistance to the accident victims and coordinating with the User module and Ambulance module to ensure that the accident victims receive timely and appropriate medical care.
+Ambulance Module:
+Receives AI-triggered notifications from the User module containing accident location and confidence score. The ambulance team can be dispatched immediately, and their movements are tracked in real-time. The module updates hospital authorities on the accident status and estimated arrival time using Firebase Realtime Database (RTDB).
 
-Each module in the Android accident detection project has a specific role to play in ensuring that accident victims receive timely and appropriate assistance. By working together, these modules can help reduce the severity of accidents and improve the outcomes for accident victims.
+Hospital Authority Module:
+Receives instant notifications from the Ambulance module about accident details, including severity predictions from the AI model. This module coordinates with medical teams to prepare for incoming patients, ensuring timely medical assistance.
+
+By combining AI-powered accident detection with real-time communication between the three modules, the system ensures faster response times, reduces accident severity, and improves patient outcomes.
+
+Tools and Technology:-
+- Android Studio
+- Kotlin / Java
+- Firebase
+- Firebase Cloud Messaging (FCM)
+- Google Maps API
+- Sqlite Database
+- Tflite Model (AI/ ML)
 
 ![image](https://github.com/rushikeshty/AcciDetect/assets/117820507/c94e418d-0b72-429f-8909-2b4694c53a44)
 
